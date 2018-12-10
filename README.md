@@ -4,3 +4,4 @@ Anca BALC
 Alexandra Gherman
 Hopartean Alexandru
 Almas Iulia
+Tamas
