@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+	<title> Register or Sign in</title>
+	<link rel="stylesheet" href="../static/auth.css">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<meta charset="UTF-8" />
+	<meta name="Description" content="Register or Sign in to manage database.">
+	<script async src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+	<script src='../models/Auth.js' type='text/javascript'></script>
+	<script src='../models/AuthRegister.js' type='text/javascript'></script>
+	<script src='../models/Storage.js' type='text/javascript'></script>
+	
+</head>
+<body>
+	<div id='authRoot'>
+	<section id='sectionUserLogedIn' class="auth-padding auth-bar-border auth-display-none">
+			<label class="auth-label_name ">User is loged in</label>
+			<div class="auth-display-block">
+				<label class="auth-label_name ">Name:</label>
+				<label name="labelUserLogedIn" id="labelUserLogedIn" ></label>
+			</div>
+			<div class="auth-display-block">
+				<button type="button" id='btnGoHome'>Go To Home</button> 
+				<button type="button" id='btnLogOut'>LogOut</button> 
+			</div>
+	</section>
+	<form id="authLoginOrRegister" class="auth-display-none">
+		<section id='sectionUserLogIn' class="auth-padding auth-bar-border">
+			<label class="auth-label_name ">User LogIn</label>
+			<div class="auth-display-block">
+				<label for="inputLogInName" class="auth-label_name ">Name:</label>
+				<input type="text" name="inputLogInName" id="inputLogInName"  placeholder="Enter Name." />
+			</div>
+			<div class="auth-display-block">
+				<label for="inputLogInPassword" class="auth-label_name ">Password:</label>
+				<input type="password" name="inputLogInPassword" id="inputLogInPassword"  placeholder="Enter Password." />
+			</div>
+			<div class="auth-display-block">
+				<button type="button" id='btnLogIn'>LogIn</button> 
+			</div>
+			<div class="auth-display-block">
+				<label id="statusLogIn" class="auth-label_name "></label>
+			</div>
+			<div class="auth-display-block">
+				<button type="button" id='btnNewAccount'>Create a New Account</button> 
+			</div>
+		</section>
+		<section id='sectionUserRegister' class="auth-padding auth-bar-border auth-display-none">
+			<div class="auth-display-block">
+				<button type="button" id='btnGo2LogIn'>Go back to Log in</button> 
+			</div>
+			<label class="auth-label_name ">User Register</label>
+			<div class="auth-display-block">
+				<label for="inputRegisterName" class="auth-label_name ">Name:</label>
+				<input type="text" name="inputRegisterName" id="inputRegisterName"  placeholder="Enter Name." />
+			</div>
+			<div class="auth-display-block">
+				<label for="inputRegisterPassword" class="auth-label_name ">Password:</label>
+				<input type="password" name="inputRegisterPassword" id="inputRegisterPassword"  placeholder="Enter Password." />
+			</div>
+			<div class="auth-display-block">
+				<label for="inputRegisterConfirmPassword" class="auth-label_name ">Confirm Password:</label>
+				<input type="password" name="inputRegisterConfirmPassword" id="inputRegisterConfirmPassword"  placeholder="Enter Confirm Password." />
+			</div>
+			<div class="auth-display-block">
+				<button type="button" id='btnRegister' >Register</button> 
+			</div>
+			<div class="auth-display-block">
+				<label id="statusRegister" class="auth-label_name "></label>
+			</div>
+		</section> 		
+	</form>
+	</div>
+	<script src='../views/auth.js' type='text/javascript'></script>
+	
+	
+	
+</body>
+</html>
