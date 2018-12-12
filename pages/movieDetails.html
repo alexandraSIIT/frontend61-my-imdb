@@ -1,0 +1,59 @@
+<html>
+
+<head>
+	<title>Movie details</title>
+	<meta charset="UTF-8" />
+	<!-- <link rel="stylesheet" href="../../css/index.css"> -->
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js">
+	</script>
+</head>
+
+<body>
+	<div id="movieDetails"></div>
+	<div id="template">
+		<h3 class="movie-header">
+			<!-- <span class="game-id"></span>  -->
+			<span class="movie-title"></span>
+		</h3>
+		<img class="movie-poster" alt="movie-poster" height="70%" width="60%">
+
+		<h4 class="plot">Plot</h4>
+		<p class="movie-plot"></p>
+
+		<h4 class="year">Year</h4>
+		<p class="movie-year"></p>
+
+		<h4 class="genre">Genre</h4>
+		<p class="movie-genre"></p>
+
+		<h4 class="director">Director</h4>
+		<p class="movie-director"></p>
+
+		<h4 class="writer">Writer</h4>
+		<p class="movie-writer"></p>
+
+		<h4 class="language">Language</h4>
+		<p class="movie-language"></p>
+
+		<h4 class="country">Country</h4>
+		<p class="movie-country"></p>
+
+		<h4 class="imdbRating">imdb Rating</h4>
+		<p class="movie-imdbRating"></p>
+
+		<h4 class="actors">Actors</h4>
+		<p class="movie-actors"></p>
+
+		<h4 class="runtime">Runtime</h4>
+		<p class="movie-runtime"></p>
+		<div>
+			<button class="movie-edit">Edit</button>
+			<button class="movie-delete">Delete</button>
+		</div>
+	</div>
+
+ 	<script src="../models/Movie.js"></script>
+	<script src="../views/movieDetails.js"></script>
+</body>
+
+</html>
