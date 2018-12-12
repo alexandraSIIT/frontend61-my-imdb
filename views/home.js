@@ -2,14 +2,14 @@ var movies = new Movies();
 getMovies();
 function getMovies() {
   movies.getAll().then(function() {
-    console.log("getALLList", movies.items);
+    console.log("getAllList", movies.items);
     displayMovies(movies.items);
   });
 }
 function displayMovies(response) {
   var template = document.getElementById("template");
   var moviesContainer = document.getElementById("movies");
-console.log("display movies resonse=", response);
+console.log("display movies response=", response);
   for (var i = 0; i < response.length; i++) {
     var moviesClone = template.cloneNode(true);
     // set a unique id for each movie
@@ -30,7 +30,23 @@ console.log("display movies resonse=", response);
     var moviePosterElement = moviesClone.querySelector(".movie-poster");
     moviePosterElement.src = response[i].Poster;
 
+    var getMovieDetailsButton = moviesClone.querySelector(".movie-details");
+    getMovieDetailsButton.addEventListener(
+      "click",
+      function getMovieDetailsOnClick() {
+        var theMovie = event.target.parentNode.parentNode;
+        var theMovieId = theMovie.id;
+        var movieId = theMovieId.replace("movie_", "");
+
+        window.location = "movieDetails.html?_id=" + movieId;
+      }
+    );
+
     moviesContainer.appendChild(moviesClone);
+
+    template.remove();
   };
 
 };
+
+

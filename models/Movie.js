@@ -14,7 +14,7 @@ function Movie(options = {}) {
   this.imdbRating = options.imdbRating;
 }
 
-const moviesRootUrl = "https://ancient-caverns-16784.herokuapp.com/movies/5baa62368b5f4c002194c7dd";
+const moviesRootUrl = "https://ancient-caverns-16784.herokuapp.com/";
 Movie.prototype.getMovieDetails = function() {
   var me = this;
   return $.get(moviesRootUrl).then(function(response) {
