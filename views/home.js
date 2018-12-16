@@ -9,7 +9,8 @@ function getMovies() {
 function displayMovies(response) {
   var template = document.getElementById("template");
   var moviesContainer = document.getElementById("movies");
-console.log("display movies response=", response);
+  // var regenerateMoviesContainer = document.getElementById("regenerate-movies");
+  console.log("display movies response=", response);
   for (var i = 0; i < response.length; i++) {
     var moviesClone = template.cloneNode(true);
     // set a unique id for each movie
@@ -39,14 +40,34 @@ console.log("display movies response=", response);
         var movieId = theMovieId.replace("movie_", "");
 
         window.location = "movieDetails.html?_id=" + movieId;
-      }
-    );
+        // console.log("id", movieId)
+      });
 
     moviesContainer.appendChild(moviesClone);
-
-    template.remove();
   };
+
+  // var regenerateMoviesButton = regenerateMoviesContainer.querySelector(
+  //   ".movie-regenerateMovies"
+  // );
+  // regenerateMoviesButton.addEventListener("click", function(event) {
+  //   var movie = getMovieById(event);
+  //   movie.regenerateMovies().then(function() {
+  //     window.location.reload();
+  //     console.log("refresh", response);
+  //   });
+  // });
+
+  template.remove();
 
 };
 
 
+function getMovieById(event) {
+  var theMovie = event.target.parentNode.parentNode;
+  var theMovieId = theMovie.id;
+
+  var movieId = theMovieId.replace("movie_", "");
+  //call delete article model
+  var movie = new Movie({ _id: movieId });
+  return movie;
+}
