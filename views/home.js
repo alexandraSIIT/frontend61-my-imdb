@@ -32,15 +32,12 @@ function displayMovies(response) {
     moviePosterElement.src = response[i].Poster;
 
     var getMovieDetailsButton = moviesClone.querySelector(".movie-details");
+    let id=response[i]._id;
     getMovieDetailsButton.addEventListener(
       "click",
       function getMovieDetailsOnClick() {
-        var theMovie = event.target.parentNode.parentNode;
-        var theMovieId = theMovie.id;
-        var movieId = theMovieId.replace("movie_", "");
 
-        window.location = "movieDetails.html?_id=" + movieId;
-        // console.log("id", movieId)
+        window.location = "movieDetails.html?_id=" + id;
       });
 
     moviesContainer.appendChild(moviesClone);

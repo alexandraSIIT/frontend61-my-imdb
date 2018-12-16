@@ -13,43 +13,46 @@
 	<div id="template">
 		<h3 class="movie-header">
 			<!-- <span class="game-id"></span>  -->
-			<span class="movie-title"></span>
+			<span class="movie-title"&nbsp;></span>
+			<!-- <h4 class="year">Year</h4> -->
+			(<span class="movie-year"></span>)
 		</h3>
+		<div class="subtext">
+			<!-- <h4 class="runtime">Runtime</h4> -->
+			<span class="movie-runtime"></span>
+
+			<span class="ghost">|</span>
+
+			<span class="movie-genre"></span>
+
+		</div>
+
+
 		<img class="movie-poster" alt="movie-poster" height="70%" width="60%">
 
-		<h4 class="plot">Plot</h4>
+		<!-- <h4 class="plot">Plot</h4> -->
 		<p class="movie-plot"></p>
 
-		<h4 class="year">Year</h4>
-		<p class="movie-year"></p>
-
 		<h4 class="genre">Genre</h4>
-		<p class="movie-genre"></p>
+		
 
-		<h4 class="director">Director</h4>
-		<p class="movie-director"></p>
+		<h4 class="director">Director : <span class="movie-director"></span></h4> 
 
-		<h4 class="writer">Writer</h4>
-		<p class="movie-writer"></p>
 
-		<h4 class="language">Language</h4>
-		<p class="movie-language"></p>
+		<h4 class="writer">Writer : <span class="movie-writer"></span></h4>
+		
 
-		<h4 class="country">Country</h4>
-		<p class="movie-country"></p>
+		<h4 class="language">Language : <span class="movie-language"></span></h4>
+		
 
-		<h4 class="imdbRating">imdb Rating</h4>
-		<p class="movie-imdbRating"></p>
+		<h4 class="country">Country : <span class="movie-country"></span></h4>
+		
 
-		<h4 class="actors">Actors</h4>
-		<p class="movie-actors"></p>
+		<h4 class="imdbRating">imdb Rating : <span class="movie-imdbRating"></span></h4>
+		
 
-		<h4 class="runtime">Runtime</h4>
-		<p class="movie-runtime"></p>
-<!-- 		<div>
-			<button class="movie-edit">Edit</button>
-			<button class="movie-delete">Delete</button>
-		</div> -->
+		<h4 class="actors">Actors : <span class="movie-actors"></span></h4>
+		
 	</div>
 
  	<script src="../models/Movie.js"></script>
