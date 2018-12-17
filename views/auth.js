@@ -9,15 +9,16 @@ function adddomElements(){
 	domElements["sectionUserLogIn"] = document.getElementById("sectionUserLogIn");
 	domElements["authLoginOrRegister"]= document.getElementById("authLoginOrRegister");
 	domElements["statusLogIn"]= document.getElementById("statusLogIn");
-	domElements["inputLogInName"]= document.getElementById("inputLogInName");
+	domElements["inputLogInUserName"]= document.getElementById("inputLogInUserName");
 	domElements["inputLogInPassword"] = document.getElementById("inputLogInPassword");
 	domElements["btnLogIn"]= document.getElementById("btnLogIn");
 	
 	domElements["sectionUserRegister"]= document.getElementById("sectionUserRegister");
 	domElements["statusRegister"]= document.getElementById("statusRegister");
-	domElements["inputRegisterName"] = document.getElementById("inputRegisterName");
+	domElements["inputRegisterUserName"] = document.getElementById("inputRegisterUserName");
 	domElements["inputRegisterPassword"] = document.getElementById("inputRegisterPassword");
 	domElements["inputRegisterConfirmPassword"] = document.getElementById("inputRegisterConfirmPassword");
+	domElements["inputRegisterEmail"] = document.getElementById("inputRegisterEmail");
 	domElements["btnRegister"] = document.getElementById("btnRegister");
 	
 	
@@ -31,6 +32,22 @@ function adddomElements(){
 }
 function addEvents(){
 	console.groupCollapsed('addEvents');
+	function getUrlParameter(name) {
+	  name = name.replace(/[\[]/, "\\[").replace(/[\]]/, "\\]");
+	  var regex = new RegExp("[\\?&]" + name + "=([^&#]*)");
+	  var results = regex.exec(location.search);
+	  return results === null
+		? ""
+		: decodeURIComponent(results[1].replace(/\+/g, " "));
+	}
+	var page='';
+	var search='';
+	page=getUrlParameter('page');
+	search=getUrlParameter('search');
+	console.log('page=',page);
+	console.log('search=',search);
+	var historyObj = window.history;
+	console.log('historyObj=',historyObj);
 	domElements["btnNewAccount"].addEventListener("click",function(event){
 		console.groupCollapsed('btnNewAccount:keyup');
 		domElements["sectionUserLogIn"].classList.add("auth-display-none");
@@ -43,8 +60,8 @@ function addEvents(){
 		domElements["sectionUserLogIn"].classList.remove("auth-display-none");
 		console.groupEnd();
 	});
-	domElements["inputLogInName"].addEventListener("keyup",function(event){
-		console.groupCollapsed('inputLogInName:keyup');
+	domElements["inputLogInUserName"].addEventListener("keyup",function(event){
+		console.groupCollapsed('inputLogInUserName:keyup');
 		inputCheck({dom:event.target,type:'name'});
 		console.groupEnd();
 	});
@@ -53,8 +70,8 @@ function addEvents(){
 		inputCheck({dom:event.target,type:'password'});
 		console.groupEnd();
 	});
-	domElements["inputRegisterName"].addEventListener("keyup",function(event){
-		console.groupCollapsed('inputRegisterName:keyup');
+	domElements["inputRegisterUserName"].addEventListener("keyup",function(event){
+		console.groupCollapsed('inputRegisterUserName:keyup');
 		inputCheck({dom:event.target,type:'name'});
 		console.groupEnd();
 	});
@@ -92,28 +109,32 @@ function addEvents(){
 	domElements["btnGoHome"].addEventListener("click",function(event){
 		event.preventDefault();
 		console.groupCollapsed('btnGoHome:click');
-		window.location = "home.html";		
+		if(page){
+			window.location = page+search;
+		}else{
+			window.location = "home.html";	
+		}			
 		console.groupEnd();
 	});
 	domElements["btnLogIn"].addEventListener("click",function(event){
 		event.preventDefault();
 		console.groupCollapsed('btnLogIn:click');
 		let errorLog=[];
-		let inputLogInName=domElements["inputLogInName"];
+		let inputLogInUserName=domElements["inputLogInUserName"];
 		let inputLogInPassword=domElements["inputLogInPassword"];
-		if(typeof inputLogInName === 'undefined' || typeof inputLogInPassword === 'undefined' ){
+		if(typeof inputLogInUserName === 'undefined' || typeof inputLogInPassword === 'undefined' ){
 			console.warn('a field is not defined');
 			errorLog.push('a field is not defined');
 		}
-		if(inputLogInName === '' || inputLogInPassword === ''){
+		if(inputLogInUserName === '' || inputLogInPassword === ''){
 			console.warn('a field is empyte');
 			errorLog.push('a field is empyte');
 		}
-		if(inputLogInName.value.length<settings.nameLength_min){
+		if(inputLogInUserName.value.length<settings.nameLength_min){
 			console.warn('name to small');
 			errorLog.push('name to small');
 		}
-		if(inputLogInName.value.length>settings.nameLength_max){
+		if(inputLogInUserName.value.length>settings.nameLength_max){
 			console.warn('name to big');
 			errorLog.push('name to big');
 		}
@@ -125,6 +146,10 @@ function addEvents(){
 			console.warn('password to big');
 			errorLog.push('password to big');
 		}
+		/*if(!grecaptcha.getResponse()){
+			console.warn('reCaptcha not verified');
+			errorLog.push('reCaptcha not verified');
+		}*/
 		if(errorLog.length>0){
 			console.warn('has error, will not commence registration');
 			console.warn('errorLog=',errorLog);
@@ -132,12 +157,16 @@ function addEvents(){
 			displayLabelStatus({domName:"statusLogIn",message:"LogIn aborted do to conditions: "+errorLog.toString()});
 			
 		}else{
-			AuthRegister.userLogIn({username:inputLogInName.value,password:inputLogInPassword.value})
+			AuthRegister.userLogIn({username:inputLogInUserName.value,password:inputLogInPassword.value})
 			.then(
 				function(resolve){
 					console.log('AuthRegister.userLogIn response:resolver=',resolve);
 					//displayDomElement();	
-					window.location = "home.html";					
+					if(page){
+						window.location = page+search;
+					}else{
+						window.location = "home.html";	
+					}				
 				}
 			).catch(
 				function(reject){
@@ -159,22 +188,23 @@ function addEvents(){
 		event.preventDefault();
 		console.groupCollapsed('btnRegister:click');
 		let errorLog=[];
-		let inputRegisterName=domElements["inputRegisterName"];
+		let inputRegisterUserName=domElements["inputRegisterUserName"];
 		let inputRegisterPassword=domElements["inputRegisterPassword"];
 		let inputRegisterConfirmPassword=domElements["inputRegisterConfirmPassword"];
-		if(typeof inputRegisterName === 'undefined' || typeof inputRegisterPassword === 'undefined' || typeof inputRegisterConfirmPassword === 'undefined'){
+		let inputRegisterEmail=domElements["inputRegisterEmail"];
+		if(typeof inputRegisterUserName === 'undefined' || typeof inputRegisterPassword === 'undefined' || typeof inputRegisterConfirmPassword === 'undefined'){
 			console.warn('a field is not defined');
 			errorLog.push('a field is not defined');
 		}
-		if(inputRegisterName === '' || inputRegisterPassword === '' ||inputRegisterConfirmPassword === ''){
+		if(inputRegisterUserName === '' || inputRegisterPassword === '' ||inputRegisterConfirmPassword === ''){
 			console.warn('a field is empyte');
 			errorLog.push('a field is empyte');
 		}
-		if(inputRegisterName.value.length<settings.nameLength_min){
+		if(inputRegisterUserName.value.length<settings.nameLength_min){
 			console.warn('name to small');
 			errorLog.push('name to small');
 		}
-		if(inputRegisterName.value.length>settings.nameLength_max){
+		if(inputRegisterUserName.value.length>settings.nameLength_max){
 			console.warn('name to big');
 			errorLog.push('name to big');
 		}
@@ -190,6 +220,14 @@ function addEvents(){
 			console.warn('password dont match');
 			errorLog.push('password dont match');
 		}
+		if(inputRegisterEmail.value.length<0){
+			console.warn('no email provided');
+			errorLog.push('no email provided');
+		}
+		if(!grecaptcha.getResponse()){
+			console.warn('reCaptcha not verified');
+			errorLog.push('reCaptcha not verified');
+		}
 		if(errorLog.length>0){
 			console.warn('has error, will not commence registration');
 			console.warn('errorLog=',errorLog);
@@ -197,12 +235,15 @@ function addEvents(){
 			displayLabelStatus({domName:"statusRegister",message:"Register aborted do to conditions: "+errorLog.toString()});
 			
 		}else{
-			AuthRegister.userRegister({username:inputRegisterName.value,password:inputRegisterPassword.value,confirmPassword:inputRegisterConfirmPassword.value})
+			AuthRegister.userRegister({username:inputRegisterUserName.value,password:inputRegisterPassword.value,confirmPassword:inputRegisterConfirmPassword.value})
 			.then(
 				function(resolve){
 					console.log('AuthRegister.userRegister response:resolver=',resolve);
-					//displayDomElement();
-					window.location = "home.html";					
+					if(page){
+						window.location = page+search;
+					}else{
+						window.location = "home.html";	
+					}					
 				}
 			).catch(
 				function(reject){
@@ -291,6 +332,7 @@ function inputCheck(options={}){
 	}
 	console.groupEnd();
 }
+
 function init() {
 	console.groupCollapsed('init');
 	adddomElements();
@@ -299,3 +341,31 @@ function init() {
 	console.groupEnd();
 }
 init();
+
+
+window.onresize=function(){
+	console.groupCollapsed('window.onresize');
+	console.log('Window.screenX=',window.screenX);
+	console.log('Window.screenY=',window.screenY);
+	console.log('Window.fullScreen=',window.fullScreen);
+	console.log('Window.innerHeight=',window.innerHeight);
+	console.log('Window.innerWidth=',window.innerWidth);
+	console.log('Window.outerHeight=',window.outerHeight);
+	console.log('Window.outerWidth=',window.outerWidth);
+	console.groupEnd();	
+}
+window.onscroll=function(){
+	console.groupCollapsed('window.onscroll');
+	console.log('Window.scrollbars=',window.scrollbars);
+	console.log('Window.scrollX=',window.scrollX);
+	console.log('Window.scrollY=',window.scrollY);
+	console.groupEnd();	
+}
+window.ondeviceeorientation=function(){
+	console.groupCollapsed('window.ondeviceeorientation');	
+	console.log('Window.orientation=',window.orientation);
+	console.groupEnd();	
+}
+window.addEventListener("orientationchange", function() {
+   console.log('screen.orientation.angle=',screen.orientation.angle);
+});

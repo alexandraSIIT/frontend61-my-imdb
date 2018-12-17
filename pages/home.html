@@ -2,12 +2,24 @@
 
 <head>
 	<title>Movie addicts</title>
+	<link rel="icon" href="../static/32396-popcorn-icon.png"><!-- added by Tamas -->
 	<meta charset="UTF-8" />
-	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js">
-  </script>
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+	<link rel="stylesheet" href="../static/auth.css"><!-- added by Tamas -->
+	
 </head>
 
 <body>
+	<section id='sectionUserAuth'  style="display:none"><!-- added by Tamas -->
+			<label id='labelUserAuthStatus' class="auth-label_name "></label>
+			<div id='divUserAuthUsername' class="auth-display-block" style="display:none">
+				<label class="auth-label_name ">Username</label>
+				<label name="labelUserName" id="labelUserName" ></label>
+			</div>
+			<div class="auth-display-block">
+				<button type="button" id='btnUserAuth'></button> 
+			</div>
+	</section>
 	<div id="movies"></div>
 	<div id="template">
 		<h3 class="movie-header">
@@ -25,8 +37,11 @@
 		<button class="movie-regenerateMovies">Regenerate Movies</button>
 	</div>
 
-  <script src="../models/Movies.js"></script>
+	<script src="../models/Movies.js"></script>
 	<script src="../models/Movie.js"></script>
 	<script src="../views/home.js"></script>
+	<script src='../models/Auth.js' type='text/javascript'></script><!-- added by Tamas -->
+	<script src='../models/Storage.js' type='text/javascript'></script><!-- added by Tamas -->
+	<script src="../views/authInclude.js"></script><!-- added by Tamas -->
 </body>
  </html>
