@@ -224,10 +224,10 @@ function addEvents(){
 			console.warn('no email provided');
 			errorLog.push('no email provided');
 		}
-		if(!grecaptcha.getResponse()){
+		/*if(!grecaptcha.getResponse()){
 			console.warn('reCaptcha not verified');
 			errorLog.push('reCaptcha not verified');
-		}
+		}*/
 		if(errorLog.length>0){
 			console.warn('has error, will not commence registration');
 			console.warn('errorLog=',errorLog);

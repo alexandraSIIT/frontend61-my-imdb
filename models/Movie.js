@@ -1,20 +1,66 @@
-function Movie(options = {}) {
-  this._id = options._id;
-  this.Title = options.Title;
-  this.Year = options.Year;
-  this.Runtime = options.Runtime;
-  this.Genre = options.Genre;
-  this.Director = options.Director;
-  this.Writer = options.Writer;
-  this.Actors = options.Actors;
-  this.Plot = options.Plot;
-  this.Language = options.Language;
-  this.Country = options.Country;
-  this.Poster = options.Poster;
-  this.imdbRating = options.imdbRating;
+class Movie {
+    constructor(option = {}) {
+        this._id = option._id;
+        this.Title = option.Title;
+        this.Year = option.Year;
+        this.Runtime = option.Runtime;
+        this.Genre = option.Genre;
+        this.Director = option.Director;
+        this.Writer = option.Writer;
+        this.Actors = option.Actors;
+        this.Plot = option.Plot;
+        this.Language = option.Language;
+        this.Country = option.Country;
+        this.Poster = option.Poster;
+        this.imdbRating = option.imdbRating;
+        
+    }
+    getMovie() {
+        
+        return $
+            .ajax({
+                //Auth: "no auth needed",
+                //Headers: {"x-auth-token" : "ZGFucG9wOmRhbnBvcA=="},
+                method: "GET",
+                url: rootUrl + "movies/" + this._id,
+            });
+    }
+    editMovie() {
+         let token=Auth.getAccessToken()
+        console.log("token=",token);
+        return $
+            .ajax({
+                //Auth: required,
+                headers: {"x-auth-token" :token},
+                method: "PUT",
+                url: rootUrl + "movies/" + this._id,
+                data: {
+                    Title: this.Title,
+                    Year: this.Year,
+                    Runtime: this.Runtime,
+                    Genre: this.Genre,
+                    Director: this.Director,
+                    Writer: this.Writer,
+                    Actors: this.Actors,
+                    Plot: this.Plot,
+                    Language: this.Language,
+                    Country: this.Country,
+                    Poster: this.Poster,
+                    imdbRating: this.imdbRating
+                }
+            });
+    }
+    
 }
 
+
+const rootUrl = "https://ancient-caverns-16784.herokuapp.com/";
+
+
+//const moviesRootUrl = "https://ancient-caverns-16784.herokuapp.com/movies/";
+
 const moviesRootUrl = "https://ancient-caverns-16784.herokuapp.com/";
+
 Movie.prototype.getMovieDetails = function() {
   var me = this;
   return $.get(moviesRootUrl +"movies/" + me.id).then(function(response) {
@@ -37,7 +83,7 @@ Movie.prototype.getMovieDetails = function() {
 
 // Movie.prototype.regenerateMovies = function() {
 //   return $.ajax({
-//     url: moviesRootUrl + "regenerate-movies",
+//     url: rootUrl + "regenerate-movies",
 //     method: "GET"
 //   });
 // };

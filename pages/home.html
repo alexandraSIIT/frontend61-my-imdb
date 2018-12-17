@@ -1,3 +1,22 @@
+<!-- <!DOCTYPE html>
+<html lang="en-US">
+
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<meta http-equiv="X-UA-Compatible" content="IE-Edge">
+    <title>Movie edit</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js">
+	</script>
+</head>
+<body>
+    <button id="edit-button">Edit</button>
+
+    <script src="../models/Movie.js"></script>
+    <script src="../views/home.js"></script>
+</body>
+</html> -->
+
 <html>
 
 <head>
@@ -6,10 +25,14 @@
 	<meta charset="UTF-8" />
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js">
+
+    </script>
+    <link rel="stylesheet" type="text/css" href="../css/styles.css">
+
   </script>
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 	<link rel="stylesheet" href="../static/auth.css"><!-- added by Tamas -->
-	
+
 </head>
 
 <body>
@@ -24,7 +47,7 @@
 			</div>
 	</section>
 	<div id="movies"></div>
-	<div id="template">
+	<div id="template" style="display:none">
 		<h3 class="movie-header">
 			<span class="movie-title"></span>
 		</h3>
@@ -32,12 +55,18 @@
 		<p class="movie-runtime"></p>
 		<p class ="movie-genre"></p>
 		<img class="movie-poster" alt="movie-poster">
+
+        <button class="movie-details">More Details</button>
+        <button class="movie-edit">Edit</button>
+        
+
 		<div>
 			<button class="movie-details">More Details</button>
 		</div>
 	</div>
 		<div id="regenerate-movies">
 		<button class="movie-regenerateMovies">Regenerate Movies</button>
+
 	</div>
 
 	<script src="../models/Movies.js"></script>
@@ -48,3 +77,4 @@
 	<script src="../views/authInclude.js"></script><!-- added by Tamas -->
 </body>
  </html>
+
