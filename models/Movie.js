@@ -15,7 +15,8 @@ class Movie {
         this.imdbRating = option.imdbRating;
         
     }
-    editMovie() {
+    getMovie() {
+        
         return $
             .ajax({
                 //Auth: "no auth needed",
@@ -24,7 +25,46 @@ class Movie {
                 url: rootUrl + "movies/" + this._id,
             });
     }
+    editMovie() {
+        
+        return $
+            .ajax({
+                //Auth: "no auth needed",
+                Headers: {"x-auth-token" : Auth.getAccessToken()},
+                method: "PUT",
+                url: rootUrl + "movies/" + this._id,
+            });
+    }
 }
 
 const rootUrl = "https://ancient-caverns-16784.herokuapp.com/";
+
+
+//const moviesRootUrl = "https://ancient-caverns-16784.herokuapp.com/movies/";
+Movie.prototype.getMovieDetails = function() {
+  var me = this;
+  return $.get(moviesRootUrl).then(function(response) {
+    console.log("Movie", response);
+    me._id = response._id;
+    me.Title = response.Title;
+    me.Year = response.Year;
+    me.Runtime = response.Runtime;
+    me.Genre = response.Genre;
+    me.Director = response.Director;
+    me.Writer = response.Writer;
+    me.Actors = response.Actors;
+    me.Plot = response.Plot;
+    me.Language = response.Language;
+    me.Country = response.Country;
+    me.Poster = response.Poster;
+    me.imdbRating = response.imdbRating;
+  });
+};
+
+// Movie.prototype.regenerateMovies = function() {
+//   return $.ajax({
+//     url: rootUrl + "regenerate-movies",
+//     method: "GET"
+//   });
+// };
 

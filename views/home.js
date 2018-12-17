@@ -1,14 +1,279 @@
-var submitBtn = document.getElementById("edit-button");
-var id = "5baa62368b5f4c002194c7dc";
+// window.onload = function() {
+//   var movie = new Movie();
+//   movie.regenerateMovies().then(function(response) {
+//     console.log("Complet regeneration", response);
+//   });
+// };
 
-submitBtn.addEventListener("click", function(){
+
+var movies = new Movies();
+getMovies();
+function getMovies() {
+  movies.getAll().then(function() {
+    console.log("getALLList", movies.items);
+    displayMovies(movies.items);
+  });
+}
+function displayMovies(response) {
+  var template = document.getElementById("template");
+  var moviesContainer = document.getElementById("movies");
+console.log("display movies resonse=", response);
+  for (var i = 0; i < response.length; i++) {
+    var moviesClone = template.cloneNode(true);
+    // set a unique id for each movie
+    moviesClone.id = "movie_" + response[i]._id;
+    // populate the cloned template
+    var movieTitleElement = moviesClone.querySelector(".movie-title");
+    movieTitleElement.innerHTML = response[i].Title;
+
+    var movieYearElement = moviesClone.querySelector(".movie-year");
+    movieYearElement.innerHTML = response[i].Year;
+
+    var movieRuntimeElement = moviesClone.querySelector(".movie-runtime");
+    movieRuntimeElement.innerHTML = response[i].Runtime;
+
+    var movieGenreElement = moviesClone.querySelector(".movie-genre");
+    movieGenreElement.innerHTML = response[i].Genre;
+
+    var moviePosterElement = moviesClone.querySelector(".movie-poster");
+    moviePosterElement.src = response[i].Poster;
+
+    moviesContainer.appendChild(moviesClone);
+    template.remove();
+
+    var editButton = moviesClone.querySelector(".movie-edit");
+    editButton.addEventListener("click", editMovie);
+  };
+
+};
+
+function editMovie(event){
+  event.target.disabled = "true";
+  var grandpa = event.target.parentNode;
+  var grandpaId = grandpa.id;
+  var movieId = grandpaId.replace("movie_", "");
+  console.log(movieId);
+  
     var movie = new Movie({
-        _id: id,
+        _id: movieId,
 
     });
-    movie.editMovie().then(function(response) {
+    movie.getMovie().then(function(response) {
+      
         console.log(response);
-        console.log("Movie with id " + id + " was succesfully updated");
-    }
-)}
-);
+        let divPopup = document.createElement("div");
+        divPopup.setAttribute("class", "popup");
+        grandpa.appendChild(divPopup);
+
+        let spanPopup = document.createElement("span");
+        spanPopup.setAttribute("class", "content");
+        divPopup.appendChild(spanPopup);
+
+        let popupXButton = document.createElement("div");
+        popupXButton.setAttribute("class", "closeButton");
+        popupXButton.innerHTML = "X";
+        divPopup.appendChild(popupXButton);
+
+        popupXButton.addEventListener("click", function(){
+           event.target.disabled = false;
+           divPopup.remove();
+           
+        });
+        //title edit
+        let titleLabel = document.createElement("label");
+        titleLabel.setAttribute("for", response.Title);
+        titleLabel.innerHTML = "<br>Title of the movie";
+        spanPopup.appendChild(titleLabel);
+
+        let newTitle = document.createElement("input");
+        newTitle.setAttribute("value", response.Title);
+        newTitle.setAttribute("class", "new-title");
+        newTitle.setAttribute("style", "width: 90%");
+        spanPopup.appendChild(newTitle);
+        
+        //year edit
+        let yearLabel = document.createElement("label");
+        yearLabel.setAttribute("for", response.Year);
+        yearLabel.innerHTML = "<br>Year<br>";
+        spanPopup.appendChild(yearLabel);
+
+        let newYear = document.createElement("input");
+        newYear.setAttribute("value", response.Year);
+        newYear.setAttribute("class", "new-year");
+        newYear.setAttribute("style", "width: 50%");
+        spanPopup.appendChild(newYear);
+        
+        //runtime edit
+        let runtimeLabel = document.createElement("label");
+        runtimeLabel.setAttribute("for", response.Runtime);
+        runtimeLabel.innerHTML = "<br>Runtime<br>";
+        spanPopup.appendChild(runtimeLabel);
+
+        let newRuntime = document.createElement("input");
+        newRuntime.setAttribute("value", response.Runtime);
+        newRuntime.setAttribute("class", "new-runtime");
+        newRuntime.setAttribute("style", "width: 90%");
+        spanPopup.appendChild(newRuntime);
+
+        //Genre edit
+        let genreLabel = document.createElement("label");
+        genreLabel.setAttribute("for", response.Genre);
+        genreLabel.innerHTML = "<br>Genre<br>";
+        spanPopup.appendChild(genreLabel);
+
+        let newGenre = document.createElement("input");
+        newGenre.setAttribute("value", response.Genre);
+        newGenre.setAttribute("class", "new-genre");
+        newGenre.setAttribute("style", "width: 90%");
+        spanPopup.appendChild(newGenre);
+
+        //Director edit
+        let directorLabel = document.createElement("label");
+        directorLabel.setAttribute("for", response.Director);
+        directorLabel.innerHTML = "<br>Director<br>";
+        spanPopup.appendChild(directorLabel);
+
+        let newDirector = document.createElement("input");
+        newDirector.setAttribute("value", response.Director);
+        newDirector.setAttribute("class", "new-director");
+        newDirector.setAttribute("style", "width: 90%");
+        spanPopup.appendChild(newDirector);
+
+        //Writer edit
+        let writerLabel = document.createElement("label");
+        writerLabel.setAttribute("for", response.Writer);
+        writerLabel.innerHTML = "<br>Writer<br>";
+        spanPopup.appendChild(writerLabel);
+
+        let newWriter = document.createElement("input");
+        newWriter.setAttribute("value", response.Writer);
+        newWriter.setAttribute("class", "new-writer");
+        newWriter.setAttribute("style", "width: 50%");
+        spanPopup.appendChild(newWriter);
+
+        //Actors edit
+        let actorsLabel = document.createElement("label");
+        actorsLabel.setAttribute("for", response.Actors);
+        actorsLabel.innerHTML = "<br>Actors<br>";
+        spanPopup.appendChild(actorsLabel);
+
+        let newActors = document.createElement("input");
+        newActors.setAttribute("value", response.Actors);
+        newActors.setAttribute("class", "new-actors");
+        newActors.setAttribute("style", "width: 90%");
+        spanPopup.appendChild(newActors);
+
+        //Plot edit
+        let plotLabel = document.createElement("label");
+        plotLabel.setAttribute("for", response.Plot);
+        plotLabel.innerHTML = "<br>Plot<br>";
+        spanPopup.appendChild(plotLabel);
+
+        let newPlot = document.createElement("input");
+        newPlot.setAttribute("value", response.Plot);
+        newPlot.setAttribute("class", "new-plot");
+        newPlot.setAttribute("style", "width: 90%");
+        spanPopup.appendChild(newPlot);
+
+        //Language edit
+        let languageLabel = document.createElement("label");
+        languageLabel.setAttribute("for", response.Language);
+        languageLabel.innerHTML = "<br>Language<br>";
+        spanPopup.appendChild(languageLabel);
+
+        let newLanguage = document.createElement("input");
+        newLanguage.setAttribute("value", response.Language);
+        newLanguage.setAttribute("class", "new-language");
+        newLanguage.setAttribute("style", "width: 90%");
+        spanPopup.appendChild(newLanguage);
+
+        //Country edit
+        let countryLabel = document.createElement("label");
+        countryLabel.setAttribute("for", response.Country);
+        countryLabel.innerHTML = "<br>Country<br>";
+        spanPopup.appendChild(countryLabel);
+
+        let newCountry = document.createElement("input");
+        newCountry.setAttribute("value", response.Country);
+        newCountry.setAttribute("class", "new-country");
+        newCountry.setAttribute("style", "width: 50%");
+        spanPopup.appendChild(newCountry);
+
+        //Poster edit
+        let posterLabel = document.createElement("label");
+        posterLabel.setAttribute("for", response.Poster);
+        posterLabel.innerHTML = "<br>Poster<br>";
+        spanPopup.appendChild(posterLabel);
+
+        let newPoster = document.createElement("input");
+        newPoster.setAttribute("value", response.Poster);
+        newPoster.setAttribute("class", "new-poster");
+        newPoster.setAttribute("style", "width: 90%");
+        spanPopup.appendChild(newPoster);
+
+        //imdbRating edit
+        let imdbLabel = document.createElement("label");
+        imdbLabel.setAttribute("for", response.imdbRating);
+        imdbLabel.innerHTML = "<br>IMDB Rating<br>";
+        spanPopup.appendChild(imdbLabel);
+
+        let newImdbRating = document.createElement("input");
+        newImdbRating.setAttribute("value", response.imdbRating);
+        newImdbRating.setAttribute("class", "new-imdb");
+        newImdbRating.setAttribute("style", "width: 90%");
+        spanPopup.appendChild(newImdbRating);
+
+        let submitBtn = document.createElement("button");
+        submitBtn.setAttribute("class", "submit-updates");
+        submitBtn.innerHTML = "Submit";
+        spanPopup.appendChild(submitBtn);
+
+        submitBtn.addEventListener("click", function() {
+          if (
+            newTitle.value === "" ||
+            yearLabel.value === "" ||
+            newRuntime.value === "" ||
+            newGenre.value === "" ||
+            newDirector.value === "" ||
+            newWriter.value === "" ||
+            newActors.value === "" ||
+            newPlot.value === "" ||
+            newLanguage.value === "" ||
+            newCountry.value === "" ||
+            newPoster.value === "" ||
+            newImdbRating.value === "" 
+          ) {
+            alert("Please fill up all fields");
+          } else {
+            var movie = new Movie({
+              _id: movieId,
+              Title: newTitle.value,
+              Year: yearLabel.value,
+              Runtime: newRuntime.value,
+              Genre: newGenre.value,
+              Director: newDirector.value,
+              Writer: newWriter.value,
+              Actors: newActors.value,
+              Plot: newPlot.value,
+              Language: newLanguage.value,
+              Country: newCountry.value,
+              Poster: newPoster.value,
+              imdbRating: newImdbRating.value,
+            });
+            movie.editMovie().then(function(response) {
+              console.log("Movie with id " + movieId + " was succesfully updated");
+              divPopup.remove();              
+              event.target.disabled = false;
+            });
+          }
+        });
+
+      }
+    
+    
+)
+;
+}
+
+
+
