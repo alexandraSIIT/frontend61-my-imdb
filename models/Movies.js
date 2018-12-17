@@ -1,7 +1,7 @@
 function Movies() {
   this.items = [];
 }
-var moviesRootUrl = "https://ancient-caverns-16784.herokuapp.com/";
+// const moviesRootUrl = "https://ancient-caverns-16784.herokuapp.com/";
 Movies.prototype.getAll = function() {
   var me = this;
   return $.get(moviesRootUrl + "movies?take=10&skip=0").then(function(response) {

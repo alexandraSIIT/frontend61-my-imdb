@@ -10,14 +10,17 @@ var movies = new Movies();
 getMovies();
 function getMovies() {
   movies.getAll().then(function() {
-    console.log("getALLList", movies.items);
+    console.log("getAllList", movies.items);
     displayMovies(movies.items);
   });
 }
 function displayMovies(response) {
+  console.log("displayMovies");
   var template = document.getElementById("template");
   var moviesContainer = document.getElementById("movies");
-console.log("display movies resonse=", response);
+  moviesContainer.innerHTML="";
+  // var regenerateMoviesContainer = document.getElementById("regenerate-movies");
+  console.log("display movies response=", response);
   for (var i = 0; i < response.length; i++) {
     var moviesClone = template.cloneNode(true);
     // set a unique id for each movie
@@ -38,26 +41,52 @@ console.log("display movies resonse=", response);
     var moviePosterElement = moviesClone.querySelector(".movie-poster");
     moviePosterElement.src = response[i].Poster;
 
+    var getMovieDetailsButton = moviesClone.querySelector(".movie-details");
+    let id=response[i]._id;
+    let me=response[i];
+    getMovieDetailsButton.addEventListener(
+      "click",
+      function getMovieDetailsOnClick() {
+
+        window.location = "movieDetails.html?_id=" + id;
+      });
+      moviesClone.style.display="initial";
     moviesContainer.appendChild(moviesClone);
-    template.remove();
+    
 
     var editButton = moviesClone.querySelector(".movie-edit");
-    editButton.addEventListener("click", editMovie);
+    editButton.addEventListener("click", function(){
+      event.target.disabled = "true";
+      editMovie(me);
+      event.target.disabled = false;
+    });
+      
   };
+
+  // var regenerateMoviesButton = regenerateMoviesContainer.querySelector(
+  //   ".movie-regenerateMovies"
+  // );
+  // regenerateMoviesButton.addEventListener("click", function(event) {
+  //   var movie = getMovieById(event);
+  //   movie.regenerateMovies().then(function() {
+  //     window.location.reload();
+  //     console.log("refresh", response);
+  //   });
+  // });
+
+ 
 
 };
 
-function editMovie(event){
-  event.target.disabled = "true";
-  var grandpa = event.target.parentNode;
-  var grandpaId = grandpa.id;
-  var movieId = grandpaId.replace("movie_", "");
-  console.log(movieId);
-  
-    var movie = new Movie({
-        _id: movieId,
 
-    });
+function editMovie(movie){
+  console.log("editMovie.movie=",movie);
+  
+  var grandpa=document.getElementById("movie_"+movie._id);
+  console.log("grandpa=",grandpa);
+var grandpaId = grandpa.id;
+ var movieId = grandpaId.replace("movie_", "");
+  
     movie.getMovie().then(function(response) {
       
         console.log(response);
@@ -75,7 +104,7 @@ function editMovie(event){
         divPopup.appendChild(popupXButton);
 
         popupXButton.addEventListener("click", function(){
-           event.target.disabled = false;
+           //event.target.disabled = false;
            divPopup.remove();
            
         });
@@ -245,25 +274,30 @@ function editMovie(event){
           ) {
             alert("Please fill up all fields");
           } else {
-            var movie = new Movie({
-              _id: movieId,
-              Title: newTitle.value,
-              Year: yearLabel.value,
-              Runtime: newRuntime.value,
-              Genre: newGenre.value,
-              Director: newDirector.value,
-              Writer: newWriter.value,
-              Actors: newActors.value,
-              Plot: newPlot.value,
-              Language: newLanguage.value,
-              Country: newCountry.value,
-              Poster: newPoster.value,
-              imdbRating: newImdbRating.value,
-            });
+           
+              movie._id = movieId;
+              movie.Title = newTitle.value;
+              movie.Year = newYear.value;
+              movie.Runtime = newRuntime.value;
+              movie.Genre = newGenre.value;
+              movie.Director = newDirector.value;
+              movie.Writer = newWriter.value;
+              movie.Actors = newActors.value;
+              movie.Plot = newPlot.value;
+              movie.Language = newLanguage.value;
+              movie.Country = newCountry.value;
+              movie.Poster = newPoster.value;
+              movie.imdbRating = newImdbRating.value;
+            
+            
             movie.editMovie().then(function(response) {
               console.log("Movie with id " + movieId + " was succesfully updated");
               divPopup.remove();              
-              event.target.disabled = false;
+             
+              displayMovies(movies.items);
+            },
+            function(reject){
+              console.error("Error updating movie");
             });
           }
         });
@@ -276,4 +310,16 @@ function editMovie(event){
 }
 
 
+
+
+
+function getMovieById(event) {
+  var theMovie = event.target.parentNode.parentNode;
+  var theMovieId = theMovie.id;
+
+  var movieId = theMovieId.replace("movie_", "");
+  //call delete article model
+  var movie = new Movie({ _id: movieId });
+  return movie;
+}
 

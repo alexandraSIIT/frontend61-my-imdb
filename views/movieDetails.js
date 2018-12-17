@@ -1,9 +1,8 @@
 var movie = new Movie();
 
-movie.id = "5baa62368b5f4c002194c7dd";
+movie.id = getUrlParameter("_id");
 movie.getMovieDetails().then(function() {
   console.log("Movie details : ", movie);
-  // console.log("Game title : ", game.title);
 
   displayMovie(movie.id);
 });

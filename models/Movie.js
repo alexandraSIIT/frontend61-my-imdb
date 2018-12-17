@@ -26,24 +26,44 @@ class Movie {
             });
     }
     editMovie() {
-        
+         let token=Auth.getAccessToken()
+        console.log("token=",token);
         return $
             .ajax({
-                //Auth: "no auth needed",
-                Headers: {"x-auth-token" : Auth.getAccessToken()},
+                //Auth: required,
+                headers: {"x-auth-token" :token},
                 method: "PUT",
                 url: rootUrl + "movies/" + this._id,
+                data: {
+                    Title: this.Title,
+                    Year: this.Year,
+                    Runtime: this.Runtime,
+                    Genre: this.Genre,
+                    Director: this.Director,
+                    Writer: this.Writer,
+                    Actors: this.Actors,
+                    Plot: this.Plot,
+                    Language: this.Language,
+                    Country: this.Country,
+                    Poster: this.Poster,
+                    imdbRating: this.imdbRating
+                }
             });
     }
+    
 }
+
 
 const rootUrl = "https://ancient-caverns-16784.herokuapp.com/";
 
 
 //const moviesRootUrl = "https://ancient-caverns-16784.herokuapp.com/movies/";
+
+const moviesRootUrl = "https://ancient-caverns-16784.herokuapp.com/";
+
 Movie.prototype.getMovieDetails = function() {
   var me = this;
-  return $.get(moviesRootUrl).then(function(response) {
+  return $.get(moviesRootUrl +"movies/" + me.id).then(function(response) {
     console.log("Movie", response);
     me._id = response._id;
     me.Title = response.Title;
