@@ -53,6 +53,7 @@ class Movie {
     
 }
 
+<<<<<<< Updated upstream
 
 const rootUrl = "https://ancient-caverns-16784.herokuapp.com/";
 
@@ -61,6 +62,8 @@ const rootUrl = "https://ancient-caverns-16784.herokuapp.com/";
 
 const moviesRootUrl = "https://ancient-caverns-16784.herokuapp.com/";
 
+=======
+>>>>>>> Stashed changes
 Movie.prototype.getMovieDetails = function() {
   var me = this;
   return $.get(moviesRootUrl +"movies/" + me.id).then(function(response) {
@@ -87,4 +90,3 @@ Movie.prototype.getMovieDetails = function() {
 //     method: "GET"
 //   });
 // };
-

@@ -8,17 +8,19 @@
 
 var movies = new Movies();
 getMovies();
-function getMovies() {
-  movies.getAll().then(function() {
+function getMovies(skip) {
+  movies.getAll(skip).then(function() {
     console.log("getAllList", movies.items);
     displayMovies(movies.items);
+    displayPagination(movies.pagination);
   });
 }
+
 function displayMovies(response) {
   console.log("displayMovies");
   var template = document.getElementById("template");
   var moviesContainer = document.getElementById("movies");
-  moviesContainer.innerHTML="";
+  moviesContainer.innerHTML = "";
   // var regenerateMoviesContainer = document.getElementById("regenerate-movies");
   console.log("display movies response=", response);
   for (var i = 0; i < response.length; i++) {
@@ -50,9 +52,9 @@ function displayMovies(response) {
 
         window.location = "movieDetails.html?_id=" + id;
       });
-      moviesClone.style.display="initial";
+    moviesClone.style.display="initial";
     moviesContainer.appendChild(moviesClone);
-    
+
 
     var editButton = moviesClone.querySelector(".movie-edit");
     editButton.addEventListener("click", function(){
@@ -60,7 +62,7 @@ function displayMovies(response) {
       editMovie(me);
       event.target.disabled = false;
     });
-      
+
   };
 
   // var regenerateMoviesButton = regenerateMoviesContainer.querySelector(
@@ -74,21 +76,35 @@ function displayMovies(response) {
   //   });
   // });
 
- 
 
 };
 
+function displayPagination(response) {
+  //console.log("response pagination", response)
+  var templatePages = document.getElementById("pagination-template");
+  var pagesContainer = document.getElementById("pagination");
+  pagesContainer.innerHTML = "";
+  for ( let i=1; i<= response.numberOfPages; i++) {
+    var pagesClone = templatePages.cloneNode(true);
+    var pageButtonElement = pagesClone.querySelector(".pages-btn");
+    pageButtonElement.innerHTML = i;
+    pagesContainer.appendChild(pagesClone);
+    pageButtonElement.addEventListener("click",function moveToPage(event){
+      return getMovies((i-1)*10 +1);
+    });
+  }
+}
 
 function editMovie(movie){
   console.log("editMovie.movie=",movie);
-  
+
   var grandpa=document.getElementById("movie_"+movie._id);
   console.log("grandpa=",grandpa);
 var grandpaId = grandpa.id;
  var movieId = grandpaId.replace("movie_", "");
-  
+
     movie.getMovie().then(function(response) {
-      
+
         console.log(response);
         let divPopup = document.createElement("div");
         divPopup.setAttribute("class", "popup");
@@ -106,7 +122,7 @@ var grandpaId = grandpa.id;
         popupXButton.addEventListener("click", function(){
            //event.target.disabled = false;
            divPopup.remove();
-           
+
         });
         //title edit
         let titleLabel = document.createElement("label");
@@ -119,7 +135,7 @@ var grandpaId = grandpa.id;
         newTitle.setAttribute("class", "new-title");
         newTitle.setAttribute("style", "width: 90%");
         spanPopup.appendChild(newTitle);
-        
+
         //year edit
         let yearLabel = document.createElement("label");
         yearLabel.setAttribute("for", response.Year);
@@ -131,7 +147,7 @@ var grandpaId = grandpa.id;
         newYear.setAttribute("class", "new-year");
         newYear.setAttribute("style", "width: 50%");
         spanPopup.appendChild(newYear);
-        
+
         //runtime edit
         let runtimeLabel = document.createElement("label");
         runtimeLabel.setAttribute("for", response.Runtime);
@@ -270,11 +286,11 @@ var grandpaId = grandpa.id;
             newLanguage.value === "" ||
             newCountry.value === "" ||
             newPoster.value === "" ||
-            newImdbRating.value === "" 
+            newImdbRating.value === ""
           ) {
             alert("Please fill up all fields");
           } else {
-           
+
               movie._id = movieId;
               movie.Title = newTitle.value;
               movie.Year = newYear.value;
@@ -288,12 +304,12 @@ var grandpaId = grandpa.id;
               movie.Country = newCountry.value;
               movie.Poster = newPoster.value;
               movie.imdbRating = newImdbRating.value;
-            
-            
+
+
             movie.editMovie().then(function(response) {
               console.log("Movie with id " + movieId + " was succesfully updated");
-              divPopup.remove();              
-             
+              divPopup.remove();
+
               displayMovies(movies.items);
             },
             function(reject){
@@ -303,8 +319,8 @@ var grandpaId = grandpa.id;
         });
 
       }
-    
-    
+
+
 )
 ;
 }
@@ -322,4 +338,3 @@ function getMovieById(event) {
   var movie = new Movie({ _id: movieId });
   return movie;
 }
-
