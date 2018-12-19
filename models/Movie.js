@@ -61,10 +61,12 @@ class Movie {
 }
 
 
+
 const rootUrl = "https://ancient-caverns-16784.herokuapp.com/";
 
 
 const moviesRootUrl = "https://ancient-caverns-16784.herokuapp.com/";
+
 
 Movie.prototype.getMovieDetails = function() {
   var me = this;
@@ -86,10 +88,19 @@ Movie.prototype.getMovieDetails = function() {
   });
 };
 
+
 Movie.prototype.regenerateMovies = function() {
   return $.ajax({
     url: rootUrl + "/movies/all",
     method: "POST"
   });
 };
+
+
+// Movie.prototype.regenerateMovies = function() {
+//   return $.ajax({
+//     url: rootUrl + "regenerate-movies",
+//     method: "GET"
+//   });
+// };
 

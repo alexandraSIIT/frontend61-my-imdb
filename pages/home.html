@@ -43,9 +43,10 @@
 				<label name="labelUserName" id="labelUserName" ></label>
 			</div>
 			<div class="auth-display-block">
-				<button type="button" id='btnUserAuth'></button> 
+				<button type="button" id='btnUserAuth'></button>
 			</div>
 	</section>
+	<div id="moviesSubmit"></div>
 	<div id="movies"></div>
 	<div id="template" style="display:none">
 		<h3 class="movie-header">
@@ -59,11 +60,15 @@
 		<button class="movie-details">More Details</button>
 		<button class="movie-delete">Delete</button>
         <button class="movie-edit">Edit</button>
-        
+
 
 		
 	</div>
-		<div id="regenerate-movies">
+	<div id="pagination"></div>
+	<div id="pagination-template">
+		<button class="pages-btn"></button>
+	</div>
+	<div id="regenerate-movies">
 		<button class="movie-regenerateMovies">Regenerate Movies</button>
 
 	</div>
@@ -76,4 +81,3 @@
 	<script src="../views/authInclude.js"></script><!-- added by Tamas -->
 </body>
  </html>
-

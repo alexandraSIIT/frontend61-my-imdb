@@ -187,6 +187,11 @@ function addEvents(){
 	domElements["btnRegister"].addEventListener("click",function(event){
 		event.preventDefault();
 		console.groupCollapsed('btnRegister:click');
+		function validateEmail(email) {
+			console.log(' validateEmail:email=',email);
+			var re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+			return re.test(String(email).toLowerCase());
+		}
 		let errorLog=[];
 		let inputRegisterUserName=domElements["inputRegisterUserName"];
 		let inputRegisterPassword=domElements["inputRegisterPassword"];
@@ -223,6 +228,10 @@ function addEvents(){
 		if(inputRegisterEmail.value.length<0){
 			console.warn('no email provided');
 			errorLog.push('no email provided');
+		}else
+		if(!validateEmail(inputRegisterEmail.value)){
+			console.warn('email is not valid');
+			errorLog.push('email is not valid');
 		}
 		/*if(!grecaptcha.getResponse()){
 			console.warn('reCaptcha not verified');
@@ -343,7 +352,7 @@ function init() {
 init();
 
 
-window.onresize=function(){
+/*window.onresize=function(){
 	console.groupCollapsed('window.onresize');
 	console.log('Window.screenX=',window.screenX);
 	console.log('Window.screenY=',window.screenY);
@@ -368,4 +377,4 @@ window.ondeviceeorientation=function(){
 }
 window.addEventListener("orientationchange", function() {
    console.log('screen.orientation.angle=',screen.orientation.angle);
-});
+});*/
