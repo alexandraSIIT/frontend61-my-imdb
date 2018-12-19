@@ -1,37 +1,190 @@
 var domElements={};
+var domImputElements={};
+var profile={mode:1,page:'',search:''}; //mode: 1- login 2-register
 var settings={nameLength_min:6,nameLength_max:36,passwordLength_min:6,passwordLength_max:36};
-function adddomElements(){
+function addDomElements(){
 	//domElements[""] = document.getElementById("");
-	console.groupCollapsed('adddomElements');
-	domElements["btnNewAccount"] = document.getElementById("btnNewAccount");
-	domElements["btnGo2LogIn"] = document.getElementById("btnGo2LogIn");
-	
-	domElements["sectionUserLogIn"] = document.getElementById("sectionUserLogIn");
-	domElements["authLoginOrRegister"]= document.getElementById("authLoginOrRegister");
-	domElements["statusLogIn"]= document.getElementById("statusLogIn");
-	domElements["inputLogInUserName"]= document.getElementById("inputLogInUserName");
-	domElements["inputLogInPassword"] = document.getElementById("inputLogInPassword");
-	domElements["btnLogIn"]= document.getElementById("btnLogIn");
-	
-	domElements["sectionUserRegister"]= document.getElementById("sectionUserRegister");
-	domElements["statusRegister"]= document.getElementById("statusRegister");
-	domElements["inputRegisterUserName"] = document.getElementById("inputRegisterUserName");
-	domElements["inputRegisterPassword"] = document.getElementById("inputRegisterPassword");
-	domElements["inputRegisterConfirmPassword"] = document.getElementById("inputRegisterConfirmPassword");
-	domElements["inputRegisterEmail"] = document.getElementById("inputRegisterEmail");
-	domElements["btnRegister"] = document.getElementById("btnRegister");
-	
-	
-	domElements["sectionUserLogedIn"]= document.getElementById("sectionUserLogedIn");
-	domElements["labelUserLogedIn"]= document.getElementById("labelUserLogedIn");
-	domElements["btnLogOut"]= document.getElementById("btnLogOut");
-	domElements["btnGoHome"]= document.getElementById("btnGoHome");
-	
+	console.groupCollapsed('addDomElements');
+	function add(name){
+		domElements[name]= document.getElementById(name);
+	}
+	function addInput(name){
+		domImputElements[name]= document.getElementById(name);
+	}
+	add("authLoginOrRegister");
+	add("sectionUserAcc");
+	add("back4Register");
+	add("btnBack2LogIn");
+	add("modeLabel");
+	addInput("inputUsername");
+	add("email2Register");
+	addInput("inputEmail");
+	addInput("inputPassword");
+	add("password2Register");
+	addInput("inputConfirmPassword");
+	add("recaptcha2Register");
+	add("btnGo2Register");
+	add('btnLogInOrRegister');
+	add("statusLogInOrRegister");
 	console.log('domElements=',domElements);
+	console.groupEnd();
+}
+function displayDomElement(){
+	console.groupCollapsed('displayDomElement');
+	if(AuthRegister.getAccessToken()){
+		console.log('loged in');
+		//domElements["authLoginOrRegister"].classList.add("auth-display-none");
+		domElements["authLoginOrRegister"].style.display="none";
+	}else{
+		console.log('not loged in');
+		domElements["authLoginOrRegister"].style.display="initial";
+	}
+	console.groupEnd();
+}
+function resetInputFields(){
+	console.groupCollapsed('resetInputFields');
+	let colorClass="auth-border-color-red";
+	domImputElements["inputUsername"].value="";
+	domImputElements["inputEmail"].value="";
+	domImputElements["inputPassword"].value="";
+	domImputElements["inputConfirmPassword"].value="";
+	domImputElements["inputUsername"].classList.remove(colorClass);
+	domImputElements["inputEmail"].classList.remove(colorClass);
+	domImputElements["inputPassword"].classList.remove(colorClass);
+	domImputElements["inputConfirmPassword"].classList.remove(colorClass);
+	console.groupEnd();
+}
+function displayDomRegister(){
+	console.groupCollapsed('displayDomRegister');
+	domElements["back4Register"].style.display="initial";
+	domElements["modeLabel"].innerHTML="User Register";
+	domElements["email2Register"].style.display="initial";
+	domElements["password2Register"].style.display="initial";
+	domElements["recaptcha2Register"].style.display="initial";
+	domElements["btnGo2Register"].style.display="none";
+	domElements["statusLogInOrRegister"].style.display="initial";
+	domElements['btnLogInOrRegister'].innerHTML="Register";
+	console.groupEnd();
+}
+function displayDomLogIn(){
+	console.groupCollapsed('displayDomLogIn');
+	domElements["back4Register"].style.display="none";
+	domElements["modeLabel"].innerHTML="User LogIn";
+	domElements["email2Register"].style.display="none";
+	domElements["password2Register"].style.display="none";
+	domElements["recaptcha2Register"].style.display="none";
+	domElements["btnGo2Register"].style.display="initial";
+	domElements["statusLogInOrRegister"].style.display="initial";
+	domElements['btnLogInOrRegister'].innerHTML="Log in";
 	console.groupEnd();
 }
 function addEvents(){
 	console.groupCollapsed('addEvents');
+	console.log('4Buttons');
+	domElements["btnGo2Register"].addEventListener("click", function(event){
+		event.preventDefault();
+		console.groupCollapsed('btnGo2Register:click');
+		resetInputFields();
+		displayDomRegister();
+		profile.mode=2;
+		console.groupEnd();
+	});
+	domElements["btnBack2LogIn"].addEventListener("click", function(event){
+		event.preventDefault();
+		console.groupCollapsed('btnBack2LogIn:click');
+		resetInputFields();
+		displayDomLogIn();
+		profile.mode=1;
+		console.groupEnd();
+	});
+	domElements["btnLogInOrRegister"].addEventListener("click", function(event){
+		event.preventDefault();
+		console.groupCollapsed('btnLogInOrRegister:click');
+		if(profile.mode===1){//login
+			callLogIn();
+		}else
+		if(profile.mode===2){//register
+			
+		}
+		console.groupEnd();
+	});
+	console.log('4Input');
+	for (let key in domImputElements){ //simple for with if in it for checking if all the newTitle, newYear, ect have a value
+		if(domImputElements[key]){
+			domImputElements[key].addEventListener("keyup",function(event){
+				console.groupCollapsed(key+':keyup');
+				if(key.toLowerCase().includes("password")){
+					inputKeyupCheck({key:key,type:'password'});
+				}else
+				if(key.toLowerCase().includes("name")){
+					inputKeyupCheck({key:key,type:'name'});
+				}else
+				if(key.toLowerCase().includes("email")){
+					inputKeyupCheck({key:key,type:'email'});
+				}
+				console.groupEnd();
+			});
+		}
+	}
+	console.groupEnd();
+}
+function inputKeyupCheck(options={}){
+	console.groupCollapsed('inputKeyupCheck');
+	console.log('options:',options);
+	let colorClass="auth-border-color-red";
+	if(!options.key||!domImputElements[options.key]){
+		console.warn('invalid key');
+		console.groupEnd();
+		return;
+	}
+	let domElement=domImputElements[options.key];
+	if(options.type){
+		if(options.type==='name'){
+			if(domElement.value.length<settings.nameLength_min){
+				console.warn('name to small');
+				domElement.classList.add(colorClass);
+			}else
+			if(domElement.value.length>settings.nameLength_max){
+				console.warn('name to big');
+				domElement.classList.add(colorClass);
+			}else{
+				domElement.classList.remove(colorClass);
+			}
+		}else
+		if(options.type==='password'){
+			if(domElement.value.length<settings.passwordLength_min){
+				console.warn('password to small');
+				domElement.classList.add(colorClass);
+			}else
+			if(domElement.value.length>settings.passwordLength_max){
+				console.warn('password to big');
+				domElement.classList.add(colorClass);
+			}else{
+				domElement.classList.remove(colorClass);
+			}
+		}else
+		if(options.type==='email'){
+			if(!validateEmail(domElement.value)){
+				console.warn('invalid email');
+				domElement.classList.add(colorClass);
+			}else{
+				domElement.classList.remove(colorClass);
+			}
+		}
+	}
+	console.groupEnd();
+}
+function validateEmail(email) {
+	console.groupCollapsed('validateEmail');
+	console.log('email=',email);
+	var re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+	var result=re.test(String(email).toLowerCase());
+	console.log('result=',result);
+	console.groupEnd();
+	return result;
+}
+function getURLDatas(){
+	console.groupCollapsed('getURLDatas');
 	function getUrlParameter(name) {
 	  name = name.replace(/[\[]/, "\\[").replace(/[\]]/, "\\]");
 	  var regex = new RegExp("[\\?&]" + name + "=([^&#]*)");
@@ -40,341 +193,138 @@ function addEvents(){
 		? ""
 		: decodeURIComponent(results[1].replace(/\+/g, " "));
 	}
-	var page='';
-	var search='';
-	page=getUrlParameter('page');
-	search=getUrlParameter('search');
-	console.log('page=',page);
-	console.log('search=',search);
-	var historyObj = window.history;
-	console.log('historyObj=',historyObj);
-	domElements["btnNewAccount"].addEventListener("click",function(event){
-		console.groupCollapsed('btnNewAccount:keyup');
-		domElements["sectionUserLogIn"].classList.add("auth-display-none");
-		domElements["sectionUserRegister"].classList.remove("auth-display-none");
-		console.groupEnd();
-	});
-	domElements["btnGo2LogIn"].addEventListener("click",function(event){
-		console.groupCollapsed('btnGo2LogIn:keyup');
-		domElements["sectionUserRegister"].classList.add("auth-display-none");
-		domElements["sectionUserLogIn"].classList.remove("auth-display-none");
-		console.groupEnd();
-	});
-	domElements["inputLogInUserName"].addEventListener("keyup",function(event){
-		console.groupCollapsed('inputLogInUserName:keyup');
-		inputCheck({dom:event.target,type:'name'});
-		console.groupEnd();
-	});
-	domElements["inputLogInPassword"].addEventListener("keyup",function(event){
-		console.groupCollapsed('inputLogInPassword:keyup');
-		inputCheck({dom:event.target,type:'password'});
-		console.groupEnd();
-	});
-	domElements["inputRegisterUserName"].addEventListener("keyup",function(event){
-		console.groupCollapsed('inputRegisterUserName:keyup');
-		inputCheck({dom:event.target,type:'name'});
-		console.groupEnd();
-	});
-	domElements["inputRegisterPassword"].addEventListener("keyup",function(event){
-		console.groupCollapsed('inputRegisterPassword:keyup');
-		inputCheck({dom:event.target,type:'password'});
-		console.groupEnd();
-	});
-	domElements["inputRegisterConfirmPassword"].addEventListener("keyup",function(event){
-		console.groupCollapsed('inputRegisteronfirmPassword:keyup');
-		inputCheck({dom:event.target,type:'password'});
-		console.groupEnd();
-	});
-	domElements["btnLogOut"].addEventListener("click",function(event){
-		event.preventDefault();
-		console.groupCollapsed('btnLogOut:click');
-		AuthRegister.userLogOut()
-		.then(
-			function(resolve){
-				console.log('AuthRegister.userLogOut response:resolver=',resolve);	
-				displayDomElement();
-			}
-		).catch(
-			function(reject){
-				console.log('AuthRegister.userLogOut response:reject=',reject);	
-				if(reject.response&&reject.response.responseJSON&&reject.response.responseJSON.message){
-					alert(reject.response.responseJSON.message);	
-				}else{
-					alert(reject.message);	
-				}
-			}
-		);
-		console.groupEnd();
-	});
-	domElements["btnGoHome"].addEventListener("click",function(event){
-		event.preventDefault();
-		console.groupCollapsed('btnGoHome:click');
-		if(page){
-			window.location = page+search;
-		}else{
-			window.location = "home.html";	
-		}			
-		console.groupEnd();
-	});
-	domElements["btnLogIn"].addEventListener("click",function(event){
-		event.preventDefault();
-		console.groupCollapsed('btnLogIn:click');
-		let errorLog=[];
-		let inputLogInUserName=domElements["inputLogInUserName"];
-		let inputLogInPassword=domElements["inputLogInPassword"];
-		if(typeof inputLogInUserName === 'undefined' || typeof inputLogInPassword === 'undefined' ){
-			console.warn('a field is not defined');
-			errorLog.push('a field is not defined');
-		}
-		if(inputLogInUserName === '' || inputLogInPassword === ''){
-			console.warn('a field is empyte');
-			errorLog.push('a field is empyte');
-		}
-		if(inputLogInUserName.value.length<settings.nameLength_min){
-			console.warn('name to small');
-			errorLog.push('name to small');
-		}
-		if(inputLogInUserName.value.length>settings.nameLength_max){
-			console.warn('name to big');
-			errorLog.push('name to big');
-		}
-		if(inputLogInPassword.value.length<settings.passwordLength_min){
-			console.warn('password to small');
-			errorLog.push('password to small');
-		}
-		if(inputLogInPassword.value.length>settings.passwordLength_max){
-			console.warn('password to big');
-			errorLog.push('password to big');
-		}
-		/*if(!grecaptcha.getResponse()){
-			console.warn('reCaptcha not verified');
-			errorLog.push('reCaptcha not verified');
-		}*/
-		if(errorLog.length>0){
-			console.warn('has error, will not commence registration');
-			console.warn('errorLog=',errorLog);
-			//alert('LogIn aborted do to conditions: '+errorLog.toString());
-			displayLabelStatus({domName:"statusLogIn",message:"LogIn aborted do to conditions: "+errorLog.toString()});
-			
-		}else{
-			AuthRegister.userLogIn({username:inputLogInUserName.value,password:inputLogInPassword.value})
-			.then(
-				function(resolve){
-					console.log('AuthRegister.userLogIn response:resolver=',resolve);
-					//displayDomElement();	
-					if(page){
-						window.location = page+search;
-					}else{
-						window.location = "home.html";	
-					}				
-				}
-			).catch(
-				function(reject){
-					console.log('AuthRegister.userLogIn response:reject=',reject);
-					if(reject.response&&reject.response.responseJSON&&reject.response.responseJSON.message){
-						//alert(reject.response.responseJSON.message);	
-						displayLabelStatus({domName:"statusLogIn",message:reject.response.responseJSON.message});
-					}else{
-						//alert(reject.message);	
-						displayLabelStatus({domName:"statusLogIn",message:reject.message});
-					}
-								
-				}
-			);
-		}
-		console.groupEnd();
-	});
-	domElements["btnRegister"].addEventListener("click",function(event){
-		event.preventDefault();
-		console.groupCollapsed('btnRegister:click');
-		function validateEmail(email) {
-			console.log(' validateEmail:email=',email);
-			var re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
-			return re.test(String(email).toLowerCase());
-		}
-		let errorLog=[];
-		let inputRegisterUserName=domElements["inputRegisterUserName"];
-		let inputRegisterPassword=domElements["inputRegisterPassword"];
-		let inputRegisterConfirmPassword=domElements["inputRegisterConfirmPassword"];
-		let inputRegisterEmail=domElements["inputRegisterEmail"];
-		if(typeof inputRegisterUserName === 'undefined' || typeof inputRegisterPassword === 'undefined' || typeof inputRegisterConfirmPassword === 'undefined'){
-			console.warn('a field is not defined');
-			errorLog.push('a field is not defined');
-		}
-		if(inputRegisterUserName === '' || inputRegisterPassword === '' ||inputRegisterConfirmPassword === ''){
-			console.warn('a field is empyte');
-			errorLog.push('a field is empyte');
-		}
-		if(inputRegisterUserName.value.length<settings.nameLength_min){
-			console.warn('name to small');
-			errorLog.push('name to small');
-		}
-		if(inputRegisterUserName.value.length>settings.nameLength_max){
-			console.warn('name to big');
-			errorLog.push('name to big');
-		}
-		if(inputRegisterPassword.value.length<settings.passwordLength_min){
-			console.warn('password to small');
-			errorLog.push('password to small');
-		}
-		if(inputRegisterPassword.value.length>settings.passwordLength_max){
-			console.warn('password to big');
-			errorLog.push('password to big');
-		}
-		if(inputRegisterPassword.value!=inputRegisterConfirmPassword.value){
-			console.warn('password dont match');
-			errorLog.push('password dont match');
-		}
-		if(inputRegisterEmail.value.length<0){
-			console.warn('no email provided');
-			errorLog.push('no email provided');
-		}else
-		if(!validateEmail(inputRegisterEmail.value)){
-			console.warn('email is not valid');
-			errorLog.push('email is not valid');
-		}
-		/*if(!grecaptcha.getResponse()){
-			console.warn('reCaptcha not verified');
-			errorLog.push('reCaptcha not verified');
-		}*/
-		if(errorLog.length>0){
-			console.warn('has error, will not commence registration');
-			console.warn('errorLog=',errorLog);
-			//alert('Register aborted do to conditions: '+errorLog.toString());
-			displayLabelStatus({domName:"statusRegister",message:"Register aborted do to conditions: "+errorLog.toString()});
-			
-		}else{
-			AuthRegister.userRegister({username:inputRegisterUserName.value,password:inputRegisterPassword.value,confirmPassword:inputRegisterConfirmPassword.value})
-			.then(
-				function(resolve){
-					console.log('AuthRegister.userRegister response:resolver=',resolve);
-					if(page){
-						window.location = page+search;
-					}else{
-						window.location = "home.html";	
-					}					
-				}
-			).catch(
-				function(reject){
-					console.log('AuthRegister.userRegister response:reject=',reject);	
-					if(reject.response&&reject.response.responseJSON&&reject.response.responseJSON.message){
-						//alert(reject.response.responseJSON.message);	
-						displayLabelStatus({domName:"statusRegister",message:reject.response.responseJSON.message});
-					}else{
-						//alert(reject.message);
-						displayLabelStatus({domName:"statusRegister",message:reject.message});						
-					}
-				}
-			);
-		}
-		
-		console.groupEnd();
-	});
+	profile.page=getUrlParameter('page');
+	profile.search=getUrlParameter('search');
+	console.log('profile.page:',profile.page);
+	console.log('profile.search:',profile.search);
 	console.groupEnd();
 }
-function displayDomElement(){
-	console.groupCollapsed('displayDomElement');
-	if(AuthRegister.getAccessToken()){
-		console.log('loged in');
-		domElements["authLoginOrRegister"].classList.add("auth-display-none");
-		domElements["sectionUserLogedIn"].classList.remove("auth-display-none");
-		domElements["labelUserLogedIn"].innerText=AuthRegister.getAccessName();
-		
-	}else{
-		console.log('not loged in');
-		domElements["sectionUserLogedIn"].classList.add("auth-display-none");
-		domElements["authLoginOrRegister"].classList.remove("auth-display-none");
-		domElements["labelUserLogedIn"].innerText="";
-	}
-	console.groupEnd();
-}
-function displayLabelStatus(options={}){
-	console.groupCollapsed('displayLabelStatus');
-	console.log('options:',options);
-	if(!options.domName){
-		console.groupEnd();
-		return;
-	}
-	if(options.message){
-		domElements[options.domName].innerText=options.message;
-	}
-	if(options.messageclear){
-		domElements[options.domName].innerText="";
-	}
-	domElements[options.domName].classList.add("auth-color_red");
-	
-	console.groupEnd();
-}
-function inputCheck(options={}){
-	console.groupCollapsed('inputCheck');
-	console.log('options:',options);
-	let colorClass="auth-border-color-red";
-	if(!options.dom){
-		console.groupEnd();
-		return;
-	}
-	if(options.type){
-		if(options.type==='name'){
-			if(options.dom.value.length<settings.nameLength_min){
-				console.warn('name to small');
-				options.dom.classList.add(colorClass);
-			}else
-			if(options.dom.value.length>settings.nameLength_max){
-				console.warn('name to big');
-				options.dom.classList.add(colorClass);
-			}else{
-				options.dom.classList.remove(colorClass);
-			}
-		}else
-		if(options.type==='password'){
-			if(options.dom.value.length<settings.passwordLength_min){
-				console.warn('password to small');
-				options.dom.classList.add(colorClass);
-			}else
-			if(options.dom.value.length>settings.passwordLength_max){
-				console.warn('password to big');
-				options.dom.classList.add(colorClass);
-			}else{
-				options.dom.classList.remove(colorClass);
-			}
-		}
-	}
-	console.groupEnd();
-}
-
 function init() {
 	console.groupCollapsed('init');
-	adddomElements();
+	addDomElements();
 	addEvents();
 	displayDomElement();
 	console.groupEnd();
 }
 init();
 
-
-/*window.onresize=function(){
-	console.groupCollapsed('window.onresize');
-	console.log('Window.screenX=',window.screenX);
-	console.log('Window.screenY=',window.screenY);
-	console.log('Window.fullScreen=',window.fullScreen);
-	console.log('Window.innerHeight=',window.innerHeight);
-	console.log('Window.innerWidth=',window.innerWidth);
-	console.log('Window.outerHeight=',window.outerHeight);
-	console.log('Window.outerWidth=',window.outerWidth);
-	console.groupEnd();	
+function displayErrorLabelStatus(message=""){
+	console.groupCollapsed('displayLabelStatus');
+	console.log('message:',message);
+	domElements["statusLogInOrRegister"].innerText=message;
+	console.groupEnd();
 }
-window.onscroll=function(){
-	console.groupCollapsed('window.onscroll');
-	console.log('Window.scrollbars=',window.scrollbars);
-	console.log('Window.scrollX=',window.scrollX);
-	console.log('Window.scrollY=',window.scrollY);
-	console.groupEnd();	
+function inputCheck(){
+	console.groupCollapsed('inputCheck');
+	console.log('profile.mode=',profile.mode);
+	var errorLog=[];
+	if((profile.mode===1&&(!domImputElements["inputUsername"]||!domImputElements["inputPassword"]))||(profile.mode===2&&(!domImputElements["inputUsername"]||!domImputElements["inputPassword"]||!domImputElements["inputConfirmPassword"]||!domImputElements["inputEmail"]))){
+		console.warn('a field is empyte');
+		errorLog.push('a field is empyte');
+	}
+	if(domImputElements["inputUsername"].value.length<settings.nameLength_min){
+		console.warn('name to small');
+		errorLog.push('name to small');
+	}
+	if(domImputElements["inputUsername"].value.length>settings.nameLength_max){
+		console.warn('name to big');
+		errorLog.push('name to big');
+	}
+	if(domImputElements["inputPassword"].value.length<settings.passwordLength_min){
+		console.warn('password to small');
+		errorLog.push('password to small');
+	}
+	if(domImputElements["inputPassword"].value.length>settings.passwordLength_max){
+		console.warn('password to big');
+		errorLog.push('password to big');
+	}
+	if(profile.mode===2&&domImputElements["inputPassword"].value!=domImputElements["inputConfirmPassword"].value){
+		console.warn('password not a match');
+		errorLog.push('password not a match');
+	}
+	if(profile.mode===2&&!validateEmail(domImputElements["inputEmail"].value)){
+		console.warn('password not a match');
+		errorLog.push('password not a match');
+	}
+	if(errorLog.length>0){
+		console.warn('has error, will not commence ajax');
+		console.warn('errorLog=',errorLog);
+		if(profile.mode===1){
+			displayErrorLabelStatus("LogIn aborted do to conditions: "+errorLog.toString());
+		}else
+		if(profile.mode===2){
+			displayErrorLabelStatus("Registration aborted do to conditions: "+errorLog.toString());
+		}
+		console.warn('return:false');
+		console.groupEnd();
+		return false;
+		
+	}
+	console.log('return:true');
+	console.groupEnd();
+	return true;
 }
-window.ondeviceeorientation=function(){
-	console.groupCollapsed('window.ondeviceeorientation');	
-	console.log('Window.orientation=',window.orientation);
-	console.groupEnd();	
+function callLogIn(){
+	console.groupCollapsed('callLogIn');
+	if(inputCheck()){
+		var data={};
+		data.username=domImputElements["inputUsername"].value;
+		data.password=domImputElements["inputPassword"].value;
+		console.log('data=',data);
+		AuthRegister.userLogIn(data)
+		.then(
+			function(result){
+				console.log('AuthRegister.userLogIn response:resolve=',result);
+				doAfterResponse(result);			
+			},function(result){
+				console.log('AuthRegister.userLogIn response:reject=',result);
+				doAfterResponse(result);			
+			}
+		);
+	}else{
+		console.warn('aborded');
+		console.groupEnd();
+	}
 }
-window.addEventListener("orientationchange", function() {
-   console.log('screen.orientation.angle=',screen.orientation.angle);
-});*/
+function callRegister(){
+	console.groupCollapsed('callRegister');
+	if(inputCheck()){
+		var data={};
+		data.username=domImputElements["inputUsername"].value;
+		data.password=domImputElements["inputPassword"].value;
+		console.log('data=',data);
+		AuthRegister.userRegister(data)
+		.then(
+			function(result){
+				console.log('AuthRegister.userRegister response:resolve=',result);
+				doAfterResponse(result);		
+			},function(result){
+				console.log('AuthRegister.userRegister response:reject=',result);
+				doAfterResponse(result);		
+			}
+		);
+	}else{
+		console.warn('aborded');
+		console.groupEnd();
+	}
+}
+function doAfterResponse(messageFromApi){
+	console.groupCollapsed('doAfterResponse');
+	console.log('messageFromApi',messageFromApi);
+	if(messageFromApi.error){
+		console.warn('error');
+		if(messageFromApi.error.responseJSON&&messageFromApi.error.responseJSON.message){
+			displayLabelStatus(messageFromApi.error.responseJSON.message);
+		}else{
+			displayErrorLabelStatus(messageFromApi.error);
+		}
+	}else if(messageFromApi.message){
+		console.warn('success');
+		if(profile.page){
+			console.groupEnd();window.location = profile.page+profile.search;
+		}else{
+			console.groupEnd();window.location = "home.html";	
+		}		
+	}
+	console.groupEnd();
+}
