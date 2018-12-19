@@ -30,7 +30,6 @@ class Movie {
         console.log("token=",token);
         return $
             .ajax({
-                //Auth: required,
                 headers: {"x-auth-token" :token},
                 method: "PUT",
                 url: rootUrl + "movies/" + this._id,
@@ -50,14 +49,20 @@ class Movie {
                 }
             });
     }
-    
+    deleteMovie() {
+        let token=Auth.getAccessToken()
+        return $
+            .ajax({
+                headers: {"x-auth-token" :token},
+                method: "DELETE",
+                url: rootUrl + "movies/" + this._id,
+    }).then (function(response){return response;});
+}
 }
 
 
 const rootUrl = "https://ancient-caverns-16784.herokuapp.com/";
 
-
-//const moviesRootUrl = "https://ancient-caverns-16784.herokuapp.com/movies/";
 
 const moviesRootUrl = "https://ancient-caverns-16784.herokuapp.com/";
 
@@ -81,10 +86,10 @@ Movie.prototype.getMovieDetails = function() {
   });
 };
 
-// Movie.prototype.regenerateMovies = function() {
-//   return $.ajax({
-//     url: rootUrl + "regenerate-movies",
-//     method: "GET"
-//   });
-// };
+Movie.prototype.regenerateMovies = function() {
+  return $.ajax({
+    url: rootUrl + "/movies/all",
+    method: "POST"
+  });
+};
 

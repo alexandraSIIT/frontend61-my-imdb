@@ -302,14 +302,11 @@ var grandpaId = grandpa.id;
               displayMovies(movies.items);
             },
             function(reject){
-              //  console.error("Error updating movie");
+               console.error("Error updating movie");
                let divDisplayError = document.createElement("div");
-               divDisplayError.setAttribute("class", "display-error");
+               divDisplayError = setAttribute("class", "display-error");
                divDisplayError.innerHTML = "Nothing to update";
-               divPopup.appendChild(divDisplayError);
-
-              
-      
+               console.log(divDisplayError);
 
                 
                
