@@ -1,9 +1,9 @@
 var domElements={};
 var domImputElements={};
-var profile={mode:1,page:'',search:''}; //mode: 1- login 2-register
+var profile={mode:1,page:'',search:'',protocol:''}; //mode: 1- login 2-register
 var settings={nameLength_min:6,nameLength_max:36,passwordLength_min:6,passwordLength_max:36};
+var widgetId;
 function addDomElements(){
-	//domElements[""] = document.getElementById("");
 	console.groupCollapsed('addDomElements');
 	function add(name){
 		domElements[name]= document.getElementById(name);
@@ -33,7 +33,6 @@ function displayDomElement(){
 	console.groupCollapsed('displayDomElement');
 	if(AuthRegister.getAccessToken()){
 		console.log('loged in');
-		//domElements["authLoginOrRegister"].classList.add("auth-display-none");
 		domElements["authLoginOrRegister"].style.display="none";
 	}else{
 		console.log('not loged in');
@@ -56,6 +55,18 @@ function resetInputFields(){
 }
 function displayDomRegister(){
 	console.groupCollapsed('displayDomRegister');
+	if(profile.protocol!=="file:"){
+		console.log('Its on a network');
+		widgetId=grecaptcha.render('add_g-recaptcha_here', {
+		  'sitekey' : '6LefgYEUAAAAAN1Loro_VTlFvcOcDvYfscJ1dlMH',
+		  'callback' : 'recaptchaSuccess',
+		  'expired-callback' : 'recaptchaExpired',
+		  'error-callback' : 'recaptchaError'
+		});
+		domElements['btnLogInOrRegister'].style.display="none";
+	}else{
+		console.warn('Its not on network, disabling g-recaptcha requirement');
+	}	
 	domElements["back4Register"].style.display="initial";
 	domElements["modeLabel"].innerHTML="User Register";
 	domElements["email2Register"].style.display="initial";
@@ -63,7 +74,30 @@ function displayDomRegister(){
 	domElements["recaptcha2Register"].style.display="initial";
 	domElements["btnGo2Register"].style.display="none";
 	domElements["statusLogInOrRegister"].style.display="initial";
-	domElements['btnLogInOrRegister'].innerHTML="Register";
+	domElements['btnLogInOrRegister'].innerHTML="Sign Up";
+	console.groupEnd();
+}
+function recaptchaSuccess(response=''){
+	console.groupCollapsed('recaptchaSuccess');
+	domElements['btnLogInOrRegister'].style.display="initial";
+	console.log('response=',response);
+	console.groupEnd();
+}
+function recaptchaExpired(response=''){
+	console.groupCollapsed('rrecaptchaExpired');
+	domElements['btnLogInOrRegister'].style.display="none";
+	console.log('response=',response);
+	console.groupEnd();
+}
+function recaptchaError(response=''){
+	console.groupCollapsed('recaptchaExpired');
+	domElements['btnLogInOrRegister'].style.display="none";
+	console.log('response=',response);
+	console.groupEnd();
+}
+function displayNewUserButton(){
+	console.groupCollapsed('displayDomRegister');
+	displayDomLogIn();
 	console.groupEnd();
 }
 function displayDomLogIn(){
@@ -75,7 +109,7 @@ function displayDomLogIn(){
 	domElements["recaptcha2Register"].style.display="none";
 	domElements["btnGo2Register"].style.display="initial";
 	domElements["statusLogInOrRegister"].style.display="initial";
-	domElements['btnLogInOrRegister'].innerHTML="Log in";
+	domElements['btnLogInOrRegister'].innerHTML="Sign In";
 	console.groupEnd();
 }
 function addEvents(){
@@ -104,13 +138,14 @@ function addEvents(){
 			callLogIn();
 		}else
 		if(profile.mode===2){//register
-			
+			callRegister();
 		}
 		console.groupEnd();
 	});
-	console.log('4Input');
+	console.groupCollapsed('4Input');
 	for (let key in domImputElements){ //simple for with if in it for checking if all the newTitle, newYear, ect have a value
 		if(domImputElements[key]){
+			console.log('key:',key,' does exists');
 			domImputElements[key].addEventListener("keyup",function(event){
 				console.groupCollapsed(key+':keyup');
 				if(key.toLowerCase().includes("password")){
@@ -124,8 +159,11 @@ function addEvents(){
 				}
 				console.groupEnd();
 			});
+		}else{
+			console.warn('key:',key,' does not exists');
 		}
 	}
+	console.groupEnd();
 	console.groupEnd();
 }
 function inputKeyupCheck(options={}){
@@ -193,6 +231,8 @@ function getURLDatas(){
 		? ""
 		: decodeURIComponent(results[1].replace(/\+/g, " "));
 	}
+	profile.protocol=location.protocol;
+	console.log('profile.protocol=',profile.protocol);
 	profile.page=getUrlParameter('page');
 	profile.search=getUrlParameter('search');
 	console.log('profile.page:',profile.page);
@@ -202,6 +242,7 @@ function getURLDatas(){
 function init() {
 	console.groupCollapsed('init');
 	addDomElements();
+	getURLDatas();
 	addEvents();
 	displayDomElement();
 	console.groupEnd();
@@ -238,13 +279,25 @@ function inputCheck(){
 		console.warn('password to big');
 		errorLog.push('password to big');
 	}
-	if(profile.mode===2&&domImputElements["inputPassword"].value!=domImputElements["inputConfirmPassword"].value){
-		console.warn('password not a match');
-		errorLog.push('password not a match');
-	}
-	if(profile.mode===2&&!validateEmail(domImputElements["inputEmail"].value)){
-		console.warn('password not a match');
-		errorLog.push('password not a match');
+	if(profile.mode===2){
+		console.log('registry requirements');
+		if(domImputElements["inputPassword"].value!=domImputElements["inputConfirmPassword"].value){
+			console.warn('password not a match');
+			errorLog.push('password not a match');
+		}
+		if(!validateEmail(domImputElements["inputEmail"].value)){
+			console.warn('password not a match');
+			errorLog.push('password not a match');
+		}
+		if(profile.protocol!=="file:"){
+			console.log('Its on a network');
+			if(!grecaptcha.getResponse()){
+				console.warn('reCaptcha not verified');
+				errorLog.push('reCaptcha not verified');
+			}	
+		}else{
+			console.warn('Its not on network, disabling g-recaptcha requirement');
+		}
 	}
 	if(errorLog.length>0){
 		console.warn('has error, will not commence ajax');
