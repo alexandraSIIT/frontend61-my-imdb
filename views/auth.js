@@ -2,7 +2,7 @@ var domElements={};
 var domImputElements={};
 var profile={mode:1,page:'',search:'',protocol:''}; //mode: 1- login 2-register
 var settings={nameLength_min:6,nameLength_max:36,passwordLength_min:6,passwordLength_max:36};
-var widgetId;
+var widgetId=-1;
 function addDomElements(){
 	console.groupCollapsed('addDomElements');
 	function add(name){
@@ -57,12 +57,17 @@ function displayDomRegister(){
 	console.groupCollapsed('displayDomRegister');
 	if(profile.protocol!=="file:"){
 		console.log('Its on a network');
-		widgetId=grecaptcha.render('add_g-recaptcha_here', {
-		  'sitekey' : '6LefgYEUAAAAAN1Loro_VTlFvcOcDvYfscJ1dlMH',
-		  'callback' : 'recaptchaSuccess',
-		  'expired-callback' : 'recaptchaExpired',
-		  'error-callback' : 'recaptchaError'
-		});
+		console.log('widgetId=',widgetId);
+		if(widgetId===-1){
+			widgetId=grecaptcha.render('add_g-recaptcha_here', {
+			  'sitekey' : '6LefgYEUAAAAAN1Loro_VTlFvcOcDvYfscJ1dlMH',
+			  'callback' : 'recaptchaSuccess',
+			  'expired-callback' : 'recaptchaExpired',
+			  'error-callback' : 'recaptchaError'
+			});
+		}else{
+			console.log('No need to render it');
+		}
 		domElements['btnLogInOrRegister'].style.display="none";
 	}else{
 		console.warn('Its not on network, disabling g-recaptcha requirement');
@@ -103,6 +108,7 @@ function displayNewUserButton(){
 function displayDomLogIn(){
 	console.groupCollapsed('displayDomLogIn');
 	domElements["back4Register"].style.display="none";
+	domElements['btnLogInOrRegister'].style.display="initial";
 	domElements["modeLabel"].innerHTML="User LogIn";
 	domElements["email2Register"].style.display="none";
 	domElements["password2Register"].style.display="none";
