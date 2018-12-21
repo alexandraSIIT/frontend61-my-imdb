@@ -1,4 +1,3 @@
-addUserAuth(); 
 function addUserAuth(){ 
 	console.groupCollapsed('addUserAuth');
 	var domUserAuthElements={};
@@ -19,15 +18,17 @@ function addUserAuth(){
 		console.log("dataEncode=", dataEncode);
 		console.groupEnd();	
 	}
-	//domUserAuthElements[""] = document.getElementById("");
-	console.log('adding doms');
-	domUserAuthElements["sectionUserAuth"] = document.getElementById("sectionUserAuth");
-	domUserAuthElements["labelUserAuthStatus"] = document.getElementById("labelUserAuthStatus");
-	domUserAuthElements["divUserAuthUsername"] = document.getElementById("divUserAuthUsername");
-	domUserAuthElements["labelUserName"] = document.getElementById("labelUserName");
-	domUserAuthElements["btnUserAuth"] = document.getElementById("btnUserAuth");
+	console.groupCollapsed('adding doms');
+	function add(name){
+		domUserAuthElements[name]= document.getElementById(name);
+	}
+	add("sectionUserAuth");
+	add("labelUserAuthStatus");
+	add("divUserAuthUsername");
+	add("labelUserName");
+	add("btnUserAuth");
 	console.log('domUserAuthElements=',domUserAuthElements);
-
+	console.groupEnd();	
 	if(domUserAuthElements["btnUserAuth"]){
 		console.log('add button event');
 		getCurrentPageAddressWithParameters();
@@ -64,55 +65,57 @@ function addUserAuth(){
 		console.warn("button not found, can't add event");
 	}
 	
-	console.log('display');
+	console.groupCollapsed('display');
 	if(Auth.getAccessToken()){
 		console.log('loged in');
 		for (var key in domUserAuthElements){
 			if(domUserAuthElements[key]){
-				console.log("domUserAuthElements["+key+"]->has something");
+				console.log("dom["+key+"]->ok");
 				if(key==="labelUserAuthStatus"){
 					domUserAuthElements[key].innerText="User loged in";
-				}
+				}else
 				if(key==="divUserAuthUsername"){
 					domUserAuthElements[key].style.display="initial";
-				}
+				}else
 				if(key==="labelUserName"){
 					domUserAuthElements[key].innerText=Auth.getAccessName();
-				}
+				}else
 				if(key==="btnUserAuth"){
 					domUserAuthElements[key].innerText="Log out";
-				}
+				}else
 				if(key==="sectionUserAuth"){
 					domUserAuthElements[key].style.display="initial";
 				}
 			}else{
-				console.warn("domUserAuthElements["+key+"]->has nothing");
+				console.warn("domUserAuthElements["+key+"]->nothing");
 			}
 		}
 	}else{
 		console.log('not loged in');
 		for (var key in domUserAuthElements){
 			if(domUserAuthElements[key]){
-				console.log("domUserAuthElements["+key+"]->has something");
+				console.log("dom["+key+"]->ok");
 				if(key==="labelUserAuthStatus"){
 					domUserAuthElements[key].innerText="No user loged in";
-				}
+				}else
 				if(key==="divUserAuthUsername"){
 					domUserAuthElements[key].style.display="none";
-				}
+				}else
 				if(key==="labelUserName"){
 					domUserAuthElements[key].innerText="";
-				}
+				}else
 				if(key==="btnUserAuth"){
 					domUserAuthElements[key].innerText="Log in/Register";
-				}
+				}else
 				if(key==="sectionUserAuth"){
 					domUserAuthElements[key].style.display="initial";
 				}
 			}else{
-				console.warn("domUserAuthElements["+key+"]->has nothing");
+				console.warn("dom["+key+"]->nothing");
 			}
 		}
 	}
+	console.groupEnd();
 	console.groupEnd();	
 }
+addUserAuth(); 
