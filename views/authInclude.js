@@ -42,13 +42,12 @@ function addUserAuth(){
 					function(resolve){
 						console.log('AuthRegister.userLogOut response:resolver=',resolve);	
 						window.location = data.page+data.search;
-						}
-				).catch(
+					},
 					function(reject){
 						console.log('AuthRegister.userLogOut response:reject=',reject);	
 						if(reject.response&&reject.response.responseJSON&&reject.response.responseJSON.message){
 							alert(reject.response.responseJSON.message);	
-						}else{
+						}else if(reject.message){
 							alert(reject.message);	
 						}
 					}
