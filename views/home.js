@@ -5,10 +5,10 @@
 //   });
 // };
 
-let modalElements={};modalLoad();
+let modalElements={};modalLoad();//added by Tamas
 var movies = new Movies();
 getMovies();
-function modalLoad(){
+function modalLoad(){//added by Tamas
 	console.groupCollapsed('modalLoad');
 	modalElements["auth"]= new authModal({root:"modalRoot"});
 	modalElements["auth"].addModal2Root();
@@ -16,9 +16,24 @@ function modalLoad(){
 	modalElements["auth"].addEvents();
 	console.groupEnd();
 }
+let backgroundSync;backgroundSyncLoad();//added by Tamas
+function backgroundSyncLoad(){//added by Tamas
+	console.groupCollapsed('backgroundSyncLoad');
+	if(Worker){
+		backgroundSync = new Worker('../workers/backgroundSync.js');
+		console.log('backgroundSync loaded');
+	}else{
+		console.warn('backgroundSync not loaded');
+	}
+	console.groupEnd();
+}
 function getMovies(skip) {
   movies.getAll(skip).then(function() {
     console.log("getAllList", movies.items);
+	if(Worker&&backgroundSync){ //added by Tamas
+		console.log("sending data to backgroundSync");
+		backgroundSync.postMessage({mode:1,movies:{skip:skip}});
+	}
     displayMovies(movies.items);
     displayPagination(movies.pagination);
   });
@@ -90,7 +105,10 @@ function displayMovies(response) {
   //     console.log("refresh", response);
   //   });
   // });
-
+	if(Worker&&backgroundSync){//added by Tamas
+		console.log("sending data to backgroundSync");
+		backgroundSync.postMessage({mode:1,movies:{items:movies.items,pagination:movies.pagination},timer:{command:'start'}});
+	}
 
 };
 
@@ -380,4 +398,35 @@ movie.deleteMovie().then(function(response){
 });
 }
 
+if(Worker&&backgroundSync){ //added by Tamas
+	console.log("receiving data to backgroundSync");
+	backgroundSync.onmessage = function(event) {
+		console.groupCollapsed('backgroundSync.onmessage');
+		console.log("event:",event);
+		console.log("data:",event.data);
+		if(event.data.update){
+			if(event.data.update.items){
+				console.log("updated movies.items");
+				if(event.data.update.items.length){
+					movies.items=[];
+					event.data.update.items.forEach(function(item,index){
+						var movie = new Movie(item);
+						movies.items.push(movie);
+					});
+				}
+				
+			}
+			if(event.data.update.pagination){
+				console.log("updated movies.pagination");
+				movies.pagination=event.data.update.pagination;
+			}
+		}else
+		if(event.data.display){
+			console.log("do display");
+			displayMovies(movies.items);
+			displayPagination(movies.pagination);
+		}
+	console.groupEnd();   
+	}
+}
 
