@@ -5,9 +5,18 @@
 //   });
 // };
 
-
+let modalElements={};modalLoad();
 var movies = new Movies();
 getMovies();
+function modalLoad(){
+	console.groupCollapsed('modalLoad');
+	modalElements["auth"]= new authModal({root:"modalRoot"});
+	modalElements["auth"].addModal2Root();
+	modalElements["auth"].add2Head();
+	modalElements["auth"].displayLogIn();
+	modalElements["auth"].addEvents();
+	console.groupEnd();
+}
 function getMovies(skip) {
   movies.getAll(skip).then(function() {
     console.log("getAllList", movies.items);

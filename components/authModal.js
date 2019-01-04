@@ -69,16 +69,16 @@ class authModal {
 				<div class='form-group'>
 					<input type="text" name="username" placeholder='Username' value="" class="text-input form-control inputKeyupCheck">
 				</div>
-				<div class='form-group register-group'>
+				<div class='form-group register-group' style="display:none">
 					<input type="text" name="email" placeholder='Email' value="" class="text-input form-control register-input inputKeyupCheck">
 				</div>
 				<div class='form-group' style="display:block">
 					<input type="password" name="password" value="" placeholder='Password' class="text-input form-control inputKeyupCheck" style="display:inline; width:90%"><button type="button" class="btn btn-warning btn-eye2Password" style="display:inline;"><img id="passwordEye" src="../static/password_eyes.png" alt="password_eyes" height="25" width="20"></button>
 				</div>
-				<div class='form-group register-group' >
+				<div class='form-group register-group' style="display:none">
 					<input type="password" name="inputConfirmPassword" value="" placeholder='Retype your Password' class="text-input form-control register-input inputKeyupCheck" >
 				</div>
-				<div class='form-group register-group' id="add_g-recaptcha_here_${this.id}">
+				<div class='form-group register-group' id="add_g-recaptcha_here_${this.id}" style="display:none">
 					
 				</div>
 			</div>
