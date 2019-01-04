@@ -13,7 +13,7 @@ class AuthRegister extends Auth{
 			.done(function( resolve ) {
 				console.log('GetHttpRequest:','success=',resolve);
 				KeyHelper.keySave({name:'accessToken',value:resolve.accessToken});
-				if(!KeyHelper.keySave({name:'accessToken',value:response.accessToken})){
+				if(!KeyHelper.keySave({name:'accessToken',value:resolve.accessToken})){
 					return new Promise((resolve, reject) => {reject({message:"Problem with handling storage"})});
 				}else{
 					return{resolve};
@@ -39,7 +39,7 @@ class AuthRegister extends Auth{
 			.done(function( resolve ) {
 				console.log('GetHttpRequest:','success=',resolve);
 				KeyHelper.keySave({name:'accessToken',value:resolve.accessToken});
-				if(!KeyHelper.keySave({name:'accessToken',value:response.accessToken})){
+				if(!KeyHelper.keySave({name:'accessToken',value:resolve.accessToken})){
 					return new Promise((resolve, reject) => {reject({message:"Problem with handling storage"})});
 				}else{
 					return{resolve};
