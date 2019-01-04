@@ -54,9 +54,10 @@ function addUserAuth(){
 				);
 			}else{
 				console.log('not loged in');
-				let wlocation="auth.html?page="+dataEncode.page+'&search='+dataEncode.search;
+				modalElements["auth"].show();
+				/*let wlocation="auth.html?page="+dataEncode.page+'&search='+dataEncode.search;
 				console.log('location=',wlocation);
-				window.location = wlocation;	
+				window.location = wlocation;	*/
 			}
 			console.groupEnd();
 		});
