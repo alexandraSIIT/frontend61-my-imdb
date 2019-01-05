@@ -18,10 +18,7 @@ function backgroundSyncLoad(){//added by Tamas
 }
 function modalLoad(){//added by Tamas
 	console.groupCollapsed('modalLoad');
-	modalElements["auth"]= new authModal({root:"modalRoot"});
-	modalElements["auth"].addModal2Root();
-	modalElements["auth"].add2Head();
-	modalElements["auth"].addEvents();
+	modalElements["auth"]= new authModal({root:"modalRoot",addModal2Root:true,add2Head:true,addEvents:true});
 	console.groupEnd();
 }
 movie.id = getUrlParameter("_id");
