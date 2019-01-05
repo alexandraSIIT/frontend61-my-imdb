@@ -7,19 +7,20 @@
 
 let modalElements={};modalLoad();//added by Tamas
 var movies = new Movies();
-getMovies();
 function modalLoad(){//added by Tamas
 	console.groupCollapsed('modalLoad');
-	modalElements["auth"]= new authModal({root:"modalRoot"});
-	modalElements["auth"].addModal2Root();
-	modalElements["auth"].add2Head();
-	modalElements["auth"].addEvents();
+	modalElements["auth"]= new authModal({root:"modalRoot",addModal2Root:true,add2Head:true,addEvents:true});
 	console.groupEnd();
 }
 let backgroundSync;backgroundSyncLoad();//added by Tamas
-function backgroundSyncLoad(){//added by Tamas
+function backgroundSyncLoad(){
 	console.groupCollapsed('backgroundSyncLoad');
 	if(Worker){
+		if(location.protocol==="file:"||location.protocol==="file"){
+			console.warn('cannot do worker do to invalid protocol');
+			console.groupEnd();
+			return;
+		}
 		backgroundSync = new Worker('../workers/backgroundSync.js');
 		console.log('backgroundSync loaded');
 	}else{
@@ -27,6 +28,8 @@ function backgroundSyncLoad(){//added by Tamas
 	}
 	console.groupEnd();
 }
+
+getMovies();
 function getMovies(skip) {
   movies.getAll(skip).then(function() {
     console.log("getAllList", movies.items);

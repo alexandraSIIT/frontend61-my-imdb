@@ -3,6 +3,7 @@
 class authModal {
 	constructor(options={}) {
 		console.groupCollapsed('constructor');
+		if(!(typeof options === 'object')){options={}};
 		function uuidv4() {
 		  return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
 			var r = Math.random() * 16 | 0, v = c == 'x' ? r : (r & 0x3 | 0x8);
@@ -23,8 +24,14 @@ class authModal {
 				this.root.jquery=$('#'+this.modal.id); 
 			}
 			if(options.addModal2Root){
-				this.addModal2Root();
+				this.addModal2Root(options.addModal2Root);
+				if(options.addEvents){
+					this.addEvents();
+				}
 			}
+		}
+		if(options.add2Head){
+			this.add2Head(options.add2Head);
 		}
 		this.profile.protocol=location.protocol;
 		console.log('profile.protocol=',this.profile.protocol);
@@ -33,6 +40,7 @@ class authModal {
 	}
 	add2Head(options={}){
 		console.groupCollapsed('add2Head');
+		if(!(typeof options === 'object')){options={}};
 		let script={};
 		script['recaptcha']=document.createElement("script");  
 		let me=this;
@@ -48,6 +56,7 @@ class authModal {
 	addModal2Root(options={}) {
 		//generates and appends the modal html elements to the rootdoom
 		console.groupCollapsed('addModal2Root');
+		if(!(typeof options === 'object')){options={}};
 		if(options.root){
 			this.root.id = options.root;
 			if(this.root.id){
@@ -96,7 +105,9 @@ class authModal {
 
   </form></div>`;
 		this.modal.content=content;
-		this.modal.addModal2Root();
+		if(!options.addSkip){
+			this.modal.addModal2Root(options.modal);
+		}
 		console.groupEnd();
 	}
 	displayLogIn(){

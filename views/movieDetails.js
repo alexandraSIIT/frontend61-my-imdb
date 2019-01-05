@@ -4,6 +4,11 @@ var backgroundSync;backgroundSyncLoad();//added by Tamas
 function backgroundSyncLoad(){//added by Tamas
 	console.groupCollapsed('backgroundSyncLoad');
 	if(Worker){
+		if(location.protocol==="file:"||location.protocol==="file"){
+			console.warn('cannot do worker do to invalid protocol');
+			console.groupEnd();
+			return;
+		}
 		backgroundSync = new Worker('../workers/backgroundSync.js');
 		console.log('backgroundSync loaded');
 	}else{
