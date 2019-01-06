@@ -13,6 +13,7 @@ function extraLoad(){
 	authModal.init({root:"modalRoot",addModal2Root:true,add2Head:true,addEvents:true});
 	auth2Pages.init();
 	jokeSocialMediaCall.init({root:"modalRoot",addModal2Root:true,addEvents:true});
+	imageFileUploader.init();
 	console.groupCollapsed('backgroundSyncLoad');
 	if(Worker){
 		if(location.protocol==="file:"||location.protocol==="file"){
@@ -153,6 +154,7 @@ var grandpaId = grandpa.id;
 
         let spanPopup = document.createElement("span");
         spanPopup.setAttribute("class", "content");
+		spanPopup.setAttribute("style", "color:black");//added by Tamas to fix the text color thats being inherited from bootstrap css
         divPopup.appendChild(spanPopup);
 
         let popupXButton = document.createElement("div");
@@ -297,6 +299,16 @@ var grandpaId = grandpa.id;
         newPoster.setAttribute("style", "width: 90%");
         spanPopup.appendChild(newPoster);
 
+		/*let posterUpload = document.createElement("input");//added by Tamas to allow uploading images
+		posterUpload.setAttribute("type", "file");
+		posterUpload.setAttribute("accept", ".jpg, .jpeg, .png, .gif");
+        spanPopup.appendChild(posterUpload);
+		posterUpload.addEventListener("change", function(){
+			console.groupCollapsed('ileInput');
+			imageFileUploader.fileUppload({event:event,element:this});
+			console.groupEnd();
+		});*/
+
         //imdbRating edit
         let imdbLabel = document.createElement("label");
         imdbLabel.setAttribute("for", response.imdbRating);
@@ -401,6 +413,23 @@ movie.deleteMovie().then(function(response){
 });
 }
 
+function doAfterSuccessImageUpload(data={}){//added by Tamas to allow uploading images
+	console.groupCollapsed('doAfterSuccessImageUpload');
+	console.log('data=',data);
+	if(typeof data.response !="object"){
+		var obj = JSON.parse(data.response);
+		console.log('obj=',obj);
+		console.log('address=',obj.address);
+		if(document.querySelector(".new-poster")){
+			document.querySelector(".new-poster").value=obj.address;
+		}
+	}else{
+		console.log('address=',data.response.address);
+		document.querySelector(".new-poster").value=data.response.address;
+	}
+	
+	console.groupEnd();
+}
 if(Worker&&backgroundSync){ //added by Tamas
 	console.log("receiving data to backgroundSync");
 	backgroundSync.onmessage = function(event) {
