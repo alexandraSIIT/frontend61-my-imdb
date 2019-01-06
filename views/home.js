@@ -5,16 +5,14 @@
 //   });
 // };
 
-let modalElements={};modalLoad();//added by Tamas
 var movies = new Movies();
-function modalLoad(){//added by Tamas
-	console.groupCollapsed('modalLoad');
-	modalElements["auth"]= new authModal({root:"modalRoot",addModal2Root:true,add2Head:true,addEvents:true});
+let modalElements={};let backgroundSync;extraLoad();//added by Tamas
+function extraLoad(){
+	console.groupCollapsed('extraLoad');
+	modalElements["notification"]= new Modal({root:"modalRoot",addModal2Root:true});
+	authModal.init({root:"modalRoot",addModal2Root:true,add2Head:true,addEvents:true});
+	auth2Pages.init();
 	jokeSocialMediaCall.init({root:"modalRoot",addModal2Root:true,addEvents:true});
-	console.groupEnd();
-}
-let backgroundSync;backgroundSyncLoad();//added by Tamas
-function backgroundSyncLoad(){
 	console.groupCollapsed('backgroundSyncLoad');
 	if(Worker){
 		if(location.protocol==="file:"||location.protocol==="file"){
@@ -27,6 +25,7 @@ function backgroundSyncLoad(){
 	}else{
 		console.warn('backgroundSync not loaded');
 	}
+	console.groupEnd();
 	console.groupEnd();
 }
 

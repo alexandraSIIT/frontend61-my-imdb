@@ -1,7 +1,11 @@
 var movie = new Movie();
-var modalElements={};modalLoad(); //added by Tamas
-var backgroundSync;backgroundSyncLoad();//added by Tamas
-function backgroundSyncLoad(){//added by Tamas
+var backgroundSync;var modalElements={};extraLoad();//added by Tamas
+function extraLoad(){//added by Tamas
+	console.groupCollapsed('extraLoad');
+	modalElements["notification"]= new Modal({root:"modalRoot"});
+	modalElements["notification"].addModal2Root();
+	authModal.init({root:"modalRoot",addModal2Root:true,add2Head:true,addEvents:true});
+	auth2Pages.init();
 	console.groupCollapsed('backgroundSyncLoad');
 	if(Worker){
 		if(location.protocol==="file:"||location.protocol==="file"){
@@ -15,12 +19,9 @@ function backgroundSyncLoad(){//added by Tamas
 		console.warn('backgroundSync not loaded');
 	}
 	console.groupEnd();
-}
-function modalLoad(){//added by Tamas
-	console.groupCollapsed('modalLoad');
-	modalElements["auth"]= new authModal({root:"modalRoot",addModal2Root:true,add2Head:true,addEvents:true});
 	console.groupEnd();
 }
+
 movie.id = getUrlParameter("_id");
 movie.getMovieDetails().then(function() {
   console.log("Movie details : ", movie);
