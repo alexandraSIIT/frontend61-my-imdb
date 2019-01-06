@@ -10,6 +10,7 @@ var movies = new Movies();
 function modalLoad(){//added by Tamas
 	console.groupCollapsed('modalLoad');
 	modalElements["auth"]= new authModal({root:"modalRoot",addModal2Root:true,add2Head:true,addEvents:true});
+	jokeSocialMediaCall.init({root:"modalRoot",addModal2Root:true,addEvents:true});
 	console.groupEnd();
 }
 let backgroundSync;backgroundSyncLoad();//added by Tamas
