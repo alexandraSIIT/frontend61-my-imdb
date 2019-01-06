@@ -6,15 +6,20 @@
 // };
 
 var movies = new Movies();
-let modalElements={};let backgroundSync;extraLoad();//added by Tamas
+let modalElements={};let alertElements={};let backgroundSync;extraLoad();//added by Tamas
 function extraLoad(){
 	console.groupCollapsed('extraLoad');
+	console.log('notification');
 	modalElements["notification"]= new Modal({root:"modalRoot",addModal2Root:true});
-	authModal.init({root:"modalRoot",addModal2Root:true,add2Head:true,addEvents:true});
-	auth2Pages.init();
+	alertElements["notification"]= new Alert({root:"alertRoot",addModal2Root:true});
 	jokeSocialMediaCall.init({root:"modalRoot",addModal2Root:true,addEvents:true});
-	imageFileUploader.init();
-	console.groupCollapsed('backgroundSyncLoad');
+
+	console.log('auth');
+	authModal.init({root:"modalRoot",addModal2Root:true,add2Head:true,addEvents:true});
+	authAlert=new Alert({root:"alertRoot",addAlert2Root:true});
+	auth2Pages.init();
+
+	console.log('backgroundSyncLoad');
 	if(Worker){
 		if(location.protocol==="file:"||location.protocol==="file"){
 			console.warn('cannot do worker do to invalid protocol');
@@ -26,7 +31,9 @@ function extraLoad(){
 	}else{
 		console.warn('backgroundSync not loaded');
 	}
-	console.groupEnd();
+	
+	console.log('imageUploaderLoad');
+	imageFileUploader.init();
 	console.groupEnd();
 }
 
@@ -413,6 +420,21 @@ movie.deleteMovie().then(function(response){
 });
 }
 
+function doAfterSuccessLogin(data={}){
+	console.groupCollapsed('doAfterSuccessLogin');
+	//location.reload();	
+	console.groupEnd();
+}
+function doAfterSuccessRegister(data={}){
+	console.groupCollapsed('doAfterSuccessRegister');
+	//location.reload();	
+	console.groupEnd();
+}
+function doAfterSuccessLogOut(data={}){
+	console.groupCollapsed('doAfterSuccessLogOut');	
+	//location.reload();
+	console.groupEnd();
+}
 function doAfterSuccessImageUpload(data={}){//added by Tamas to allow uploading images
 	console.groupCollapsed('doAfterSuccessImageUpload');
 	console.log('data=',data);
