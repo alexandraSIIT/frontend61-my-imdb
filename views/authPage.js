@@ -5,7 +5,7 @@ let settings={nameLength_min:6,nameLength_max:36,passwordLength_min:6,passwordLe
 let modalNotification;		
 		
 function displayLogIn(){
-	console.groupCollapsed('displayLogIn');
+	//console.groupCollapsed('displayLogIn');
 	inputClear();
 	profile.mode=1;
 	document.querySelectorAll('.register-group').forEach(function(element,index){
@@ -17,15 +17,15 @@ function displayLogIn(){
 	document.querySelector('.menu-title').innerHTML="User Log In";
 	document.querySelector('.bt-newuserOrback').innerHTML="New";
 	document.querySelector('.bt-loginOrRegister').innerHTML="Log In";
-	console.groupEnd();
+	//console.groupEnd();
 }
 function displayRegister(){
-	console.groupCollapsed('displayRegister');
+	//console.groupCollapsed('displayRegister');
 	inputClear();
 	profile.mode=2;
 	if(profile.protocol!=="file:"){
-		console.log('Its on a network');
-		console.log('widgetId=',widgetId);
+		//console.log('Its on a network');
+		//console.log('widgetId=',widgetId);
 		if(widgetId===-1){
 			widgetId=grecaptcha.render('add_g-recaptcha_here', {
 			  'sitekey' : '6LefgYEUAAAAAN1Loro_VTlFvcOcDvYfscJ1dlMH',
@@ -34,7 +34,7 @@ function displayRegister(){
 			  'error-callback' : 'recaptchaError'
 			});
 		}else{
-			console.log('No need to render it');
+			//console.log('No need to render it');
 		}
 		
 	}else{
@@ -46,12 +46,12 @@ function displayRegister(){
 	document.querySelector('.menu-title').innerHTML="New User Register";
 	document.querySelector('.bt-newuserOrback').innerHTML="Back";
 	document.querySelector('.bt-loginOrRegister').innerHTML="Register";
-	console.groupEnd();
+	//console.groupEnd();
 }
 function eye2PasswordToggle(mode=0){
-	console.groupCollapsed('eye2PasswordToggle');
+	//console.groupCollapsed('eye2PasswordToggle');
 	if(mode===-1){//reset
-		console.log('resets profile eye');
+		//console.log('resets profile eye');
 		profile.eye=false;
 	}
 	if(mode===2||mode===20||mode===21){
@@ -62,14 +62,14 @@ function eye2PasswordToggle(mode=0){
 			profile.eye=false;
 		}
 		if(profile.eye){
-			console.log('hide');
+			//console.log('hide');
 			profile.eye=false;
 			document.querySelector('input[name="password"]').setAttribute('type', 'password');
 			document.querySelector(".btn-eye2Password").classList.add("btn-warning");
 			document.querySelector(".btn-eye2Password").classList.remove("btn-info");
 			document.querySelector(".btn-eye2Password").classList.remove("btn-success");
 		}else{
-			console.log('show');
+			//console.log('show');
 			profile.eye=true;
 			document.querySelector('input[name="password"]').setAttribute('type', 'text');
 			document.querySelector(".btn-eye2Password").classList.remove("btn-warning");
@@ -79,45 +79,45 @@ function eye2PasswordToggle(mode=0){
 	}else
 	if(mode===1){
 		if(!profile.eye){
-			console.log('show');
+			//console.log('show');
 			document.querySelector('input[name="password"]').setAttribute('type', 'text');
 			document.querySelector(".btn-eye2Password").classList.remove("btn-warning");
 			document.querySelector(".btn-eye2Password").classList.add("btn-info");
 		}
 	}else{
 		if(!profile.eye){
-			console.log('hide');
+			//console.log('hide');
 			document.querySelector('input[name="password"]').setAttribute('type', 'password');
 			document.querySelector(".btn-eye2Password").classList.add("btn-warning");
 			document.querySelector(".btn-eye2Password").classList.remove("btn-info");
 			document.querySelector(".btn-eye2Password").classList.remove("btn-success");
 		}
 	}
-	console.groupEnd();
+	//console.groupEnd();
 }
 function inputClear(){
-	console.groupCollapsed('inputClear');
+	//console.groupCollapsed('inputClear');
 	let me=this;
 	document.querySelectorAll('.text-input').forEach(function(element,index){
 		element.value="";
 		element.classList.remove(settings.classList.invalid);
 	});
-	console.groupEnd();
+	//console.groupEnd();
 }
 function inputKeyupCheckClear(){
-	console.groupCollapsed('inputKeyupCheck');
+	//console.groupCollapsed('inputKeyupCheck');
 	let me=this;
 	document.querySelectorAll('.inputKeyupCheck').forEach(function(element,index){
 		element.classList.remove(settings.classList.invalid);
 	});
-	console.groupEnd();
+	//console.groupEnd();
 }
 function inputKeyupCheck(options={}){
-	console.groupCollapsed('inputKeyupCheck');
-	console.log('options:',options);
+	//console.groupCollapsed('inputKeyupCheck');
+	//console.log('options:',options);
 	if(!options.element){
 		console.warn('invali');
-		console.groupEnd();
+		//console.groupEnd();
 		return;
 	}
 	if(options.type){
@@ -154,20 +154,20 @@ function inputKeyupCheck(options={}){
 			}
 		}
 	}
-	console.groupEnd();
+	//console.groupEnd();
 }
 function validateEmail(email) {
-	console.groupCollapsed('validateEmail');
-	console.log('email=',email);
+	//console.groupCollapsed('validateEmail');
+	//console.log('email=',email);
 	var re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
 	var result=re.test(String(email).toLowerCase());
-	console.log('result=',result);
-	console.groupEnd();
+	//console.log('result=',result);
+	//console.groupEnd();
 	return result;
 }
 function inputCheck(){
-	console.groupCollapsed('inputCheck');
-	console.log('profile.mode=',profile.mode);
+	//console.groupCollapsed('inputCheck');
+	//console.log('profile.mode=',profile.mode);
 	var errorLog=[];
 	if(document.querySelector('input[name="username"]').value.length<settings.nameLength_min){
 		console.warn('name too small');
@@ -186,7 +186,7 @@ function inputCheck(){
 		errorLog.push('password too big');
 	}
 	if(profile.mode===2){
-		console.log('registry requirements');
+		//console.log('registry requirements');
 		if(document.querySelector('input[name="inputConfirmPassword"]').value!=document.querySelector('input[name="password"]').value){
 			console.warn('password not a match');
 			errorLog.push('password not a match');
@@ -196,7 +196,7 @@ function inputCheck(){
 			errorLog.push('email is not valid');
 		}
 		if(profile.protocol!=="file:"){
-			console.log('Its on a network');
+			//console.log('Its on a network');
 			if(!grecaptcha.getResponse()){
 				console.warn('reCaptcha not verified');
 				errorLog.push('reCaptcha not verified');
@@ -218,33 +218,33 @@ function inputCheck(){
 			displayNotification({type:-1,title:"A problem at New User Registering",body:"<p>The following problems have occurred:</p>"+errorMessage});
 		}
 		console.warn('return:false');
-		console.groupEnd();
+		//console.groupEnd();
 		return false;
 		
 	}
-	console.log('return:true');
-	console.groupEnd();
+	//console.log('return:true');
+	//console.groupEnd();
 	return true;
 }
 
 function callLogIn(){
-	console.groupCollapsed('callLogIn');
+	//console.groupCollapsed('callLogIn');
 	if(inputCheck()){
 		var data={};
 		data.username=document.querySelector('input[name="username"]').value;
 		data.password=document.querySelector('input[name="password"]').value;
-		console.log('data=',data);
+		//console.log('data=',data);
 		statusLog.callResponse={status:0,mode:1,data:data,response:""};
 		displayNotification({type:1,title:"LogIn",body:"<p>Please wait</p>"});
 		Auth.userLogIn(data)
 		.then(
 			function(resolve){
-				console.log('AuthRegister.userLogIn response:resolve=',resolve);
+				//console.log('AuthRegister.userLogIn response:resolve=',resolve);
 				statusLog.callResponse.status=1;statusLog.callResponse.response=resolve;
 				doAfterSuccessResponse();
 			},
 			function(reject){
-				console.log('AuthRegister.userLogIn response:reject=',reject);
+				//console.log('AuthRegister.userLogIn response:reject=',reject);
 				statusLog.callResponse.status=-1;statusLog.callResponse.response=reject;
 				reject.called="Log in";
 				doAfterRejectedResponse(reject);
@@ -252,27 +252,27 @@ function callLogIn(){
 		)
 	}else{
 		console.warn('aborded');
-		console.groupEnd();
+		//console.groupEnd();
 	}
 }
 function callRegister(){
-	console.groupCollapsed('callRegister');
+	//console.groupCollapsed('callRegister');
 	if(inputCheck()){
 		var data={};
 		data.username=document.querySelector('input[name="username"]').value;
 		data.password=document.querySelector('input[name="password"]').value;
 		//the movie api does not require email, so it's pointless to add one 
-		console.log('data=',data);
+		//console.log('data=',data);
 		displayNotification({type:1,title:"Register",body:"<p>Please wait</p>"});
 		statusLog.callResponse={status:0,mode:2,data:data,response:""};
 		Auth.userRegister(data)
 		.then(
 			function(resolve){
-				console.log('AuthRegister.userRegister response:resolve=',resolve);
+				//console.log('AuthRegister.userRegister response:resolve=',resolve);
 				statusLog.callResponse.status=1;statusLog.callResponse.response=resolve;
 				doAfterSuccessResponse();				
 			},function(reject){
-				console.log('AuthRegister.userRegister response:reject=',reject);
+				//console.log('AuthRegister.userRegister response:reject=',reject);
 				reject.called="Register";
 				statusLog.callResponse.status=-1;statusLog.callResponse.response=reject;
 				doAfterRejectedResponse(reject);
@@ -280,15 +280,15 @@ function callRegister(){
 		);
 	}else{
 		console.warn('aborded');
-		console.groupEnd();
+		//console.groupEnd();
 	}
 }
 function doAfterSuccessResponse(){
-	console.log('success');
+	//console.log('success');
 	location.assign("home.html");
 }
 function doAfterRejectedResponse(response=""){
-	console.groupCollapsed('doAfterRejectedResponse');
+	//console.groupCollapsed('doAfterRejectedResponse');
 	if(response.status){
 		console.warn('status:',response.status);
 	}
@@ -305,55 +305,55 @@ function doAfterRejectedResponse(response=""){
 	if(profile.mode===2){
 		displayNotification({type:-1,title:"A problem at New User Registering",body:"<p>The following problems have occurred:</p>"+errorMessage});
 	}
-	console.groupEnd();
+	//console.groupEnd();
 }
 function displayNotification(options={}){
-	console.groupCollapsed('displayNotification');
-	console.log("options=",options);	
+	//console.groupCollapsed('displayNotification');
+	//console.log("options=",options);	
 	modalNotification.setElement([{selector:".modal-title", task:"inner", value:options.title||"(unknown)"},{selector:".modal-body", task:"inner", value:options.body||"(unknown)"},"show"]);
-	console.groupEnd();
+	//console.groupEnd();
 }
 function addEvents(){
-	console.groupCollapsed('addEvents');
-	console.groupCollapsed('4Buttons');
+	//console.groupCollapsed('addEvents');
+	//console.groupCollapsed('4Buttons');
 	document.querySelector('.bt-back').addEventListener("click", function(event){
 		event.preventDefault();
 		history.back();
-		console.groupEnd();
+		//console.groupEnd();
 	});
 	document.querySelector(".btn-eye2Password").addEventListener("click", function(event){
 		event.preventDefault();
-		console.groupCollapsed('.bt-eye2Password:click');
+		//console.groupCollapsed('.bt-eye2Password:click');
 		eye2PasswordToggle(2);
-		console.groupEnd();
+		//console.groupEnd();
 	});
 	document.querySelector(".bt-newuserOrback").addEventListener("click", function(event){
 		event.preventDefault();
-		console.groupCollapsed('.bt-newuserOrback:click');
+		//console.groupCollapsed('.bt-newuserOrback:click');
 		if(profile.mode===1){
 			displayRegister();
 		}else{
 			displayLogIn();
 		}
-		console.groupEnd();
+		//console.groupEnd();
 	});
 	document.querySelector(".bt-loginOrRegister").addEventListener("click", function(event){
 		event.preventDefault();
-		console.groupCollapsed('.bt-loginOrRegister');
+		//console.groupCollapsed('.bt-loginOrRegister');
 		if(profile.mode===1){
-			console.log('perform log in');
+			//console.log('perform log in');
 			callLogIn();
 		}else{
-			console.log('perform register ');
+			//console.log('perform register ');
 			callRegister();
 		}
-		console.groupEnd();
+		//console.groupEnd();
 	});
-	console.groupEnd();
-	console.groupCollapsed('4Input');
+	//console.groupEnd();
+	//console.groupCollapsed('4Input');
 	function inputKeyupEvent(element){
-		console.groupCollapsed('inputKeyupEvent');
-		console.log('element=',element);
+		//console.groupCollapsed('inputKeyupEvent');
+		//console.log('element=',element);
 		element.addEventListener("keyup",function(event){
 			if(element.name.toLowerCase().includes("password")){
 				inputKeyupCheck({element:element,type:'password'});
@@ -364,37 +364,37 @@ function addEvents(){
 			if(element.name.toLowerCase().includes("email")){
 				inputKeyupCheck({element:element,type:'email'});
 			}
-			console.groupEnd();
+			//console.groupEnd();
 		});
-		console.groupEnd();
+		//console.groupEnd();
 	}
 	document.querySelectorAll('.inputKeyupCheck').forEach(function(element,index){
 		inputKeyupEvent(element);
 	});
-	console.groupEnd();
-	console.groupCollapsed('4Mouseover');
+	//console.groupEnd();
+	//console.groupCollapsed('4Mouseover');
 		document.querySelector(".btn-eye2Password").addEventListener("mouseover", function(event){
 			event.preventDefault();
-			console.groupCollapsed('passwordEye:mouseover');
+			//console.groupCollapsed('passwordEye:mouseover');
 			profile.mouseEye=true;
 			eye2PasswordToggle(1);
-			console.groupEnd();
+			//console.groupEnd();
 		});
 		document.querySelector(".btn-eye2Password").addEventListener("mouseleave", function(event){
 			event.preventDefault();
-			console.groupCollapsed('passwordEye:mouseleave');
+			//console.groupCollapsed('passwordEye:mouseleave');
 			profile.mouseEye=false;
 			eye2PasswordToggle(0);
-			console.groupEnd();
+			//console.groupEnd();
 		});
-	console.groupEnd();
-	console.groupEnd();
+	//console.groupEnd();
+	//console.groupEnd();
 }
 function init(){
-	console.groupCollapsed('init');
+	//console.groupCollapsed('init');
 	profile.protocol=location.protocol;
 	modalNotification= new Modal({root:"modalRoot",addModal2Root:true,});
 	addEvents();
-	console.groupEnd();
+	//console.groupEnd();
 }
 init();
