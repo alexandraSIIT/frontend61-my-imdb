@@ -7,13 +7,14 @@
 
 var movies = new Movies();
 let modalElements={};let alertElements={};let backgroundSync;extraLoad();//added by Tamas
-function extraLoad(){
+function extraLoad(){ //added by Tamas
+	//here it loads the blank modal & alert notification, but also the components for authentication, image uploading and background sysnc
 	console.groupCollapsed('extraLoad');
 	console.log('notification');
 	modalElements["notification"]= new Modal({root:"modalRoot",addModal2Root:true});
 	alertElements["notification"]= new Alert({root:"alertRoot",addModal2Root:true});
 	jokeSocialMediaCall.init({root:"modalRoot",addModal2Root:true,addEvents:true});
-
+	notificationPopUp.init();
 	console.log('auth');
 	authModal.init({root:"modalRoot",addModal2Root:true,add2Head:true,addEvents:true});
 	authAlert=new Alert({root:"alertRoot",addAlert2Root:true});
@@ -420,39 +421,47 @@ movie.deleteMovie().then(function(response){
 });
 }
 
-function doAfterSuccessLogin(data={}){
+function doAfterSuccessLogin(data={}){//added by Tamas, will run this function after successful log in
 	console.groupCollapsed('doAfterSuccessLogin');
 	//location.reload();	
 	console.groupEnd();
 }
-function doAfterSuccessRegister(data={}){
+function doAfterSuccessRegister(data={}){//added by Tamas, will run this function after successful register
 	console.groupCollapsed('doAfterSuccessRegister');
 	//location.reload();	
 	console.groupEnd();
 }
-function doAfterSuccessLogOut(data={}){
+function doAfterSuccessLogOut(data={}){//added by Tamas, will run this function after successful log out
 	console.groupCollapsed('doAfterSuccessLogOut');	
 	//location.reload();
 	console.groupEnd();
 }
-function doAfterSuccessImageUpload(data={}){//added by Tamas to allow uploading images
+function doAfterSuccessImageUpload(data={}){//added by Tamas, will run this function after successful imate upload
 	console.groupCollapsed('doAfterSuccessImageUpload');
 	console.log('data=',data);
+	//the data will contain information to the address of uploaded image
+	//do to server side, the resposne might not be a json
 	if(typeof data.response !="object"){
+		//conver the result if not json
 		var obj = JSON.parse(data.response);
 		console.log('obj=',obj);
 		console.log('address=',obj.address);
+		//now we got the address of the image saved in obj.address
+		notificationPopUp.post({body:"Image successfully uploaded",icon:obj.address});
 		if(document.querySelector(".new-poster")){
 			document.querySelector(".new-poster").value=obj.address;
 		}
 	}else{
+		//we got the address of the image saved in data.response.address
 		console.log('address=',data.response.address);
+		notificationPopUp.post({body:"Image successfully uploaded",icon:data.response.address});
 		document.querySelector(".new-poster").value=data.response.address;
 	}
 	
 	console.groupEnd();
 }
-if(Worker&&backgroundSync){ //added by Tamas
+if(Worker&&backgroundSync){ //added by Tamas, allows page to refresh its movies if it changed on the database
+	//not tested it with search attributes
 	console.log("receiving data to backgroundSync");
 	backgroundSync.onmessage = function(event) {
 		console.groupCollapsed('backgroundSync.onmessage');
@@ -479,6 +488,7 @@ if(Worker&&backgroundSync){ //added by Tamas
 			console.log("do display");
 			displayMovies(movies.items);
 			displayPagination(movies.pagination);
+			notificationPopUp.post({body:"Updated displayed movies."});
 		}
 	console.groupEnd();   
 	}
