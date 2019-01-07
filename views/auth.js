@@ -85,7 +85,7 @@ let auth2Pages={
 				document.querySelector("#labelUserName").innerText="You are logged in as "+Auth.getAccessName();
 			}
 			if(document.querySelector("#btnUserAuth")){
-				document.querySelector("#btnUserAuth").innerText="Log out";
+				document.querySelector("#btnUserAuth").innerHTML="<i class='fas fa-sign-out-alt' style='padding-right:5px;'></i>Log out";
 				document.querySelector("#btnUserAuth").classList.remove("btn-primary");
 				document.querySelector("#btnUserAuth").classList.add("btn-danger");
 				
@@ -96,7 +96,7 @@ let auth2Pages={
 				document.querySelector("#labelUserName").innerText="No user is loged in";
 			}
 			if(document.querySelector("#btnUserAuth")){
-				document.querySelector("#btnUserAuth").innerText="Log in";
+				document.querySelector("#btnUserAuth").innerHTML="<i class='fas fa-sign-in-alt' style='padding-right:5px;'></i>Log in";
 				document.querySelector("#btnUserAuth").classList.remove("btn-danger");
 				document.querySelector("#btnUserAuth").classList.add("btn-primary");
 			}
