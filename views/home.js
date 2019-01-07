@@ -118,7 +118,7 @@ function displayMovies(response) {
 
 function displayPagination(response) {
   //console.log("response pagination", response)
-  var templatePages = document.getElementById("pagination-template");
+  var templatePages = document.getElementsByClassName("pagination-template");
   var pagesContainer = document.getElementById("pagination");
   pagesContainer.innerHTML = "";
   for ( let i=1; i<= response.numberOfPages; i++) {
