@@ -195,7 +195,6 @@ function searchYear() {
 function searchGenre() {
   var responseMovies = movies.items;
   var moviesGenre = []; // String Genre Array
-  console.log("SEARCHHHHHHHHHH ", movies.items);
   
   for (let i=0; i<responseMovies.length; i++) {
     var responseMoviesGenre = responseMovies[i].Genre;
@@ -278,7 +277,6 @@ function searchLanguage() {
         console.log("Language button", singleLanguage);
     });
   }
-  
   addButtonLanguage(singleLanguage);
   }
 }
