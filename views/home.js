@@ -1,3 +1,4 @@
+
 // window.onload = function() {
 //   var movie = new Movie();
 //   movie.regenerateMovies().then(function(response) {
@@ -8,44 +9,44 @@
 var movies = new Movies();
 let modalElements={};let alertElements={};let backgroundSync;extraLoad();//added by Tamas
 function extraLoad(){ //added by Tamas
-	//here it loads the blank modal & alert notification, but also the components for authentication, image uploading and background sysnc
-	console.groupCollapsed('extraLoad');
-	console.log('notification');
-	modalElements["notification"]= new Modal({root:"modalRoot",addModal2Root:true});
-	alertElements["notification"]= new Alert({root:"alertRoot",addModal2Root:true});
-	jokeSocialMediaCall.init({root:"modalRoot",addModal2Root:true,addEvents:true});
-	notificationPopUp.init();
-	console.log('auth');
-	authModal.init({root:"modalRoot",addModal2Root:true,add2Head:true,addEvents:true});
-	authAlert=new Alert({root:"alertRoot",addAlert2Root:true});
-	auth2Pages.init();
+  //here it loads the blank modal & alert notification, but also the components for authentication, image uploading and background sysnc
+  console.groupCollapsed('extraLoad');
+  console.log('notification');
+  modalElements["notification"]= new Modal({root:"modalRoot",addModal2Root:true});
+  alertElements["notification"]= new Alert({root:"alertRoot",addModal2Root:true});
+  jokeSocialMediaCall.init({root:"modalRoot",addModal2Root:true,addEvents:true});
+  notificationPopUp.init();
+  console.log('auth');
+  authModal.init({root:"modalRoot",addModal2Root:true,add2Head:true,addEvents:true});
+  authAlert=new Alert({root:"alertRoot",addAlert2Root:true});
+  auth2Pages.init();
 
-	console.log('backgroundSyncLoad');
-	if(Worker){
-		if(location.protocol==="file:"||location.protocol==="file"){
-			console.warn('cannot do worker do to invalid protocol');
-			console.groupEnd();
-			return;
-		}
-		backgroundSync = new Worker('../workers/backgroundSync.js');
-		console.log('backgroundSync loaded');
-	}else{
-		console.warn('backgroundSync not loaded');
-	}
-	
-	console.log('imageUploaderLoad');
-	imageFileUploader.init();
-	console.groupEnd();
+  console.log('backgroundSyncLoad');
+  if(Worker){
+    if(location.protocol==="file:"||location.protocol==="file"){
+      console.warn('cannot do worker do to invalid protocol');
+      console.groupEnd();
+      return;
+    }
+    backgroundSync = new Worker('../workers/backgroundSync.js');
+    console.log('backgroundSync loaded');
+  }else{
+    console.warn('backgroundSync not loaded');
+  }
+  
+  console.log('imageUploaderLoad');
+  imageFileUploader.init();
+  console.groupEnd();
 }
 
 getMovies();
 function getMovies(skip) {
   movies.getAll(skip).then(function() {
     console.log("getAllList", movies.items);
-	if(Worker&&backgroundSync){ //added by Tamas
-		console.log("sending data to backgroundSync");
-		backgroundSync.postMessage({mode:1,movies:{skip:skip}});
-	}
+  if(Worker&&backgroundSync){ //added by Tamas
+    console.log("sending data to backgroundSync");
+    backgroundSync.postMessage({mode:1,movies:{skip:skip}});
+  }
     displayMovies(movies.items);
     displayPagination(movies.pagination);
   });
@@ -106,10 +107,10 @@ function displayMovies(response) {
 
   };
 
-	if(Worker&&backgroundSync){//added by Tamas
-		console.log("sending data to backgroundSync");
-		backgroundSync.postMessage({mode:1,movies:{items:movies.items,pagination:movies.pagination},timer:{command:'start'}});
-	}
+  if(Worker&&backgroundSync){//added by Tamas
+    console.log("sending data to backgroundSync");
+    backgroundSync.postMessage({mode:1,movies:{items:movies.items,pagination:movies.pagination},timer:{command:'start'}});
+  }
 
 };
 
@@ -151,7 +152,7 @@ var grandpaId = grandpa.id;
 
         let spanPopup = document.createElement("span");
         spanPopup.setAttribute("class", "content");
-		spanPopup.setAttribute("style", "color:black");//added by Tamas to fix the text color thats being inherited from bootstrap css
+    spanPopup.setAttribute("style", "color:black");//added by Tamas to fix the text color thats being inherited from bootstrap css
         divPopup.appendChild(spanPopup);
 
         let popupXButton = document.createElement("div");
@@ -296,15 +297,15 @@ var grandpaId = grandpa.id;
         newPoster.setAttribute("style", "width: 90%");
         spanPopup.appendChild(newPoster);
 
-		/*let posterUpload = document.createElement("input");//added by Tamas to allow uploading images
-		posterUpload.setAttribute("type", "file");
-		posterUpload.setAttribute("accept", ".jpg, .jpeg, .png, .gif");
+    /*let posterUpload = document.createElement("input");//added by Tamas to allow uploading images
+    posterUpload.setAttribute("type", "file");
+    posterUpload.setAttribute("accept", ".jpg, .jpeg, .png, .gif");
         spanPopup.appendChild(posterUpload);
-		posterUpload.addEventListener("change", function(){
-			console.groupCollapsed('ileInput');
-			imageFileUploader.fileUppload({event:event,element:this});
-			console.groupEnd();
-		});*/
+    posterUpload.addEventListener("change", function(){
+      console.groupCollapsed('ileInput');
+      imageFileUploader.fileUppload({event:event,element:this});
+      console.groupEnd();
+    });*/
 
         //imdbRating edit
         let imdbLabel = document.createElement("label");
@@ -411,75 +412,74 @@ movie.deleteMovie().then(function(response){
 }
 
 function doAfterSuccessLogin(data={}){//added by Tamas, will run this function after successful log in
-	console.groupCollapsed('doAfterSuccessLogin');
-	//location.reload();	
-	console.groupEnd();
+  console.groupCollapsed('doAfterSuccessLogin');
+  //location.reload();  
+  console.groupEnd();
 }
 function doAfterSuccessRegister(data={}){//added by Tamas, will run this function after successful register
-	console.groupCollapsed('doAfterSuccessRegister');
-	//location.reload();	
-	console.groupEnd();
+  console.groupCollapsed('doAfterSuccessRegister');
+  //location.reload();  
+  console.groupEnd();
 }
 function doAfterSuccessLogOut(data={}){//added by Tamas, will run this function after successful log out
-	console.groupCollapsed('doAfterSuccessLogOut');	
-	//location.reload();
-	console.groupEnd();
+  console.groupCollapsed('doAfterSuccessLogOut'); 
+  //location.reload();
+  console.groupEnd();
 }
 function doAfterSuccessImageUpload(data={}){//added by Tamas, will run this function after successful imate upload
-	console.groupCollapsed('doAfterSuccessImageUpload');
-	console.log('data=',data);
-	//the data will contain information to the address of uploaded image
-	//do to server side, the resposne might not be a json
-	if(typeof data.response !="object"){
-		//conver the result if not json
-		var obj = JSON.parse(data.response);
-		console.log('obj=',obj);
-		console.log('address=',obj.address);
-		//now we got the address of the image saved in obj.address
-		notificationPopUp.post({body:"Image successfully uploaded",icon:obj.address});
-		if(document.querySelector(".new-poster")){
-			document.querySelector(".new-poster").value=obj.address;
-		}
-	}else{
-		//we got the address of the image saved in data.response.address
-		console.log('address=',data.response.address);
-		notificationPopUp.post({body:"Image successfully uploaded",icon:data.response.address});
-		document.querySelector(".new-poster").value=data.response.address;
-	}
-	
-	console.groupEnd();
+  console.groupCollapsed('doAfterSuccessImageUpload');
+  console.log('data=',data);
+  //the data will contain information to the address of uploaded image
+  //do to server side, the resposne might not be a json
+  if(typeof data.response !="object"){
+    //conver the result if not json
+    var obj = JSON.parse(data.response);
+    console.log('obj=',obj);
+    console.log('address=',obj.address);
+    //now we got the address of the image saved in obj.address
+    notificationPopUp.post({body:"Image successfully uploaded",icon:obj.address});
+    if(document.querySelector(".new-poster")){
+      document.querySelector(".new-poster").value=obj.address;
+    }
+  }else{
+    //we got the address of the image saved in data.response.address
+    console.log('address=',data.response.address);
+    notificationPopUp.post({body:"Image successfully uploaded",icon:data.response.address});
+    document.querySelector(".new-poster").value=data.response.address;
+  }
+  
+  console.groupEnd();
 }
 if(Worker&&backgroundSync){ //added by Tamas, allows page to refresh its movies if it changed on the database
-	//not tested it with search attributes
-	console.log("receiving data to backgroundSync");
-	backgroundSync.onmessage = function(event) {
-		console.groupCollapsed('backgroundSync.onmessage');
-		console.log("event:",event);
-		console.log("data:",event.data);
-		if(event.data.update){
-			if(event.data.update.items){
-				console.log("updated movies.items");
-				if(event.data.update.items.length){
-					movies.items=[];
-					event.data.update.items.forEach(function(item,index){
-						var movie = new Movie(item);
-						movies.items.push(movie);
-					});
-				}
-				
-			}
-			if(event.data.update.pagination){
-				console.log("updated movies.pagination");
-				movies.pagination=event.data.update.pagination;
-			}
-		}else
-		if(event.data.display){
-			console.log("do display");
-			displayMovies(movies.items);
-			displayPagination(movies.pagination);
-			notificationPopUp.post({body:"Updated displayed movies."});
-		}
-	console.groupEnd();   
-	}
+  //not tested it with search attributes
+  console.log("receiving data to backgroundSync");
+  backgroundSync.onmessage = function(event) {
+    console.groupCollapsed('backgroundSync.onmessage');
+    console.log("event:",event);
+    console.log("data:",event.data);
+    if(event.data.update){
+      if(event.data.update.items){
+        console.log("updated movies.items");
+        if(event.data.update.items.length){
+          movies.items=[];
+          event.data.update.items.forEach(function(item,index){
+            var movie = new Movie(item);
+            movies.items.push(movie);
+          });
+        }
+        
+      }
+      if(event.data.update.pagination){
+        console.log("updated movies.pagination");
+        movies.pagination=event.data.update.pagination;
+      }
+    }else
+    if(event.data.display){
+      console.log("do display");
+      displayMovies(movies.items);
+      displayPagination(movies.pagination);
+      notificationPopUp.post({body:"Updated displayed movies."});
+    }
+  console.groupEnd();   
+  }
 }
-
