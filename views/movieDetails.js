@@ -3,8 +3,8 @@ var backgroundSync;var modalElements={};extraLoad();//added by Tamas
 function extraLoad(){//added by Tamas
 	console.groupCollapsed('extraLoad');
 	modalElements["notification"]= new Modal({root:"modalRoot"});
-	modalElements["notification"].addModal2Root();
-	authModal.init({root:"modalRoot",addModal2Root:true,add2Head:true,addEvents:true});
+	modalElements["notification"].add2Root();
+	authModal.init({root:"modalRoot",add2Root:true,add2Head:true,addEvents:true});
 	auth2Pages.init();
 	console.groupCollapsed('backgroundSyncLoad');
 	if(Worker){

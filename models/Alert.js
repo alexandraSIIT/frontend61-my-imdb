@@ -314,7 +314,7 @@ class Alert {
 			if(!option.selector){
 				console.warn('No selector for: ', index);
 			}else
-			if(!me.root.dom.querySelector(option.selector)){
+			if(!me.main.dom.querySelector(option.selector)){
 				console.warn('No element for: ', index);
 			}else{
 				//console.log("element:",me.main.dom.querySelector(option.selector));
@@ -350,161 +350,21 @@ class Alert {
 		});
 		console.groupEnd();
 	}
-	setInnerHtml(options=[]){
-		console.groupCollapsed('setElement');
-		if(!(typeof options === 'object')){options=[]};
-		this.add2Root();
+	ifExists(selector=""){
+		console.groupCollapsed('ifExists');
 		if(!this.main.dom){
 			console.warn('No modal to select');
 			console.groupEnd();
-			return;
+			return false;
 		}
-		console.log("options=",options);
-		let me=this;
-		options.forEach(function(option,index){//element, index
-			console.groupCollapsed('option[',index,']');
-			console.log('option=',option);
-			if(!option.selector){
-				console.warn('No selector for: ', index);
-			}else
-			if(!me.root.dom.querySelector(option.selector)){
-				console.warn('No element for: ', index);
-			}else{
-				me.main.dom.querySelector(option.selector).innerHTML=option.value;
-			}
+		console.log("selector=",selector);
+		if(this.main.dom.querySelector(selector)){
 			console.groupEnd();
-		});
-		console.groupEnd();
-	}
-	setValue(options=[]){
-		console.groupCollapsed('setValue');
-		if(!(typeof options === 'object')){options=[]};
-		this.add2Root();
-		if(!this.main.dom){
-			console.warn('No modal to select');
-			console.groupEnd();
-			return;
+			return true;
 		}
-		console.log("options=",options);
-		let me=this;
-		options.forEach(function(option,index){//element, index
-			console.groupCollapsed('option[',index,']');
-			console.log('option=',option);
-			if(!option.selector){
-				console.warn('No selector for: ', index);
-			}else
-			if(!me.root.dom.querySelector(option.selector)){
-				console.warn('No element for: ', index);
-			}else{
-				me.main.dom.querySelector(option.selector).value=option.value;
-			}
-			console.groupEnd();
-		});
+		console.warn('No such element');
 		console.groupEnd();
-	}
-	setAttribute(options=[]){
-		console.groupCollapsed('setAttribute');
-		if(!(typeof options === 'object')){options=[]};
-		this.add2Root();
-		if(!this.main.dom){
-			console.warn('No modal to select');
-			console.groupEnd();
-			return;
-		}
-		console.log("options=",options);
-		let me=this;
-		options.forEach(function(option,index){//element, index
-			console.groupCollapsed('option[',index,']');
-			console.log('option=',option);
-			if(!option.selector){
-				console.warn('No selector for: ', index);
-			}else
-			if(!me.root.dom.querySelector(option.selector)){
-				console.warn('No element for: ', index);
-			}else{
-				me.main.dom.querySelector(option.selector).setAttribute(option.name,option.value);
-			}
-			console.groupEnd();
-		});
-		console.groupEnd();
-	}
-	removeAttribute(options=[]){
-		console.groupCollapsed('removeAttribute');
-		if(!(typeof options === 'object')){options=[]};
-		this.add2Root();
-		if(!this.main.dom){
-			console.warn('No modal to select');
-			console.groupEnd();
-			return;
-		}
-		console.log("options=",options);
-		let me=this;
-		options.forEach(function(option,index){//element, index
-			console.groupCollapsed('option[',index,']');
-			console.log('option=',option);
-			if(!option.selector){
-				console.warn('No selector for: ', index);
-			}else
-			if(!me.root.dom.querySelector(option.selector)){
-				console.warn('No element for: ', index);
-			}else{
-				me.main.dom.querySelector(option.selector).removeAttribute(option.name,option.value);
-			}
-			console.groupEnd();
-		});
-		console.groupEnd();
-	}
-	setClass(options=[]){
-		console.groupCollapsed('setClass');
-		this.add2Root();
-		if(!(typeof options === 'object')){options=[]};
-		if(!this.main.dom){
-			console.warn('No modal to select');
-			console.groupEnd();
-			return;
-		}
-		console.log("options=",options);
-		let me=this;
-		options.forEach(function(option,index){//element, index
-			console.groupCollapsed('option[',index,']');
-			console.log('option=',option);
-			if(!option.selector){
-				console.warn('No selector for: ', index);
-			}else
-			if(!me.root.dom.querySelector(option.selector)){
-				console.warn('No element for: ', index);
-			}else{
-				me.main.dom.querySelector(option.selector).classList.add(option.value);
-			}
-			console.groupEnd();
-		});
-		console.groupEnd();
-	}
-	removeClass(options=[]){
-		console.groupCollapsed('removeClass');
-		if(!(typeof options === 'object')){options=[]};
-		this.add2Root();
-		if(!this.main.dom){
-			console.warn('No modal to select');
-			console.groupEnd();
-			return;
-		}
-		console.log("options=",options);
-		let me=this;
-		options.forEach(function(option,index){//element, index
-			console.groupCollapsed('option[',index,']');
-			console.log('option=',option);
-			if(!option.selector){
-				console.warn('No selector for: ', index);
-			}else
-			if(!me.root.dom.querySelector(option.selector)){
-				console.warn('No element for: ', index);
-			}else{
-				me.main.dom.querySelector(option.selector).classList.remove(option.value);
-			}
-			console.groupEnd();
-		});
-		console.groupEnd();
+		return false;
 	}
 	create(options={}){
 		console.log("create");

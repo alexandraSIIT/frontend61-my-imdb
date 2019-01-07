@@ -27,7 +27,7 @@ let auth2Pages={
 							if(typeof doAfterSuccessLogOut !=="undefined"){
 								console.log("trigger doAfterSuccessLogOut");
 								try {
-									authAlert.addAlert2Root();
+									authAlert.add2Root();
 									authAlert.setType('success');
 									me.display();
 									authAlert.setElement([{selector:".alert-body",task:"inner",value:"Successfully loged out."},"show"]);
@@ -49,7 +49,7 @@ let auth2Pages={
 							if(typeof doAfterFailedLogOut !=="undefined"){
 								console.log("trigger doAfterSuccessLogOut");
 								try {
-									authAlert.addAlert2Root();
+									authAlert.add2Root();
 									authAlert.setType('danger');
 									authAlert.setElement([{selector:".alert-body",task:"inner",value:"Failed to log out."},"show"]);
 									authAlert.slideup();
@@ -104,7 +104,7 @@ let auth2Pages={
 //component based on the idea of Modules 
 //need to replace this with Modules and not Models but can't figure out why import is not working 
 let authModal={
-	init:function(options={root:"body",addModal2Root:true,add2Head:true,addEvents:true}) {
+	init:function(options={root:"body",add2Root:true,add2Head:true,addEvents:true}) {
 		console.groupCollapsed('authModal@init');
 		this.initDone=true;
 		if(!(typeof options === 'object')){options={}};
@@ -127,8 +127,8 @@ let authModal={
 				this.root.dom=document.getElementById(this.root.id);
 				this.root.jquery=$('#'+this.root.id); 
 			}
-			if(options.addModal2Root){
-				this.addModal2Root(options.addModal2Root);
+			if(options.add2Root){
+				this.add2Root(options.add2Root);
 				if(options.addEvents){
 					this.addEvents();
 				}
@@ -157,9 +157,9 @@ let authModal={
 		}; 
 		console.groupEnd();		
 	},
-	addModal2Root:function(options={}) {
+	add2Root:function(options={}) {
 		//generates and appends the modal html elements to the rootdoom
-		console.groupCollapsed('authModal@addModal2Root');
+		console.groupCollapsed('authModal@add2Root');
 		//if(!this.initDone)this.init();
 		if(!(typeof options === 'object')){options={}};
 		if(options.root){
@@ -211,7 +211,7 @@ let authModal={
   </form></div>`;
 		this.modal.content=content;
 		if(!options.addSkip){
-			this.modal.addModal2Root(options.modal);
+			this.modal.add2Root(options.modal);
 		}
 		console.groupEnd();
 	},
@@ -629,7 +629,7 @@ let authModal={
 					if(typeof doAfterSuccessLogin !=="undefined"){
 						console.log("trigger doAfterSuccessLogin");
 						try {
-							authAlert.addAlert2Root();
+							authAlert.add2Root();
 							authAlert.setType('success');
 							auth2Pages.display();
 							authAlert.setElement([{selector:".alert-body",task:"inner",value:"Successfully loged in."},"show"]);
@@ -695,7 +695,7 @@ let authModal={
 					if(typeof doAfterSuccessRegister !=="undefined"){
 						console.log("trigger doAfterSuccessRegister");
 						try {
-							authAlert.addAlert2Root();
+							authAlert.add2Root();
 							authAlert.setType('success');
 							auth2Pages.display();
 							authAlert.setElement([{selector:".alert-body",task:"inner",value:"Successfully registered."},"show"]);
