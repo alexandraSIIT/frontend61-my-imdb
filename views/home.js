@@ -49,6 +49,8 @@ function getMovies(skip) {
   }
     displayMovies(movies.items);
     displayPagination(movies.pagination);
+    searchYear();
+    searchGenre();
   });
 }
 
@@ -138,57 +140,12 @@ var searchBtn = document.getElementById('search-btn');
   searchBtn.addEventListener("click", searchMovie);
 
 function searchMovie() {
-  var searchSelectedValue = searchSelected.value;
+  // var searchSelectedValue = searchSelected.value;
   var inputTextValue = inputText.value;
-  console.log("SEARCH BUTTON")
-  ////////////////////////////////////////////
-  var responseMovies = movies.items;
-  var moviesGenre = []; // String Genre Array
-  console.log("SEARCHHHHHHHHHH ", responseMovies)
-  
-  for (let i=0; i<responseMovies.length; i++) {
-    var responseMoviesGenre = responseMovies[i].Genre;
-    getGenre();
-    function getGenre(){
-      var genreStringArray = responseMoviesGenre.split(", ");
-      for(let i=0; i<genreStringArray.length;i++) {
-        var genreString = genreStringArray[i];
-        moviesGenre.push(genreString);
-      }
-    }
-  }
-  removeDuplacteGenre();
-  function removeDuplacteGenre() {
-  var genreObj = {};
-  var genreArr = [];
-  for (let i = 0; i < moviesGenre.length; i++) {
-    if (!(moviesGenre[i] in genreObj)) {
-      genreArr.push(moviesGenre[i]);
-      genreObj[moviesGenre[i]] = true;
-    }
-  }
-  
-  for (let i=0; i<genreArr.length; i++) { 
-    var singleGenre = genreArr[i]; //
-    function addButtonGenre(singleGenre) {
-    var genreDiv = document.getElementById('searchDivGenre'); // div pentru butoane
-    var genreButton = document.createElement('button'); // creare buton
-    var textButton = document.createTextNode(singleGenre); // nume buton (gen)
-    genreButton.appendChild(textButton);
-    genreDiv.appendChild(genreButton);
-  
-    genreButton.addEventListener("click", function() { // functie buton
-        console.log("Genre button", singleGenre);
-    });
-  }
-  
-  addButtonGenre(singleGenre);
-  }
-  }
-
+  console.log("SEARCH BUTTON");
   if (inputTextValue) {
     removeTemplateMovies();
-    movies.getAll(10, 0, searchSelectedValue, inputTextValue).then(function () {
+    movies.getAll(10, 0, inputTextValue).then(function () {
       displayMovies(movies.items);
     });
   } else {
@@ -196,9 +153,7 @@ function searchMovie() {
     movies.getAll(10, 0).then(function () {
       displayMovies(movies.items);
     });
-  }
-
-  }
+  }}
 
   function removeTemplateMovies() {
     var movieDiv = document.getElementsByClassName('new-movie');
@@ -207,7 +162,7 @@ function searchMovie() {
     }
   }
 ///////////////////////////////////// Search Year
-searchYear();
+
 function searchYear() {
   var yearDiv = document.getElementById('searchDivYear');
   var buttonYearMin = document.createElement('button');
@@ -234,8 +189,49 @@ function searchYear() {
   
 }
 ///////////////////////////////////// Search Genre
-searchGenre();
+
 function searchGenre() {
+  var responseMovies = movies.items;
+  var moviesGenre = []; // String Genre Array
+  console.log("SEARCHHHHHHHHHH ", movies.items);
+  
+  for (let i=0; i<responseMovies.length; i++) {
+    var responseMoviesGenre = responseMovies[i].Genre;
+    getGenre();
+    function getGenre(){
+      var genreStringArray = responseMoviesGenre.split(", ");
+      for(let i=0; i<genreStringArray.length;i++) {
+        var genreString = genreStringArray[i];
+        moviesGenre.push(genreString);
+      }
+    }
+  }
+  
+  var genreObj = {};
+  var genreArr = [];
+  for (let i = 0; i < moviesGenre.length; i++) {
+    if (!(moviesGenre[i] in genreObj)) {
+      genreArr.push(moviesGenre[i]);
+      genreObj[moviesGenre[i]] = true;
+    }
+  }
+  
+  for (let i=0; i<genreArr.length; i++) { 
+    var singleGenre = genreArr[i]; //
+    function addButtonGenre(singleGenre) {
+    var genreDiv = document.getElementById('searchDivGenre'); // div pentru butoane
+    var genreButton = document.createElement('button'); // creare buton
+    var textButton = document.createTextNode(singleGenre); // nume buton (gen)
+    genreButton.appendChild(textButton);
+    genreDiv.appendChild(genreButton);
+  
+    genreButton.addEventListener("click", function() { // functie buton
+        console.log("Genre button", singleGenre);
+    });
+  }
+  
+  addButtonGenre(singleGenre);
+  }
 
 
 }
