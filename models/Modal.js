@@ -43,8 +43,8 @@ class Modal {
 				this.root.dom=document.getElementById(this.root.id);
 				this.root.jquery=$('#'+this.root.id); 
 			}
-			if(options.addModal2Root){
-				this.addModal2Root(options.addModal2Root);
+			if(options.add2Root){
+				this.add2Root(options.add2Root);
 			}
 		}
 		if(options.add2Head){
@@ -125,9 +125,9 @@ class Modal {
 		}
 		console.groupEnd();
 	}
-	addModal2Root(options={}) {
+	add2Root(options={}) {
 		//generates and appends the modal html elements to the rootdoom
-		console.groupCollapsed('addModal2Root');
+		console.groupCollapsed('add2Root');
 		if(!(typeof options === 'object')){options={}};
 		if(options.root){
 			this.root.id = options.root;
@@ -319,5 +319,239 @@ class Modal {
 		console.log('elements=',elements);
 		console.groupEnd();
 		return elements;
+	}
+	get id(){
+		console.log("get id");
+		return this.main.id;
+	}
+	get dom(){
+		console.log("get dom");
+		return this.main.dom;
+	}
+	get jquery(){
+		console.log("get jquery");
+		return this.main.jquery;
+	}
+	setElement(options=[]){
+		console.groupCollapsed('setElement');
+		if(!(typeof options === 'object')){options=[]};
+		this.add2Root();
+		if(!this.main.dom){
+			console.warn('No modal to select');
+			console.groupEnd();
+			return;
+		}
+		console.log("options=",options);
+		let me=this;
+		options.forEach(function(option,index){//element, index
+			//console.groupCollapsed('option[',index,']');
+			//console.log('option=',option);
+			if(option==="show"){
+				me.show();
+			}else
+			if(option==="hide"){
+				me.hide();
+			}else
+			if(option==="toggle"){
+				me.toggle();
+			}else
+			if(!option.selector){
+				console.warn('No selector for: ', index);
+			}else
+			if(!me.root.dom.querySelector(option.selector)){
+				console.warn('No element for: ', index);
+			}else{
+				//console.log("element:",me.main.dom.querySelector(option.selector));
+				if(option.task==="inner"){
+					//console.log("set: inner");
+					me.main.dom.querySelector(option.selector).innerHTML=option.value;
+					//console.log("get:",me.main.dom.querySelector(option.selector));
+				}else
+				if(option.task==="attribute-add"){
+					//console.log("set: attribute-add");
+					me.main.dom.querySelector(option.selector).setAttribute(option.name,option.value);
+					//console.log("get:",me.main.dom.querySelector(option.selector));
+				}else
+				if(option.task==="attribute-remove"){
+					//console.log("set: attribute-remove");
+					me.main.dom.querySelector(option.selector).removeAttribute(option.name);
+					//console.log("get:",me.main.dom.querySelector(option.selector));
+				}else
+				if(option.task==="class-add"){
+					//console.log("set: class-add");
+					me.main.dom.querySelector(option.selector).classList.add(option.value);
+					//console.log("get:",me.main.dom.querySelector(option.selector));
+				}else
+				if(option.task==="class-remove"){
+					//console.log("set: class-remove");
+					me.main.dom.querySelector(option.selector).classList.remove(option.value);
+					//console.log("get:",me.main.dom.querySelector(option.selector));
+				}else{
+					console.warn('No task for: ', index);
+				}
+			}
+			//console.groupEnd();
+		});
+		console.groupEnd();
+	}
+	setInnerHtml(options=[]){
+		console.groupCollapsed('setElement');
+		if(!(typeof options === 'object')){options=[]};
+		this.add2Root();
+		if(!this.main.dom){
+			console.warn('No modal to select');
+			console.groupEnd();
+			return;
+		}
+		console.log("options=",options);
+		let me=this;
+		options.forEach(function(option,index){//element, index
+			console.groupCollapsed('option[',index,']');
+			console.log('option=',option);
+			if(!option.selector){
+				console.warn('No selector for: ', index);
+			}else
+			if(!me.root.dom.querySelector(option.selector)){
+				console.warn('No element for: ', index);
+			}else{
+				me.main.dom.querySelector(option.selector).innerHTML=option.value;
+			}
+			console.groupEnd();
+		});
+		console.groupEnd();
+	}
+	setValue(options=[]){
+		console.groupCollapsed('setValue');
+		if(!(typeof options === 'object')){options=[]};
+		this.add2Root();
+		if(!this.main.dom){
+			console.warn('No modal to select');
+			console.groupEnd();
+			return;
+		}
+		console.log("options=",options);
+		let me=this;
+		options.forEach(function(option,index){//element, index
+			console.groupCollapsed('option[',index,']');
+			console.log('option=',option);
+			if(!option.selector){
+				console.warn('No selector for: ', index);
+			}else
+			if(!me.root.dom.querySelector(option.selector)){
+				console.warn('No element for: ', index);
+			}else{
+				me.main.dom.querySelector(option.selector).value=option.value;
+			}
+			console.groupEnd();
+		});
+		console.groupEnd();
+	}
+	setAttribute(options=[]){
+		console.groupCollapsed('setAttribute');
+		if(!(typeof options === 'object')){options=[]};
+		this.add2Root();
+		if(!this.main.dom){
+			console.warn('No modal to select');
+			console.groupEnd();
+			return;
+		}
+		console.log("options=",options);
+		let me=this;
+		options.forEach(function(option,index){//element, index
+			console.groupCollapsed('option[',index,']');
+			console.log('option=',option);
+			if(!option.selector){
+				console.warn('No selector for: ', index);
+			}else
+			if(!me.root.dom.querySelector(option.selector)){
+				console.warn('No element for: ', index);
+			}else{
+				me.main.dom.querySelector(option.selector).setAttribute(option.name,option.value);
+			}
+			console.groupEnd();
+		});
+		console.groupEnd();
+	}
+	removeAttribute(options=[]){
+		console.groupCollapsed('removeAttribute');
+		if(!(typeof options === 'object')){options=[]};
+		this.add2Root();
+		if(!this.main.dom){
+			console.warn('No modal to select');
+			console.groupEnd();
+			return;
+		}
+		console.log("options=",options);
+		let me=this;
+		options.forEach(function(option,index){//element, index
+			console.groupCollapsed('option[',index,']');
+			console.log('option=',option);
+			if(!option.selector){
+				console.warn('No selector for: ', index);
+			}else
+			if(!me.root.dom.querySelector(option.selector)){
+				console.warn('No element for: ', index);
+			}else{
+				me.main.dom.querySelector(option.selector).removeAttribute(option.name,option.value);
+			}
+			console.groupEnd();
+		});
+		console.groupEnd();
+	}
+	setClass(options=[]){
+		console.groupCollapsed('setClass');
+		this.add2Root();
+		if(!(typeof options === 'object')){options=[]};
+		if(!this.main.dom){
+			console.warn('No modal to select');
+			console.groupEnd();
+			return;
+		}
+		console.log("options=",options);
+		let me=this;
+		options.forEach(function(option,index){//element, index
+			console.groupCollapsed('option[',index,']');
+			console.log('option=',option);
+			if(!option.selector){
+				console.warn('No selector for: ', index);
+			}else
+			if(!me.root.dom.querySelector(option.selector)){
+				console.warn('No element for: ', index);
+			}else{
+				me.main.dom.querySelector(option.selector).classList.add(option.value);
+			}
+			console.groupEnd();
+		});
+		console.groupEnd();
+	}
+	removeClass(options=[]){
+		console.groupCollapsed('removeClass');
+		if(!(typeof options === 'object')){options=[]};
+		this.add2Root();
+		if(!this.main.dom){
+			console.warn('No modal to select');
+			console.groupEnd();
+			return;
+		}
+		console.log("options=",options);
+		let me=this;
+		options.forEach(function(option,index){//element, index
+			console.groupCollapsed('option[',index,']');
+			console.log('option=',option);
+			if(!option.selector){
+				console.warn('No selector for: ', index);
+			}else
+			if(!me.root.dom.querySelector(option.selector)){
+				console.warn('No element for: ', index);
+			}else{
+				me.main.dom.querySelector(option.selector).classList.remove(option.value);
+			}
+			console.groupEnd();
+		});
+		console.groupEnd();
+	}
+	create(options={}){
+		console.log("create");
+		this.add2Root(options);
 	}
 }
