@@ -420,7 +420,7 @@ function addEvents(){
 		document.querySelector("input[name='inputConfirmPassword']").addEventListener("keyup",function(event){
 			if (event.keyCode === 13&&inputKeyupCheck({element:this,type:"password"})) {
 				console.log("enter_hit:correct");
-				//me.modal.modal.dom.querySelector(".bt-loginOrRegister").focus();
+				//me.modal.main.dom.querySelector(".bt-loginOrRegister").focus();
 				//Google repatcha uses sandbox attribute, its iFrame cant be accessed by script :C
 			}
 		});

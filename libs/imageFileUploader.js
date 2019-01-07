@@ -1,14 +1,14 @@
 let imageFileUploader={
 	init:function(options={}) {
-		//console.groupCollapsed('constructor');
-		this.file="";
-		this.converted="";
+		console.groupCollapsed('init');
+		this.initDone=true;
 		this.statusLog={fileReadEvent:{status:0,file:"",converted:"",error:""},fileUploadEvent:{status:0,error:"",resolve:"",reject:""}};
 		this.mode=1;
-		//console.groupEnd();
+		console.groupEnd();
 	},
 	fileUppload:function(options={}) {
-		//console.groupCollapsed('fileUppload');
+		console.groupCollapsed('fileUppload');
+		if(!this.initDone)this.init();
 		let me=this;
 		me.statusLog.fileReadEvent={status:0,file:"",converted:"",error:""};
 		function errorcall(str=""){
@@ -67,43 +67,44 @@ let imageFileUploader={
 			if (!isError) {
 				var reader = new FileReader();
 				reader.onload = function(e) {
-				//console.groupCollapsed('fileuppload_result');
-				//console.log('e.target.result.length=',e.target.result.length);
-				if(me.mode===2||me.mode===3){
-					//console.log('get image base64');
-					me.statusLog.fileReadEvent.status=1;
-					me.statusLog.fileReadEvent.converted=e.target.result;
-					if(typeof doAfterSuccessConvertingImage2Base64 !=="undefined"){
-						//console.log("trigger doAfterSuccessConvertingImage2Base64");
-						try {
-							doAfterSuccessConvertingImage2Base64({obj:me,file:file,result:e.target.result});
+					console.groupCollapsed('fileRead');
+					console.log('e.target.result.length=',e.target.result.length);
+					if(me.mode===2||me.mode===3){
+						//console.log('get image base64');
+						me.statusLog.fileReadEvent.status=1;
+						me.statusLog.fileReadEvent.converted=e.target.result;
+						if(typeof doAfterSuccessConvertingImage2Base64 !=="undefined"){
+							console.log("trigger doAfterSuccessConvertingImage2Base64");
+							try {
+								doAfterSuccessConvertingImage2Base64({obj:me,file:file,result:e.target.result});
+							}
+							catch(err) {
+								console.warn('error at function call:',err)
+							}
+						}else{
+							console.log("use internal");
 						}
-						catch(err) {
-							console.warn('error at function call:',err)
-						}
-					}else{
-						//console.log("use internal");
 					}
-				}
-				if(me.mode===1||me.mode===3){
-					//console.log('do upload of base64');
-					me.upload({file:file,result:e.target.result});
-					
-				}
-				//console.groupEnd();
-			  };
+					if(me.mode===1||me.mode===3){
+						//console.log('do upload of base64');
+						me.upload({file:file,result:e.target.result});
+						
+					}
+					console.groupEnd();
+				};
 			  reader.readAsDataURL(file);
 			}
 		} else {
 			// Handle errors here
-			//console.log( "file not selected" );
+			console.warn( "file not selected" );
 			errorcall("fileNotSelected");
 			isError = true;
 		}
-		//console.groupEnd();
+		console.groupEnd();
 	},
 	upload:function(data={}){
-		//console.groupCollapsed('upload');
+		console.groupCollapsed('upload');
+		if(!this.initDone)this.init();
 		//https://127.0.0.1/webdevelope/server/movies/imageUploader.php/upload
 		//https://goriest-fastener.000webhostapp.com/movie/imageUploader.php/upload
 		let me=this;
@@ -139,7 +140,7 @@ let imageFileUploader={
 			//return{resolve};
 		})
 		.fail(function(reject) {
-			console.warn('HttpRequest:','fail=',reject);
+			//console.warn('HttpRequest:','fail=',reject);
 			me.statusLog.fileUploadEvent.status=-1;
 			me.statusLog.fileUploadEvent.error="rejected";
 			me.statusLog.fileUploadEvent.reject=reject;
@@ -154,6 +155,6 @@ let imageFileUploader={
 			}
 			//return{reject};
 		});
-		//console.groupEnd();
+		console.groupEnd();
 	}
 }
