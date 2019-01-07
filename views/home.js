@@ -124,6 +124,7 @@ function displayPagination(response) {
   for ( let i=1; i<= response.numberOfPages; i++) {
     var pagesClone = templatePages.cloneNode(true);
     pagesClone.removeAttribute("style");
+    pagesClone.removeAttribute("id");
     var pageButtonElement = pagesClone.querySelector(".pages-btn");
     pageButtonElement.innerHTML = i;
     pagesContainer.appendChild(pagesClone);
