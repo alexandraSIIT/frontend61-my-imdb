@@ -63,6 +63,7 @@ function displayMovies(response) {
     var moviesClone = template.cloneNode(true);
     // set a unique id for each movie
     moviesClone.id = "movie_" + response[i]._id;
+    moviesClone.classList.add('new-movie');
     // populate the cloned template
     var movieTitleElement = moviesClone.querySelector(".movie-title");
     movieTitleElement.innerHTML = response[i].Title;
@@ -94,9 +95,8 @@ function displayMovies(response) {
 
     let editButton = moviesClone.querySelector(".movie-edit");
     editButton.addEventListener("click", function(){
-      event.target.disabled = "true";
-      editMovie(me);
-      event.target.disabled = false;
+        editMovie(me);
+      
     });
 
 
@@ -131,24 +131,132 @@ function displayPagination(response) {
   }
 }
 
-function editMovie(movie){
-  console.log("editMovie.movie=",movie);
+// ALEXXXXXXX Search
+var inputText = document.querySelector("[name=search]");
+var searchSelected = document.querySelector(".search-select");
+var searchBtn = document.getElementById('search-btn');
+  searchBtn.addEventListener("click", searchMovie);
 
+function searchMovie() {
+  var searchSelectedValue = searchSelected.value;
+  var inputTextValue = inputText.value;
+  console.log("SEARCH BUTTON")
+  ////////////////////////////////////////////
+  var responseMovies = movies.items;
+  var moviesGenre = []; // String Genre Array
+  console.log("SEARCHHHHHHHHHH ", responseMovies)
   
-  var grandpa = document.getElementById("movie_"+movie._id);
+  for (let i=0; i<responseMovies.length; i++) {
+    var responseMoviesGenre = responseMovies[i].Genre;
+    getGenre();
+    function getGenre(){
+      var genreStringArray = responseMoviesGenre.split(", ");
+      for(let i=0; i<genreStringArray.length;i++) {
+        var genreString = genreStringArray[i];
+        moviesGenre.push(genreString);
+      }
+    }
+  }
+  removeDuplacteGenre();
+  function removeDuplacteGenre() {
+  var genreObj = {};
+  var genreArr = [];
+  for (let i = 0; i < moviesGenre.length; i++) {
+    if (!(moviesGenre[i] in genreObj)) {
+      genreArr.push(moviesGenre[i]);
+      genreObj[moviesGenre[i]] = true;
+    }
+  }
+  
+  for (let i=0; i<genreArr.length; i++) { 
+    var singleGenre = genreArr[i]; //
+    function addButtonGenre(singleGenre) {
+    var genreDiv = document.getElementById('searchDivGenre'); // div pentru butoane
+    var genreButton = document.createElement('button'); // creare buton
+    var textButton = document.createTextNode(singleGenre); // nume buton (gen)
+    genreButton.appendChild(textButton);
+    genreDiv.appendChild(genreButton);
+  
+    genreButton.addEventListener("click", function() { // functie buton
+        console.log("Genre button", singleGenre);
+    });
+  }
+  
+  addButtonGenre(singleGenre);
+  }
+  }
+
+  if (inputTextValue) {
+    removeTemplateMovies();
+    movies.getAll(10, 0, searchSelectedValue, inputTextValue).then(function () {
+      displayMovies(movies.items);
+    });
+  } else {
+    removeTemplateMovies();
+    movies.getAll(10, 0).then(function () {
+      displayMovies(movies.items);
+    });
+  }
+
+  }
+
+  function removeTemplateMovies() {
+    var movieDiv = document.getElementsByClassName('new-movie');
+    while (movieDiv[0]) {
+      movieDiv[0].parentNode.removeChild(movieDiv[0]);
+    }
+  }
+///////////////////////////////////// Search Year
+searchYear();
+function searchYear() {
+  var yearDiv = document.getElementById('searchDivYear');
+  var buttonYearMin = document.createElement('button');
+  var buttonYearMed = document.createElement('button');
+  var buttonYearMax = document.createElement('button');
+  var textButtonYearMin = document.createTextNode("Year < 2000");
+  var textButtonYearMed = document.createTextNode("2000 - 2010");
+  var textButtonYearMax = document.createTextNode("2010 < Year");
+  buttonYearMin.appendChild(textButtonYearMin);
+  buttonYearMin.addEventListener('click', function(){
+    console.log("Year MIN clicked");
+  })
+  buttonYearMed.appendChild(textButtonYearMed);
+  buttonYearMed.addEventListener('click', function(){
+    console.log("Year MED clicked");
+  })
+  buttonYearMax.appendChild(textButtonYearMax);
+  buttonYearMax.addEventListener('click', function(){
+    console.log("Year MAX clicked");
+  })
+  yearDiv.appendChild(buttonYearMin);
+  yearDiv.appendChild(buttonYearMed);
+  yearDiv.appendChild(buttonYearMax);
+  
+}
+///////////////////////////////////// Search Genre
+searchGenre();
+function searchGenre() {
 
 
-  var grandpa=document.getElementById("movie_"+movie._id);
+}
+//////////////////////ALEXXXXXXXXXXXX
 
-  console.log("grandpa=",grandpa);
-var grandpaId = grandpa.id;
- var movieId = grandpaId.replace("movie_", "");
+function editMovie(movie){
+   let myElement = document.querySelectorAll(".popup");
+   for (let i = 0; i < myElement.length; i++){
+     myElement[i].remove();
+    
+   }
+   let grandpa = document.getElementById("movie_" + movie._id);
+   let grandpaId = grandpa.id;
+   let movieId = grandpaId.replace("movie_", "");
 
-    movie.getMovie().then(function(response) {
+   movie.getMovie().then(function(response) {
 
         console.log(response);
         let divPopup = document.createElement("div");
         divPopup.setAttribute("class", "popup");
+        divPopup.style.top = (document.body.scrollTop + document.documentElement.scrollTop + 35)+"px"
         grandpa.appendChild(divPopup);
 
         let spanPopup = document.createElement("span");
@@ -162,14 +270,16 @@ var grandpaId = grandpa.id;
         divPopup.appendChild(popupXButton);
 
         popupXButton.addEventListener("click", function(){
-           //event.target.disabled = false;
+          let eventButton = grandpa.querySelector('.movie-edit');
+           console.log("Event button", eventButton);
+           eventButton.disabled = false;
            divPopup.remove();
 
         });
         //title edit
         let titleLabel = document.createElement("label");
         titleLabel.setAttribute("for", response.Title);
-        titleLabel.innerHTML = "<br>Title of the movie";
+        titleLabel.innerHTML = "<br>Title of the movie<br>";
         spanPopup.appendChild(titleLabel);
 
         let newTitle = document.createElement("input");
@@ -256,10 +366,10 @@ var grandpaId = grandpa.id;
         plotLabel.innerHTML = "<br>Plot<br>";
         spanPopup.appendChild(plotLabel);
 
-        let newPlot = document.createElement("input");
-        newPlot.setAttribute("value", response.Plot);
+        let newPlot = document.createElement("textarea");
+        newPlot.value = response.Plot;
         newPlot.setAttribute("class", "new-plot");
-        newPlot.setAttribute("style", "width: 90%");
+        newPlot.setAttribute("style", "width: 90%; height: auto");
         spanPopup.appendChild(newPlot);
 
         //Language edit
