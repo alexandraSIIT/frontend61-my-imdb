@@ -3,12 +3,14 @@ let authAlert;
 let auth2Pages={ 
 	init:function(){
 		console.groupCollapsed('auth2Pages@init');
+		this.initDone=true;
 		this.addEvent();
 		this.display();
 		console.groupEnd();
 	},
 	addEvent:function(){
 		console.groupCollapsed('auth2Pages@addEvent');
+		//if(!this.initDone)this.init();
 		if(document.querySelector("#btnUserAuth")){
 			console.log('add button event');
 			let me=this;
@@ -76,6 +78,7 @@ let auth2Pages={
 	},
 	display:function(){
 		console.groupCollapsed('auth2Pages@display');
+		//if(!this.initDone)this.init();
 		if(Auth.getAccessToken()){
 			console.log('loged in');
 			if(document.querySelector("#labelUserName")){
@@ -101,8 +104,9 @@ let auth2Pages={
 //component based on the idea of Modules 
 //need to replace this with Modules and not Models but can't figure out why import is not working 
 let authModal={
-	init:function(options={}) {
+	init:function(options={root:"body",addModal2Root:true,add2Head:true,addEvents:true}) {
 		console.groupCollapsed('authModal@init');
+		this.initDone=true;
 		if(!(typeof options === 'object')){options={}};
 		function uuidv4() {
 		  return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
@@ -139,6 +143,7 @@ let authModal={
 	},
 	add2Head:function(options={}){
 		console.groupCollapsed('authModal@add2Head');
+		//if(!this.initDone)this.init();
 		if(!(typeof options === 'object')){options={}};
 		let script={};
 		script['recaptcha']=document.createElement("script");  
@@ -155,6 +160,7 @@ let authModal={
 	addModal2Root:function(options={}) {
 		//generates and appends the modal html elements to the rootdoom
 		console.groupCollapsed('authModal@addModal2Root');
+		//if(!this.initDone)this.init();
 		if(!(typeof options === 'object')){options={}};
 		if(options.root){
 			this.root.id = options.root;
@@ -211,22 +217,24 @@ let authModal={
 	},
 	displayLogIn:function(){
 		console.groupCollapsed('authModal@displayLogIn');
+		//if(!this.initDone)this.init();
 		this.inputClear();
 		this.profile.mode=1;
-		this.modal.modal.dom.querySelectorAll('.register-group').forEach(function(element,index){
+		this.modal.main.dom.querySelectorAll('.register-group').forEach(function(element,index){
 			element.style.display="none";
 		});
-		this.modal.modal.dom.querySelectorAll('.register-input').forEach(function(element,index){
+		this.modal.main.dom.querySelectorAll('.register-input').forEach(function(element,index){
 			element.value="";
 		});
-		this.modal.modal.dom.querySelector('.modal-title').innerHTML="User Log In";
-		this.modal.modal.dom.querySelector('.bt-newuserOrback').innerHTML="New";
-		this.modal.modal.dom.querySelector('.bt-loginOrRegister').innerHTML="Log In";
-		this.modal.modal.dom.querySelector('.username').focus();
+		this.modal.main.dom.querySelector('.modal-title').innerHTML="User Log In";
+		this.modal.main.dom.querySelector('.bt-newuserOrback').innerHTML="New";
+		this.modal.main.dom.querySelector('.bt-loginOrRegister').innerHTML="Log In";
+		this.modal.main.dom.querySelector('.username').focus();
 		console.groupEnd();
 	},
 	displayRegister:function(){
 		console.groupCollapsed('authModal@displayRegister');
+		//if(!this.initDone)this.init();
 		this.inputClear();
 		this.profile.mode=2;
 		if(this.profile.protocol!=="file:"){
@@ -247,20 +255,21 @@ let authModal={
 		}else{
 			console.warn('Its not on network, disabling g-recaptcha requirement');
 		}
-		this.modal.modal.dom.querySelectorAll('.register-group').forEach(function(element,index){
+		this.modal.main.dom.querySelectorAll('.register-group').forEach(function(element,index){
 			element.style.display="block";
 		});
-		this.modal.modal.dom.querySelector('.modal-title').innerHTML="New User Register";
-		this.modal.modal.dom.querySelector('.bt-newuserOrback').innerHTML="Back";
-		this.modal.modal.dom.querySelector('.bt-loginOrRegister').innerHTML="Register";
-		this.modal.modal.dom.querySelector('.username').focus();
+		this.modal.main.dom.querySelector('.modal-title').innerHTML="New User Register";
+		this.modal.main.dom.querySelector('.bt-newuserOrback').innerHTML="Back";
+		this.modal.main.dom.querySelector('.bt-loginOrRegister').innerHTML="Register";
+		this.modal.main.dom.querySelector('.username').focus();
 		console.groupEnd();
 	},
 	addEvents:function(){
 		console.groupCollapsed('authModal@addEvents');
+		//if(!this.initDone)this.init();
 		console.log('4Buttons');
 		let me=this;
-		this.modal.modal.dom.querySelector('.bt-close').addEventListener("click", function(event){
+		this.modal.main.dom.querySelector('.bt-close').addEventListener("click", function(event){
 			event.preventDefault();
 			console.groupCollapsed('authModal@.bt-close:click');
 			me.inputClear();
@@ -268,19 +277,19 @@ let authModal={
 			me.displayNotificationUndo();
 			console.groupEnd();
 		});
-		this.modal.modal.dom.querySelector('.bt-closenotification').addEventListener("click", function(event){
+		this.modal.main.dom.querySelector('.bt-closenotification').addEventListener("click", function(event){
 			event.preventDefault();
 			console.groupCollapsed('authModal@.bt-closenotification:click');
 			me.displayNotificationUndo();
 			console.groupEnd();
 		});
-		this.modal.modal.dom.querySelector(".btn-eye2Password").addEventListener("click", function(event){
+		this.modal.main.dom.querySelector(".btn-eye2Password").addEventListener("click", function(event){
 			event.preventDefault();
 			console.groupCollapsed('authModal@.bt-eye2Password:click');
 			me.eye2PasswordToggle(2);
 			console.groupEnd();
 		});
-		this.modal.modal.dom.querySelector(".bt-newuserOrback").addEventListener("click", function(event){
+		this.modal.main.dom.querySelector(".bt-newuserOrback").addEventListener("click", function(event){
 			event.preventDefault();
 			console.groupCollapsed('authModal@.bt-newuserOrback:click');
 			if(me.profile.mode===1){
@@ -290,7 +299,7 @@ let authModal={
 			}
 			console.groupEnd();
 		});
-		this.modal.modal.dom.querySelector(".bt-loginOrRegister").addEventListener("click", function(event){
+		this.modal.main.dom.querySelector(".bt-loginOrRegister").addEventListener("click", function(event){
 			event.preventDefault();
 			console.groupCollapsed('authModal@.bt-loginOrRegister');
 			if(me.profile.mode===1){
@@ -321,18 +330,18 @@ let authModal={
 			});
 			console.groupEnd();
 		}
-		this.modal.modal.dom.querySelectorAll('.inputKeyupCheck').forEach(function(element,index){
+		this.modal.main.dom.querySelectorAll('.inputKeyupCheck').forEach(function(element,index){
 			inputKeyupEvent(element);
 		});
 		console.log('authModal@4Mouseover');
-			this.modal.modal.dom.querySelector(".btn-eye2Password").addEventListener("mouseover", function(event){
+			this.modal.main.dom.querySelector(".btn-eye2Password").addEventListener("mouseover", function(event){
 				event.preventDefault();
 				console.groupCollapsed('authModal@passwordEye:mouseover');
 				me.profile.mouseEye=true;
 				me.eye2PasswordToggle(1);
 				console.groupEnd();
 			});
-			this.modal.modal.dom.querySelector(".btn-eye2Password").addEventListener("mouseleave", function(event){
+			this.modal.main.dom.querySelector(".btn-eye2Password").addEventListener("mouseleave", function(event){
 				event.preventDefault();
 				console.groupCollapsed('authModal@passwordEye:mouseleave');
 				me.profile.mouseEye=false;
@@ -340,36 +349,36 @@ let authModal={
 				console.groupEnd();
 			});
 		console.log("input enter -> focus")
-			this.modal.modal.dom.querySelector(".username").addEventListener("keyup",function(event){
+			this.modal.main.dom.querySelector(".username").addEventListener("keyup",function(event){
 				if (event.keyCode === 13&&me.inputKeyupCheck({element:this,type:"name"})) {
 					console.log("enter_hit:correct");
 					if(me.profile.mode===2){
-						me.modal.modal.dom.querySelector(".email").focus();
+						me.modal.main.dom.querySelector(".email").focus();
 					}else{
-						me.modal.modal.dom.querySelector(".password").focus();
+						me.modal.main.dom.querySelector(".password").focus();
 					}
 				}
 			});
-			this.modal.modal.dom.querySelector(".password").addEventListener("keyup",function(event){
+			this.modal.main.dom.querySelector(".password").addEventListener("keyup",function(event){
 				if (event.keyCode === 13&&me.inputKeyupCheck({element:this,type:"password"})) {
 					console.log("enter_hit:correct");
 					if(me.profile.mode===2){
-						me.modal.modal.dom.querySelector(".confirm-password").focus();
+						me.modal.main.dom.querySelector(".confirm-password").focus();
 					}else{
-						me.modal.modal.dom.querySelector(".bt-loginOrRegister").focus();
+						me.modal.main.dom.querySelector(".bt-loginOrRegister").focus();
 					}
 				}
 			});
-			this.modal.modal.dom.querySelector(".email").addEventListener("keyup",function(event){
+			this.modal.main.dom.querySelector(".email").addEventListener("keyup",function(event){
 				if (event.keyCode === 13&&me.inputKeyupCheck({element:this,type:"password"})) {
 					console.log("enter_hit:correct");
-					me.modal.modal.dom.querySelector(".password").focus();					
+					me.modal.main.dom.querySelector(".password").focus();					
 				}
 			});
-			this.modal.modal.dom.querySelector(".confirm-password").addEventListener("keyup",function(event){
+			this.modal.main.dom.querySelector(".confirm-password").addEventListener("keyup",function(event){
 				if (event.keyCode === 13&&me.inputKeyupCheck({element:this,type:"password"})) {
 					console.log("enter_hit:correct");
-					//me.modal.modal.dom.querySelector(".bt-loginOrRegister").focus();
+					//me.modal.main.dom.querySelector(".bt-loginOrRegister").focus();
 					//Google repatcha uses sandbox attribute, its iFrame cant be accessed by script :C
 				}
 			});
@@ -377,6 +386,7 @@ let authModal={
 	},
 	eye2PasswordToggle:function(mode=0){
 		console.groupCollapsed('authModal@eye2PasswordToggle');
+		//if(!this.initDone)this.init();
 		if(mode===-1){//reset
 			console.log('resets profile eye');
 			this.profile.eye=false;
@@ -391,41 +401,42 @@ let authModal={
 			if(this.profile.eye){
 				console.log('hide');
 				this.profile.eye=false;
-				this.modal.modal.dom.querySelector('input[name="password"]').setAttribute('type', 'password');
-				this.modal.modal.dom.querySelector(".btn-eye2Password").classList.add("btn-warning");
-				this.modal.modal.dom.querySelector(".btn-eye2Password").classList.remove("btn-info");
-				this.modal.modal.dom.querySelector(".btn-eye2Password").classList.remove("btn-success");
+				this.modal.main.dom.querySelector('input[name="password"]').setAttribute('type', 'password');
+				this.modal.main.dom.querySelector(".btn-eye2Password").classList.add("btn-warning");
+				this.modal.main.dom.querySelector(".btn-eye2Password").classList.remove("btn-info");
+				this.modal.main.dom.querySelector(".btn-eye2Password").classList.remove("btn-success");
 			}else{
 				console.log('show');
 				this.profile.eye=true;
-				this.modal.modal.dom.querySelector('input[name="password"]').setAttribute('type', 'text');
-				this.modal.modal.dom.querySelector(".btn-eye2Password").classList.remove("btn-warning");
-				this.modal.modal.dom.querySelector(".btn-eye2Password").classList.remove("btn-info");
-				this.modal.modal.dom.querySelector(".btn-eye2Password").classList.add("btn-success");
+				this.modal.main.dom.querySelector('input[name="password"]').setAttribute('type', 'text');
+				this.modal.main.dom.querySelector(".btn-eye2Password").classList.remove("btn-warning");
+				this.modal.main.dom.querySelector(".btn-eye2Password").classList.remove("btn-info");
+				this.modal.main.dom.querySelector(".btn-eye2Password").classList.add("btn-success");
 			}
 		}else
 		if(mode===1){
 			if(!this.profile.eye){
 				console.log('show');
-				this.modal.modal.dom.querySelector('input[name="password"]').setAttribute('type', 'text');
-				this.modal.modal.dom.querySelector(".btn-eye2Password").classList.remove("btn-warning");
-				this.modal.modal.dom.querySelector(".btn-eye2Password").classList.add("btn-info");
+				this.modal.main.dom.querySelector('input[name="password"]').setAttribute('type', 'text');
+				this.modal.main.dom.querySelector(".btn-eye2Password").classList.remove("btn-warning");
+				this.modal.main.dom.querySelector(".btn-eye2Password").classList.add("btn-info");
 			}
 		}else{
 			if(!this.profile.eye){
 				console.log('hide');
-				this.modal.modal.dom.querySelector('input[name="password"]').setAttribute('type', 'password');
-				this.modal.modal.dom.querySelector(".btn-eye2Password").classList.add("btn-warning");
-				this.modal.modal.dom.querySelector(".btn-eye2Password").classList.remove("btn-info");
-				this.modal.modal.dom.querySelector(".btn-eye2Password").classList.remove("btn-success");
+				this.modal.main.dom.querySelector('input[name="password"]').setAttribute('type', 'password');
+				this.modal.main.dom.querySelector(".btn-eye2Password").classList.add("btn-warning");
+				this.modal.main.dom.querySelector(".btn-eye2Password").classList.remove("btn-info");
+				this.modal.main.dom.querySelector(".btn-eye2Password").classList.remove("btn-success");
 			}
 		}
 		console.groupEnd();
 	},
 	inputClear:function(){
 		console.groupCollapsed('authModal@inputClear');
+		//if(!this.initDone)this.init();
 		let me=this;
-		this.modal.modal.dom.querySelectorAll('.text-input').forEach(function(element,index){
+		this.modal.main.dom.querySelectorAll('.text-input').forEach(function(element,index){
 			element.value="";
 			element.classList.remove(me.settings.classList.invalid);
 		});
@@ -433,8 +444,9 @@ let authModal={
 	},
 	inputKeyupCheckClear:function(){
 		console.groupCollapsed('authModal@inputKeyupCheckClear');
+		//if(!this.initDone)this.init();
 		let me=this;
-		this.modal.modal.dom.querySelectorAll('.inputKeyupCheck').forEach(function(element,index){
+		this.modal.main.dom.querySelectorAll('.inputKeyupCheck').forEach(function(element,index){
 			element.classList.remove(me.settings.classList.invalid);
 		});
 		console.groupEnd();
@@ -442,6 +454,7 @@ let authModal={
 	inputKeyupCheck:function(options={}){
 		//console.groupCollapsed('authModal@inputKeyupCheck');
 		//console.log('options:',options);
+		//if(!this.initDone)this.init();
 		let result=true;
 		if(!options.element){
 			console.warn('invali');
@@ -488,6 +501,7 @@ let authModal={
 	},
 	validateEmail:function(email) {
 		console.groupCollapsed('authModal@validateEmail');
+		//if(!this.initDone)this.init();
 		console.log('email=',email);
 		var re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
 		var result=re.test(String(email).toLowerCase());
@@ -497,34 +511,35 @@ let authModal={
 	},
 	inputCheck:function(){
 		console.groupCollapsed('authModal@inputCheck');
+		//if(!this.initDone)this.init();
 		console.log('profile.mode=',this.profile.mode);
 		var errorLog=[];
-		this.modal.modal.dom.querySelectorAll('input').forEach(function(input,i){
+		this.modal.main.dom.querySelectorAll('input').forEach(function(input,i){
 			input.value=input.value.trim();
 		});
-		if(this.modal.modal.dom.querySelector('input[name="username"]').value.length<this.settings.nameLength_min){
+		if(this.modal.main.dom.querySelector('input[name="username"]').value.length<this.settings.nameLength_min){
 			console.warn('name too small');
 			errorLog.push('name too small');
 		}
-		if(this.modal.modal.dom.querySelector('input[name="username"]').value.length>this.settings.nameLength_max){
+		if(this.modal.main.dom.querySelector('input[name="username"]').value.length>this.settings.nameLength_max){
 			console.warn('name too big');
 			errorLog.push('name too big');
 		}
-		if(this.modal.modal.dom.querySelector('input[name="password"]').value.length<this.settings.passwordLength_min){
+		if(this.modal.main.dom.querySelector('input[name="password"]').value.length<this.settings.passwordLength_min){
 			console.warn('password too small');
 			errorLog.push('password too small');
 		}
-		if(this.modal.modal.dom.querySelector('input[name="password"]').value.length>this.settings.passwordLength_max){
+		if(this.modal.main.dom.querySelector('input[name="password"]').value.length>this.settings.passwordLength_max){
 			console.warn('password too big');
 			errorLog.push('password too big');
 		}
 		if(this.profile.mode===2){
 			console.log('registry requirements');
-			if(this.modal.modal.dom.querySelector('input[name="inputConfirmPassword"]').value!=this.modal.modal.dom.querySelector('input[name="password"]').value){
+			if(this.modal.main.dom.querySelector('input[name="inputConfirmPassword"]').value!=this.modal.main.dom.querySelector('input[name="password"]').value){
 				console.warn('password not a match');
 				errorLog.push('password not a match');
 			}
-			if(!this.validateEmail(this.modal.modal.dom.querySelector('input[name="email"]').value)){
+			if(!this.validateEmail(this.modal.main.dom.querySelector('input[name="email"]').value)){
 				console.warn('email is not valid');
 				errorLog.push('email is not valid');
 			}
@@ -561,42 +576,45 @@ let authModal={
 	},
 	displayNotificationUndo:function(){
 		console.groupCollapsed('authModal@displayNotificationUndo');
-		this.modal.modal.dom.querySelector('.loginOrRegister').style.display="";
-		this.modal.modal.dom.querySelector('.notification').style.display="none";
-		this.modal.modal.dom.querySelector('.bt-loginOrRegister').style.display="";
-		this.modal.modal.dom.querySelector('.bt-newuserOrback').style.display="";
-		this.modal.modal.dom.querySelector('.bt-closenotification').style.display="none";
+		//if(!this.initDone)this.init();
+		this.modal.main.dom.querySelector('.loginOrRegister').style.display="";
+		this.modal.main.dom.querySelector('.notification').style.display="none";
+		this.modal.main.dom.querySelector('.bt-loginOrRegister').style.display="";
+		this.modal.main.dom.querySelector('.bt-newuserOrback').style.display="";
+		this.modal.main.dom.querySelector('.bt-closenotification').style.display="none";
 		console.groupEnd();
 	},
 	displayNotification:function(options={}){
 		console.groupCollapsed('authModal@displayNotification');
+		//if(!this.initDone)this.init();
 		console.log("options=",options);	
 		if(options.type){
 			if(options.type===1){//processing
-				this.modal.modal.dom.querySelector('.bt-closenotification').style.display="none";
+				this.modal.main.dom.querySelector('.bt-closenotification').style.display="none";
 			}else
 			if(options.type===-1){//failed
-				this.modal.modal.dom.querySelector('.bt-closenotification').style.display="";
+				this.modal.main.dom.querySelector('.bt-closenotification').style.display="";
 			}
 		}
 		if(options.body){
-			this.modal.modal.dom.querySelector('.notification').innerHTML=options.body;
+			this.modal.main.dom.querySelector('.notification').innerHTML=options.body;
 		}
 		/*if(options.title){
-			this.modal.modal.dom.querySelector('.modal-title').innerHTML=options.title;
+			this.modal.main.dom.querySelector('.modal-title').innerHTML=options.title;
 		}*/
-		this.modal.modal.dom.querySelector('.bt-loginOrRegister').style.display="none";
-		this.modal.modal.dom.querySelector('.bt-newuserOrback').style.display="none";
-		this.modal.modal.dom.querySelector('.loginOrRegister').style.display="none";
-		this.modal.modal.dom.querySelector('.notification').style.display="block";
+		this.modal.main.dom.querySelector('.bt-loginOrRegister').style.display="none";
+		this.modal.main.dom.querySelector('.bt-newuserOrback').style.display="none";
+		this.modal.main.dom.querySelector('.loginOrRegister').style.display="none";
+		this.modal.main.dom.querySelector('.notification').style.display="block";
 		console.groupEnd();
 	},
 	callLogIn:function(){
 		console.groupCollapsed('authModal@callLogIn');
+		//if(!this.initDone)this.init();
 		if(this.inputCheck()){
 			var data={};
-			data.username=this.modal.modal.dom.querySelector('input[name="username"]').value.trim();
-			data.password=this.modal.modal.dom.querySelector('input[name="password"]').value.trim();
+			data.username=this.modal.main.dom.querySelector('input[name="username"]').value.trim();
+			data.password=this.modal.main.dom.querySelector('input[name="password"]').value.trim();
 			console.log('data=',data);
 			let me=this;
 			this.statusLog.callResponse={status:0,mode:1,data:data,response:""};
@@ -657,10 +675,11 @@ let authModal={
 	},
 	callRegister:function(){
 		console.groupCollapsed('authModal@callRegister');
+		//if(!this.initDone)this.init();
 		if(this.inputCheck()){
 			var data={};
-			data.username=this.modal.modal.dom.querySelector('input[name="username"]').value.trim();
-			data.password=this.modal.modal.dom.querySelector('input[name="password"]').value.trim();
+			data.username=this.modal.main.dom.querySelector('input[name="username"]').value.trim();
+			data.password=this.modal.main.dom.querySelector('input[name="password"]').value.trim();
 			//the movie api does not require email, so it's pointless to add one 
 			console.log('data=',data);
 			this.displayNotification({type:1,body:"<p>Please wait</p>"});
@@ -747,22 +766,25 @@ let authModal={
 	},
 	show:function(){
 		console.groupCollapsed('authModal@show');
+		//if(!this.initDone)this.init();
 		this.modal.show();
 		let me=this;
 		setTimeout(function(){
 			console.log('focus');
-			me.modal.modal.dom.querySelector('.username').focus();
+			me.modal.main.dom.querySelector('.username').focus();
 		}, 500);
 		
 		console.groupEnd();
 	},
 	hide:function(){
 		console.groupCollapsed('authModal@hide');
+		//if(!this.initDone)this.init();
 		this.modal.hide();
 		console.groupEnd();
 	},
 	open:function(){
 		console.groupCollapsed('authModal@open');
+		//if(!this.initDone)this.init();
 		this.inputClear();
 		this.eye2PasswordToggle(-1);
 		this.displayNotificationUndo();
@@ -771,6 +793,7 @@ let authModal={
 	},
 	close:function(){
 		console.groupCollapsed('authModal@close');
+		//if(!this.initDone)this.init();
 		this.modal.hide();
 		this.inputClear();
 		this.eye2PasswordToggle(-1);

@@ -1,9 +1,10 @@
 let jokeSocialMediaCall={
-	init:function(options={}) {
+	init:function(options={root:"body",addModal2Root:true}) {
 		//console.groupCollapsed('init');
+		this.initDone=true;
 		this.modal="";
 		this.root={id:'',dom:'',jquery:''};
-		this.statusLog={inputError:[]};
+		//this.statusLog={inputError:[]};
 		this.buttonsList;
 		if(options.root){
 			this.root.id = options.root;
@@ -18,11 +19,13 @@ let jokeSocialMediaCall={
 				}
 			}
 		}
+		
 		//console.groupEnd();
 	},
 	addModal2Root:function(options={}) {
 		//generates and appends the modal html elements to the rootdoom
 		//console.groupCollapsed('addModal2Root');
+		if(!this.initDone)this.init();
 		if(!(typeof options === 'object')){options={}};
 		if(options.root){
 			this.root.id = options.root;
@@ -40,6 +43,7 @@ let jokeSocialMediaCall={
 	},
 	addEvents:function(){
 		//console.groupCollapsed('addEvents');
+		if(!this.initDone)this.init();
 		//console.groupCollapsed('4Buttons');
 		this.buttonsList=document.querySelectorAll('.jokesocialmediacall');
 		//let listToAdd=['facebook','instagram','twitch','twitter','youtube'];
@@ -71,9 +75,11 @@ let jokeSocialMediaCall={
 		//console.groupEnd();
 	},
 	showModal:function(){
+		if(!this.initDone)this.init();
 		this.modal.show();
 	},
 	hideModal:function(){
+		if(!this.initDone)this.init();
 		this.modal.hide();
 	}
 

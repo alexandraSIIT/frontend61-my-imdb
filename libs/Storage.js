@@ -223,57 +223,57 @@ class CookieStorage{
 
 class KeyHelper {
 	static keyRead(name){
-		//console.groupCollapsed('keyReade');
-		//console.log('name=',name);
+		console.groupCollapsed('keyReade');
+		console.log('name=',name);
 		let value=false;
 		if(typeof SessionStorage != 'undefined'&&SessionStorage.storageAvailable()){
-			//console.log('Using session storage');
+			console.log('Using session storage');
 			value=SessionStorage.read(name);
 		}else
 		if(typeof CookieStorage != 'undefined'&&CookieStorage.storageAvailable()){
-			//console.log('Using cookie storage');
+			console.log('Using cookie storage');
 			value=CookieStorage.read(name);
 		}else{
 			console.warn('There is no storage to use');
 		}	
-		//console.log('return=',value);
-		//console.groupEnd(); 
+		console.log('return=',value);
+		console.groupEnd(); 
 		return value;
 	}
 	static keySave(options={}){
-		//console.groupCollapsed('keySave');
-		//console.log('options:',options);
+		console.groupCollapsed('keySave');
+		console.log('options:',options);
 		let value=false;
 		if(typeof SessionStorage != 'undefined'&&SessionStorage.storageAvailable()){
-			//console.log('Using session storage');
+			console.log('Using session storage');
 			value=SessionStorage.save(options);
 		}else
 		if(typeof CookieStorage != 'undefined'&&CookieStorage.storageAvailable()){
-			//console.log('Using cookie storage');
+			console.log('Using cookie storage');
 			value=CookieStorage.save(options);
 		}else{
 			console.warn('There is no storage to use');
 		}	
-		//console.log('return=',value);
-		//console.groupEnd(); 
+		console.log('return=',value);
+		console.groupEnd(); 
 		return value;
 	}
 	static keyRemove(name){
-		//console.groupCollapsed('keyRemove');
-		//console.log('name=',name);
+		console.groupCollapsed('keyRemove');
+		console.log('name=',name);
 		let value=false;
 		if(typeof SessionStorage != 'undefined' &&SessionStorage.storageAvailable()){
-			//console.log('Using session storage');
+			console.log('Using session storage');
 			value=SessionStorage.remove(name);
 		}else
 		if(typeof CookieStorage != 'undefined' &&CookieStorage.storageAvailable()){
-			//console.log('Using cookie storage');
+			console.log('Using cookie storage');
 			value=CookieStorage.remove(name);
 		}else{
 			console.warn('There is no storage to use');
 		}	
-		//console.log('return=',value);
-		//console.groupEnd(); 
+		console.log('return=',value);
+		console.groupEnd(); 
 		return value;
 	}
 }

@@ -44,13 +44,13 @@ self.onmessage = function (msg) {
 				//console.log('we got movies_items');
 				stats.called.movies.items++;
 				movies.main.items=msg.data.movies.items;
-				//console.log("value=",movies.main.items);
+				console.log("items=",movies.main.items);
 			}
 			if(msg.data.movies.pagination){
 				//console.log('we got movies_pagination');
 				stats.called.movies.pagination++;
 				movies.main.pagination=msg.data.movies.pagination;
-				//console.log("value=",movies.main.pagination);
+				console.log("pagination=",movies.main.pagination);
 			}
 			if(msg.data.movies.skip){
 				//console.log('we got movies_skip');
@@ -186,6 +186,7 @@ function buildUrlMovies(){
 	//console.groupEnd();
 }
 function doAjaxCheckup(){
+	console.log("checking4Modifications");
 	//console.groupCollapsed('doAjaxCheckup');
 	timerForCheckingModificationl.mcount+=timerForCheckingModificationl.mcycle;
 	if(timerForCheckingModificationl.mcount<timerForCheckingModificationl.mfire){
@@ -286,6 +287,7 @@ function checkifTheyAreTheSame(){
 		var aProps = Object.getOwnPropertyNames(a);
 		var bProps = Object.getOwnPropertyNames(b);
 		if (aProps.length != bProps.length) {
+			console.warn("notEquivalent->invalud lenght");
 			//console.groupCollapsed('invalud lenght');
 			//console.log('aProps.length=',aProps.length);
 			//console.log('bProps.length=',bProps.length);
@@ -297,6 +299,7 @@ function checkifTheyAreTheSame(){
 		for (var i = 0; i < aProps.length; i++) {
 			var propName = aProps[i];
 			if (a[propName] != b[propName]) {
+				console.warn("notEquivalent->",[propName,a[propName],b[propName]]);
 				//console.groupCollapsed('invalud property');
 				//console.log('Props.propName=',propName);
 				//console.log('aProps.value=',a[propName]);
@@ -316,7 +319,7 @@ function checkifTheyAreTheSame(){
 		//console.log("movies.main.items.length=",movies.main.items.length);
 		//console.log("movies.background.items.length=",movies.background.items.length);
 		if(movies.main.items.length!=movies.background.items.length){
-			//console.log("array lenght invalid");
+			console.warn("array lenght invalid");
 			//console.log("result=false");
 			stats.checkup.modified++;
 			//console.groupEnd();
@@ -332,6 +335,7 @@ function checkifTheyAreTheSame(){
 					//console.log("isObjEquivalent=true");
 				}else{
 					//console.log("isObjEquivalent=false");
+					console.warn("notEquivalent:",[movies.main.items[i],movies.background.items[i]]);
 					ok=false;
 				}
 				i++
@@ -355,6 +359,7 @@ function checkifTheyAreTheSame(){
 		//console.log("movie.main=",movie.main);
 		//console.log("movie.background=",movie.background);
 		if(isObjEquivalent(movie.main,movie.background)){
+			console.warn("notEquivalent:",[movie.main,movie.background]);
 			//console.log("isObjEquivalent=true");
 			//console.groupEnd();
 			return true;
