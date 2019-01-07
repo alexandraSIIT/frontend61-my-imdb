@@ -1,0 +1,21 @@
+*{
+	box-sizing: border-box;
+}
+
+#template{
+	margin-left: 20%;
+	margin-right: 20%;
+}
+
+.movie-header {
+	text-align: center;
+}
+
+.movie-details{
+	text-align: left;
+}
+
+.movie-poster{
+	padding: 3%;
+}
+

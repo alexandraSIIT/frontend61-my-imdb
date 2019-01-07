@@ -5,7 +5,7 @@
 	<link rel="icon" href="../static/32396-popcorn-icon.png"><!-- added by Tamas -->
 	<meta charset="UTF-8" />
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
-	<!-- <link rel="stylesheet" href="../../css/index.css"> -->
+	<link rel="stylesheet" href="../css/movieDetails.css">
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 	<link rel="stylesheet" href="../css/auth.css"><!-- added by Tamas -->
 	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"><!-- added by Tamas -->
@@ -25,38 +25,42 @@
 	<div id='modalRoot'></div>
 	<div id="movieDetails"></div>
 	<div id="template">
-		<h3 class="movie-header">
+		<div class="movie-header">
 			<!-- <span class="game-id"></span>  -->
-			<span class="movie-title"&nbsp;></span>
+			<h3><span class="movie-title"&nbsp;></span>
 
-			(<span class="movie-year"></span>)
-		</h3>
-		<div class="subtext">
+			(<span class="movie-year"></span>)</h3>
 
 			<span class="movie-runtime"></span>
 
 			<span class="ghost">|</span>
 
-			<span class="movie-genre"></span>
+			<span class="movie-genre"></span><br>
+
+			<img class="movie-poster" alt="movie-poster">
 
 		</div>
 
+		<div class="movie-details">
 
-		<img class="movie-poster" alt="movie-poster" height="70%" width="60%">
+			<p class="movie-plot"></p>
 
-		<p class="movie-plot"></p>
-		
-		<p class="director">Director : <span class="movie-director"></span></p> 
+			<div id="details">
+			
+				<p class="director"><b>Director :</b> <span class="movie-director"></span></p>
 
-		<p class="writer">Writer : <span class="movie-writer"></span></p>
+				<p class="writer"><b>Writer :</b> <span class="movie-writer"></span></p>
 
-		<p class="language">Language : <span class="movie-language"></span></p>
+				<p class="language"><b>Language :</b><span class="movie-language"></span></p>
 
-		<p class="country">Country : <span class="movie-country"></span></p>
+				<p class="country"><b>Country :</b><span class="movie-country"></span></p>
 
-		<p class="imdbRating">imdb Rating : <span class="movie-imdbRating"></span></p>
-		
-		<p class="actors">Actors : <span class="movie-actors"></span></p>
+				<p class="imdbRating"><b>imdb Rating :</b><span class="movie-imdbRating"></span></p>
+				
+				<p class="actors"><b>Actors :</b><span class="movie-actors"></span></p>
+			</div>
+
+		</div>
 
 		<div id="back-home">
 			<a href="home.html" link="black"><button>Back to Home Page</button></a>
