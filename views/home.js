@@ -51,6 +51,7 @@ function getMovies(skip) {
     displayPagination(movies.pagination);
     searchYear();
     searchGenre();
+    searchLanguage();
   });
 }
 
@@ -173,21 +174,22 @@ function searchYear() {
   var textButtonYearMax = document.createTextNode("2010 < Year");
   buttonYearMin.appendChild(textButtonYearMin);
   buttonYearMin.addEventListener('click', function(){
-    console.log("Year MIN clicked");
+    console.log(textButtonYearMin);
   })
   buttonYearMed.appendChild(textButtonYearMed);
   buttonYearMed.addEventListener('click', function(){
-    console.log("Year MED clicked");
+    console.log(textButtonYearMed);
   })
   buttonYearMax.appendChild(textButtonYearMax);
   buttonYearMax.addEventListener('click', function(){
-    console.log("Year MAX clicked");
+    console.log(textButtonYearMax);
   })
   yearDiv.appendChild(buttonYearMin);
   yearDiv.appendChild(buttonYearMed);
   yearDiv.appendChild(buttonYearMax);
-  
+
 }
+
 ///////////////////////////////////// Search Genre
 
 function searchGenre() {
@@ -235,6 +237,52 @@ function searchGenre() {
 
 
 }
+///////////////////////////////////// Search Language
+
+function searchLanguage() {
+  var responseMovies = movies.items;
+  var moviesLanguage = []; // String Genre Array
+  console.log("SEARCHHHHHHHHHH ", movies.items);
+  
+  for (let i=0; i<responseMovies.length; i++) {
+    var responseMoviesLanguage = responseMovies[i].Language;
+    getLanguage();
+    function getLanguage(){
+      var languageStringArray = responseMoviesLanguage.split(", ");
+      for(let i=0; i<languageStringArray.length;i++) {
+        var languageString = languageStringArray[i];
+        moviesLanguage.push(languageString);
+      }
+    }
+  }
+  
+  var languageObj = {};
+  var languageArr = [];
+  for (let i = 0; i < moviesLanguage.length; i++) {
+    if (!(moviesLanguage[i] in languageObj)) {
+      languageArr.push(moviesLanguage[i]);
+      languageObj[moviesLanguage[i]] = true;
+    }
+  }
+  
+  for (let i=0; i<languageArr.length; i++) { 
+    var singleLanguage = languageArr[i]; //
+    function addButtonLanguage(singleLanguage) {
+    var languageDiv = document.getElementById('searchDivLanguage'); // div pentru butoane
+    var languageButton = document.createElement('button'); // creare buton
+    var textButton = document.createTextNode(singleLanguage); // nume buton (gen)
+    languageButton.appendChild(textButton);
+    languageDiv.appendChild(languageButton);
+  
+    languageButton.addEventListener("click", function() { // functie buton
+        console.log("Language button", singleLanguage);
+    });
+  }
+  
+  addButtonLanguage(singleLanguage);
+  }
+}
+
 //////////////////////ALEXXXXXXXXXXXX
 
 function editMovie(movie){
