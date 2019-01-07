@@ -97,9 +97,8 @@ function displayMovies(response) {
 
     let editButton = moviesClone.querySelector(".movie-edit");
     editButton.addEventListener("click", function(){
-      event.target.disabled = "true";
-      editMovie(me);
-      event.target.disabled = false;
+        editMovie(me);
+      
     });
 
 
@@ -124,6 +123,7 @@ function displayPagination(response) {
   pagesContainer.innerHTML = "";
   for ( let i=1; i<= response.numberOfPages; i++) {
     var pagesClone = templatePages.cloneNode(true);
+    pagesClone.removeAttribute("style");
     var pageButtonElement = pagesClone.querySelector(".pages-btn");
     pageButtonElement.innerHTML = i;
     pagesContainer.appendChild(pagesClone);
@@ -238,23 +238,21 @@ function searchGenre() {
 //////////////////////ALEXXXXXXXXXXXX
 
 function editMovie(movie){
-  console.log("editMovie.movie=",movie);
+   let myElement = document.querySelectorAll(".popup");
+   for (let i = 0; i < myElement.length; i++){
+     myElement[i].remove();
+    
+   }
+   let grandpa = document.getElementById("movie_" + movie._id);
+   let grandpaId = grandpa.id;
+   let movieId = grandpaId.replace("movie_", "");
 
-  
-  var grandpa = document.getElementById("movie_"+movie._id);
-
-
-  var grandpa=document.getElementById("movie_"+movie._id);
-
-  console.log("grandpa=",grandpa);
-var grandpaId = grandpa.id;
- var movieId = grandpaId.replace("movie_", "");
-
-    movie.getMovie().then(function(response) {
+   movie.getMovie().then(function(response) {
 
         console.log(response);
         let divPopup = document.createElement("div");
         divPopup.setAttribute("class", "popup");
+        divPopup.style.top = (document.body.scrollTop + document.documentElement.scrollTop + 35)+"px"
         grandpa.appendChild(divPopup);
 
         let spanPopup = document.createElement("span");
@@ -268,14 +266,16 @@ var grandpaId = grandpa.id;
         divPopup.appendChild(popupXButton);
 
         popupXButton.addEventListener("click", function(){
-           //event.target.disabled = false;
+          let eventButton = grandpa.querySelector('.movie-edit');
+           console.log("Event button", eventButton);
+           eventButton.disabled = false;
            divPopup.remove();
 
         });
         //title edit
         let titleLabel = document.createElement("label");
         titleLabel.setAttribute("for", response.Title);
-        titleLabel.innerHTML = "<br>Title of the movie";
+        titleLabel.innerHTML = "<br>Title of the movie<br>";
         spanPopup.appendChild(titleLabel);
 
         let newTitle = document.createElement("input");
@@ -362,10 +362,10 @@ var grandpaId = grandpa.id;
         plotLabel.innerHTML = "<br>Plot<br>";
         spanPopup.appendChild(plotLabel);
 
-        let newPlot = document.createElement("input");
-        newPlot.setAttribute("value", response.Plot);
+        let newPlot = document.createElement("textarea");
+        newPlot.value = response.Plot;
         newPlot.setAttribute("class", "new-plot");
-        newPlot.setAttribute("style", "width: 90%");
+        newPlot.setAttribute("style", "width: 90%; height: auto");
         spanPopup.appendChild(newPlot);
 
         //Language edit
