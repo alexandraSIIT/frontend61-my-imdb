@@ -54,6 +54,9 @@ function displayMovie() {
   $(".movie-country").html(movie.Country);
 
   $(".movie-imdbRating").html(movie.imdbRating);
+
+
+
   if(Worker&&backgroundSync){//added by Tamas
 		console.log("sending data to backgroundSync");
 		backgroundSync.postMessage({
@@ -120,3 +123,4 @@ if(Worker&&backgroundSync){ //added by Tamas
 		console.groupEnd();   
 	}
 }
+

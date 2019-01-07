@@ -103,20 +103,9 @@ function displayMovies(response) {
     deleteButton.addEventListener("click", function(){
       deleteMovieOnClick(me,i);
     });
-      
 
   };
 
-  // var regenerateMoviesButton = regenerateMoviesContainer.querySelector(
-  //   ".movie-regenerateMovies"
-  // );
-  // regenerateMoviesButton.addEventListener("click", function(event) {
-  //   var movie = getMovieById(event);
-  //   movie.regenerateMovies().then(function() {
-  //     window.location.reload();
-  //     console.log("refresh", response);
-  //   });
-  // });
 	if(Worker&&backgroundSync){//added by Tamas
 		console.log("sending data to backgroundSync");
 		backgroundSync.postMessage({mode:1,movies:{items:movies.items,pagination:movies.pagination},timer:{command:'start'}});
