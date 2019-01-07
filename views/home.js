@@ -58,6 +58,13 @@ function getMovies(skip) {
 function displayMovies(response) {
   console.log("displayMovies");
   var template = document.getElementById("template");
+  if(Auth.getAccessToken()){
+    template.querySelector(".movie-edit").removeAttribute("style");
+    template.querySelector(".movie-delete").removeAttribute("style");
+  }else{
+    template.querySelector(".movie-edit").style.display="none";
+    template.querySelector(".movie-delete").style.display="none";
+  }
   var moviesContainer = document.getElementById("movies");
   moviesContainer.innerHTML = "";
   // var regenerateMoviesContainer = document.getElementById("regenerate-movies");
@@ -108,6 +115,8 @@ function displayMovies(response) {
       deleteMovieOnClick(me,i);
     });
 
+    
+
   };
 
   if(Worker&&backgroundSync){//added by Tamas
@@ -125,6 +134,7 @@ function displayPagination(response) {
   for ( let i=1; i<= response.numberOfPages; i++) {
     var pagesClone = templatePages.cloneNode(true);
     pagesClone.removeAttribute("style");
+    pagesClone.removeAttribute("id");
     var pageButtonElement = pagesClone.querySelector(".pages-btn");
     pageButtonElement.innerHTML = i;
     pagesContainer.appendChild(pagesClone);
@@ -566,18 +576,28 @@ movie.deleteMovie().then(function(response){
 
 function doAfterSuccessLogin(data={}){//added by Tamas, will run this function after successful log in
   console.groupCollapsed('doAfterSuccessLogin');
-  //location.reload();  
+  displayEditButtons();
   console.groupEnd();
 }
 function doAfterSuccessRegister(data={}){//added by Tamas, will run this function after successful register
   console.groupCollapsed('doAfterSuccessRegister');
-  //location.reload();  
+  displayEditButtons();
   console.groupEnd();
+
 }
 function doAfterSuccessLogOut(data={}){//added by Tamas, will run this function after successful log out
   console.groupCollapsed('doAfterSuccessLogOut'); 
-  //location.reload();
+  hideEditButtons();
   console.groupEnd();
+}
+function displayEditButtons(){
+  document.querySelectorAll(".movie-delete").forEach(function(buttons){buttons.removeAttribute("style")});
+  document.querySelectorAll(".movie-edit").forEach(function(buttons){buttons.removeAttribute("style")});
+}
+function hideEditButtons(){
+  console.log("hide");
+  document.querySelectorAll(".movie-delete").forEach(function(buttons){buttons.style.display="none";});
+  document.querySelectorAll(".movie-edit").forEach(function(buttons){buttons.style.display="none";});
 }
 function doAfterSuccessImageUpload(data={}){//added by Tamas, will run this function after successful imate upload
   console.groupCollapsed('doAfterSuccessImageUpload');

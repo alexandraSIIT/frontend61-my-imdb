@@ -1,16 +1,17 @@
-* {
-   margin: 0;
-   padding: 0;
- }
-
 *{
     box-sizing: border-box;
     text-align: center;
+    margin: 0;
 }/*added by Iulia*/
 
 .movie-poster{
-    padding: 3%;
+    padding: 1%;
 }/*added by Iulia*/
+
+.buttons{
+    padding: 1%;
+}
+
 
 .buttons > button{
     -moz-box-shadow: 3px 4px 1px 0px #8a2a21;
@@ -39,31 +40,38 @@
     top:1px;
 }/*added by Iulia*/
 
-/*.pages-btn{
-    display: inline-block;
-}*/
+.logo {
+    float: left;
+    height: 15%;
+    margin-top:0;
+    margin-bottom: 1%;
+}
 
-#pagination-template {
+.pagination-template {
   display: inline-block;
   text-align: center;
-}/*added by Iulia*/
+}
 
-#pagination-template > .pages-btn {
+#pagination {
+  margin-top: 15px;
+  margin-bottom: 15px;
+}
+
+.pagination-template > .pages-btn {
   color: black;
   float: left;
-  padding: 8px 16px;
+  padding: 6px 12px;
   text-decoration: none;
   transition: background-color .3s;
   border: 1px solid #ddd;
   margin: 0 4px;
-}/*added by Iulia*/
+}
 
-#pagination-template button.active {
+.pagination-template button.active {
   background-color: #4CAF50;
   color: white;
   border: 1px solid #4CAF50;
-}/*added by Iulia*/
-
+}
 
 .popup {
     display: flex;
@@ -102,6 +110,3 @@
    margin-top: 10px;
 
 }
- 
-
-
