@@ -38,23 +38,29 @@
 </head>
 
 <body>
-	<div id='alertRoot'></div>
-	<section id='sectionUserAuth' ><!-- added by Tamas -->
-			<div id='divUserAuthUsername' class="auth-display-block">
-				<label name="labelUserName" id="labelUserName" ></label>
-			</div>
-			<div class="auth-display-block">
-				<button type="button" id='btnUserAuth'></button>
-			</div>
-	</section>
-	<div class="nb-social-links" style="display:block">
-		<i class="fab fa-facebook fa-2x jokesocialmediacall"></i>
-		<i class="fab fa-instagram fa-2x jokesocialmediacall"></i>
-		<i class="fab fa-twitch fa-2x jokesocialmediacall"></i>
-		<i class="fab fa-twitter fa-2x jokesocialmediacall"></i>
-		<i class="fab fa-youtube fa-2x jokesocialmediacall"></i>
-	</div>
-	<div id='modalRoot'></div>
+	<div id='alertRoot'></div><div id='modalRoot'></div>
+	<nav class="navbar navbar-default navbar-expand-lg navbar-light">
+		<div class="collapse navbar-collapse justify-content-start" style="padding-top:10px;padding-bottom:10px;">
+			<ul class="nav navbar-nav  navbar-right ml-auto">
+				<li class="nav-item" style="display:block;padding-top:0px;padding-right:10px;">
+				    <h4><span  id="labelUserName" class="label label-default"></span></h4>
+					<!--<label name="labelUserName" id="labelUserName"></label>-->
+				</li>
+				<li class="nav-item" style="padding-right:10px;">
+					<button id="btnUserAuth" class="btn nav-link btn-secondary" aria-expanded="false">Login</button>
+				</li>
+			</ul>
+			<ul class="nav navbar-nav  navbar-right ml-auto">
+				<i class="nav-item fab fa-facebook fa-2x jokesocialmediacall"></i>
+				<i class="nav-item fab fa-instagram fa-2x jokesocialmediacall"></i>
+				<i class="nav-item fab fa-twitch fa-2x jokesocialmediacall"></i>
+				<i class="nav-item fab fa-twitter fa-2x jokesocialmediacall"></i>
+				<i class="nav-item fab fa-youtube fa-2x jokesocialmediacall"></i>
+			</ul>
+		</div>
+	</nav>
+	
+	
 	<div id="moviesSubmit"></div>
 	<div id="movies"></div>
 	<div id="template" style="display:none">

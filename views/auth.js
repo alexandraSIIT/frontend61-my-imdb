@@ -86,6 +86,9 @@ let auth2Pages={
 			}
 			if(document.querySelector("#btnUserAuth")){
 				document.querySelector("#btnUserAuth").innerText="Log out";
+				document.querySelector("#btnUserAuth").classList.remove("btn-primary");
+				document.querySelector("#btnUserAuth").classList.add("btn-danger");
+				
 			}
 		}else{
 			console.log('not loged in');
@@ -94,6 +97,8 @@ let auth2Pages={
 			}
 			if(document.querySelector("#btnUserAuth")){
 				document.querySelector("#btnUserAuth").innerText="Log in";
+				document.querySelector("#btnUserAuth").classList.remove("btn-danger");
+				document.querySelector("#btnUserAuth").classList.add("btn-primary");
 			}
 		}
 		console.groupEnd();

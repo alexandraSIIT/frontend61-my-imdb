@@ -14,15 +14,26 @@
 </head>
 
 <body>
-	<section id='sectionUserAuth' ><!-- added by Tamas -->
-			<div id='divUserAuthUsername' class="auth-display-block">
-				<label name="labelUserName" id="labelUserName" ></label>
-			</div>
-			<div class="auth-display-block">
-				<button type="button" id='btnUserAuth'></button>
-			</div>
-	</section>
 	<div id='modalRoot'></div>
+	<nav class="navbar navbar-default navbar-expand-lg navbar-light">
+		<div class="collapse navbar-collapse justify-content-start" style="padding-top:10px;padding-bottom:10px;">
+			<ul class="nav navbar-nav  ml-auto">
+				<li class="nav-item">
+					<button id="back2Home" class="btn btn-danger nav-left" href="home.html" aria-expanded="false" >Back To Home Page</button>
+				</li>
+			</ul>
+			<ul class="nav navbar-nav  navbar-right ml-auto">
+				<li class="nav-item" style="display:block;padding-top:0px;padding-right:10px;">
+				    <h4><span  id="labelUserName" class="label label-default"></span></h4>
+					<!--<label name="labelUserName" id="labelUserName"></label>-->
+				</li>
+				<li class="nav-item" style="padding-right:10px;">
+					<button id="btnUserAuth" class="btn nav-link btn-secondary" aria-expanded="false">Login</button>
+				</li>
+			</ul>
+		</div>
+	</nav>
+
 	<div id="movieDetails"></div>
 	<div id="template">
 		<div class="movie-header">
