@@ -14,7 +14,7 @@ function extraLoad(){ //added by Tamas
   console.log('notification');
   modalElements["notification"]= new Modal({root:"#modalRoot",add2Root:true});
   alertElements["notification"]= new Alert({root:"#alertRoot",add2Root:true});
-  jokeSocialMediaCall.init({root:"modalRoot",add2Root:true,addEvents:true});
+  jokeSocialMediaCall.init({root:"#modalRoot",add2Root:true,addEvents:true});
   notificationPopUp.init();
   console.log('auth');
   authModal.init({root:"#modalRoot",add2Root:true,add2Head:true,addEvents:true});
