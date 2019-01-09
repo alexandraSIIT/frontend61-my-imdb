@@ -175,28 +175,24 @@ function searchMovie() {
 ///////////////////////////////////// Search Year
 
 function searchYear() {
-  var yearDiv = document.getElementById('searchDivYear');
-  var buttonYearMin = document.createElement('button');
-  var buttonYearMed = document.createElement('button');
-  var buttonYearMax = document.createElement('button');
-  var textButtonYearMin = document.createTextNode("Year < 2000");
-  var textButtonYearMed = document.createTextNode("2000 - 2010");
-  var textButtonYearMax = document.createTextNode("2010 < Year");
-  buttonYearMin.appendChild(textButtonYearMin);
-  buttonYearMin.addEventListener('click', function(){
-    console.log(textButtonYearMin);
-  })
-  buttonYearMed.appendChild(textButtonYearMed);
-  buttonYearMed.addEventListener('click', function(){
-    console.log(textButtonYearMed);
-  })
-  buttonYearMax.appendChild(textButtonYearMax);
-  buttonYearMax.addEventListener('click', function(){
-    console.log(textButtonYearMax);
-  })
-  yearDiv.appendChild(buttonYearMin);
-  yearDiv.appendChild(buttonYearMed);
-  yearDiv.appendChild(buttonYearMax);
+  var yearDiv = document.getElementById("searchDivYear");
+
+  //Create array of options to be added
+  var yearArray = ["Year < 2000", "2000 - 2010", "2010 < Year"];
+  
+  //Create and append select list
+  var yearList = document.createElement("select");
+  yearDiv.appendChild(yearList);
+  
+  //Create and append the options
+  for (let i = 0; i < yearArray.length; i++) {
+    var singleYear = yearArray[i];
+    var optionYear = document.createElement("option");
+    optionYear.value = singleYear;
+    optionYear.text = singleYear;
+    yearList.appendChild(optionYear);
+
+  }
 
 }
 
@@ -227,18 +223,18 @@ function searchGenre() {
     }
   }
   
+  var genreDiv = document.getElementById('searchDivGenre');
+  var genreList = document.createElement('select');
+  genreDiv.appendChild(genreList);
+
   for (let i=0; i<genreArr.length; i++) { 
     var singleGenre = genreArr[i]; //
-    function addButtonGenre(singleGenre) {
-    var genreDiv = document.getElementById('searchDivGenre'); // div pentru butoane
-    var genreButton = document.createElement('button'); // creare buton
-    var textButton = document.createTextNode(singleGenre); // nume buton (gen)
-    genreButton.appendChild(textButton);
-    genreDiv.appendChild(genreButton);
-  
-    genreButton.addEventListener("click", function() { // functie buton
-        console.log("Genre button", singleGenre);
-    });
+    function addButtonGenre(singleGenre) { // div pentru butoane // creare buton
+      var optionGenre = document.createElement("option");
+      optionGenre.value = singleGenre;
+      optionGenre.text = singleGenre;
+      genreList.appendChild(optionGenre);
+
   }
   
   addButtonGenre(singleGenre);
@@ -246,12 +242,13 @@ function searchGenre() {
 
 
 }
+
 ///////////////////////////////////// Search Language
 
 function searchLanguage() {
   var responseMovies = movies.items;
   var moviesLanguage = []; // String Genre Array
-  console.log("SEARCHHHHHHHHHH ", movies.items);
+  console.log("SEARCH LANGUAGE get all ", movies.items);
   
   for (let i=0; i<responseMovies.length; i++) {
     var responseMoviesLanguage = responseMovies[i].Language;
@@ -273,19 +270,22 @@ function searchLanguage() {
       languageObj[moviesLanguage[i]] = true;
     }
   }
+
+
+  var languageDiv = document.getElementById('searchDivLanguage');
+  var languageList = document.createElement('select');
+  languageDiv.appendChild(languageList);
   
   for (let i=0; i<languageArr.length; i++) { 
-    var singleLanguage = languageArr[i]; //
+    var singleLanguage = languageArr[i]; 
     function addButtonLanguage(singleLanguage) {
-    var languageDiv = document.getElementById('searchDivLanguage'); // div pentru butoane
-    var languageButton = document.createElement('button'); // creare buton
-    var textButton = document.createTextNode(singleLanguage); // nume buton (gen)
-    languageButton.appendChild(textButton);
-    languageDiv.appendChild(languageButton);
-  
-    languageButton.addEventListener("click", function() { // functie buton
-        console.log("Language button", singleLanguage);
-    });
+
+      var optionLanguage = document.createElement("option");
+      optionLanguage.value = singleLanguage;
+      optionLanguage.text = singleLanguage;
+      languageList.appendChild(optionLanguage);
+
+
   }
   addButtonLanguage(singleLanguage);
   }
