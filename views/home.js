@@ -321,12 +321,16 @@ function editMovie(movie){
       <label for="new${key}"><br>${key}<br></label>
       <input value="${movie[key]}" type="text" id="new${key}" class="form-control validate">
     </div> `;
+	if(key==="Poster"){//if added by Tamas to add file upload support to Poster
+		container+=`<input class='fileInput' id='imageUpload' type="file" accept=".jpg, .jpeg, .png, .gif" style="padding-top:5px;">`;
+	}
  
       }
     }
-    console.log(container);
+    console.log("container=",container);
     $("#movie-edit").find(".modal-body").html(container);
     $("#movie-edit").modal("show");
+	insertlUploadImage(); //added by Tamas to add file upload support to Poster
     return;
         
 
@@ -387,6 +391,41 @@ function modalMovieEditCreate(){
 }
 
 
+function insertlUploadImage(){//added by tamas 
+	console.log('insertlUploadImage');
+	$("#imageUpload").change(function(event){
+			imageFileUploader.fileUppload({event:event,element:this});
+		});
+}
+function doAfterSuccessImageUpload(data={}){//added by Tamas, will run this function after successful imate upload
+  console.groupCollapsed('doAfterSuccessImageUpload');
+  console.log('data=',data);
+  if(!$("#movie-edit")||!$("#movie-edit").find("#newPoster")){
+	   console.warn('no element');
+	   console.groupEnd();
+	   return;
+  }
+  //the data will contain information to the address of uploaded image
+  //do to server side, the resposne might not be a json
+  if(typeof data.response !="object"){
+    //conver the result if not json
+    var obj = JSON.parse(data.response);
+    console.log('obj=',obj);
+    console.log('address=',obj.address);
+    //now we got the address of the image saved in obj.address
+    notificationPopUp.post({body:"Image successfully uploaded",icon:obj.address});
+     $("#movie-edit").find("#newPoster").val(obj.address);
+   
+  }else{
+    //we got the address of the image saved in data.response.address
+    console.log('address=',data.response.address);
+    notificationPopUp.post({body:"Image successfully uploaded",icon:data.response.address});
+    $("#movie-edit").find("#newPoster").val(data.response.address);
+  }
+  
+  console.groupEnd();
+}
+
 
 
 
@@ -435,30 +474,7 @@ function hideEditButtons(){
   document.querySelectorAll(".movie-delete").forEach(function(buttons){buttons.style.display="none";});
   document.querySelectorAll(".movie-edit").forEach(function(buttons){buttons.style.display="none";});
 }
-function doAfterSuccessImageUpload(data={}){//added by Tamas, will run this function after successful imate upload
-  console.groupCollapsed('doAfterSuccessImageUpload');
-  console.log('data=',data);
-  //the data will contain information to the address of uploaded image
-  //do to server side, the resposne might not be a json
-  if(typeof data.response !="object"){
-    //conver the result if not json
-    var obj = JSON.parse(data.response);
-    console.log('obj=',obj);
-    console.log('address=',obj.address);
-    //now we got the address of the image saved in obj.address
-    notificationPopUp.post({body:"Image successfully uploaded",icon:obj.address});
-    if(document.querySelector(".new-poster")){
-      document.querySelector(".new-poster").value=obj.address;
-    }
-  }else{
-    //we got the address of the image saved in data.response.address
-    console.log('address=',data.response.address);
-    notificationPopUp.post({body:"Image successfully uploaded",icon:data.response.address});
-    document.querySelector(".new-poster").value=data.response.address;
-  }
-  
-  console.groupEnd();
-}
+
 if(Worker&&backgroundSync){ //added by Tamas, allows page to refresh its movies if it changed on the database
   //not tested it with search attributes
   console.log("receiving data to backgroundSync");
