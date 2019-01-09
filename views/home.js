@@ -12,13 +12,13 @@ function extraLoad(){ //added by Tamas
   //here it loads the blank modal & alert notification, but also the components for authentication, image uploading and background sysnc
   console.groupCollapsed('extraLoad');
   console.log('notification');
-  modalElements["notification"]= new Modal({root:"modalRoot",add2Root:true});
-  alertElements["notification"]= new Alert({root:"alertRoot",add2Root:true});
-  jokeSocialMediaCall.init({root:"modalRoot",add2Root:true,addEvents:true});
+  modalElements["notification"]= new Modal({root:"#modalRoot",add2Root:true});
+  alertElements["notification"]= new Alert({root:"#alertRoot",add2Root:true});
+  jokeSocialMediaCall.init({root:"#modalRoot",add2Root:true,addEvents:true});
   notificationPopUp.init();
   console.log('auth');
-  authModal.init({root:"modalRoot",add2Root:true,add2Head:true,addEvents:true});
-  authAlert=new Alert({root:"alertRoot",add2Root:true});
+  authModal.init({root:"#modalRoot",add2Root:true,add2Head:true,addEvents:true});
+  authAlert=new Alert({root:"#alertRoot",add2Root:true});
   auth2Pages.init();
 
   console.log('backgroundSyncLoad');

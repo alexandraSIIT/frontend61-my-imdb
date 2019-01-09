@@ -24,8 +24,8 @@ class Alert {
 		if(options.root){
 			this.root.id = options.root;
 			if(this.root.id){
-				this.root.dom=document.getElementById(this.root.id);
-				this.root.jquery=$('#'+this.root.id); 
+				this.root.dom=document.querySelector(this.root.id);
+				this.root.jquery=$(this.root.id); 
 			}
 			if(options.add2Root){
 				this.add2Root(options.add2Root);
@@ -118,8 +118,8 @@ class Alert {
 		if(options.root){
 			this.root.id = options.root;
 			if(this.root.id){
-				this.root.dom=document.getElementById(this.root.id);
-				this.root.jquery=$('#'+this.root.id); 
+				this.root.dom=document.querySelector(this.root.id);
+				this.root.jquery=$(this.root.id); 
 			}
 		}
 		//console.log('root=',this.root);
