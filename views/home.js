@@ -193,6 +193,11 @@ function searchYear() {
     yearList.appendChild(optionYear);
 
   }
+  yearList.addEventListener('change', function() { 
+    console.log("CHANGE?", this.value);
+  }
+);
+  
 
 }
 
@@ -239,6 +244,10 @@ function searchGenre() {
   
   addButtonGenre(singleGenre);
   }
+  genreList.addEventListener('change', function() { 
+      console.log("CHANGE?", this.value);
+    }
+ );
 
 
 }
@@ -289,6 +298,10 @@ function searchLanguage() {
   }
   addButtonLanguage(singleLanguage);
   }
+  languageList.addEventListener('change', function() { 
+    console.log("CHANGE?", this.value);
+  }
+);
 }
 
 //////////////////////ALEXXXXXXXXXXXX
