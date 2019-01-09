@@ -40,8 +40,8 @@ class Modal {
 		if(options.root){
 			this.root.id = options.root;
 			if(this.root.id){
-				this.root.dom=document.getElementById(this.root.id);
-				this.root.jquery=$('#'+this.root.id); 
+				this.root.dom=document.querySelector(this.root.id);
+				this.root.jquery=$(this.root.id); 
 			}
 			if(options.add2Root){
 				this.add2Root(options.add2Root);
@@ -132,14 +132,14 @@ class Modal {
 		if(options.root){
 			this.root.id = options.root;
 			if(this.root.id){
-				this.root.dom=document.getElementById(this.root.id);
-				this.root.jquery=$('#'+this.root.id); 
+				this.root.dom=document.querySelector(this.root.id);
+				this.root.jquery=$(this.root.id); 
 			}
 		}
 		console.log('root=',this.root);
 		//console.log('modal=',$('#'+this.main.id)[0]);
 		if($('#'+this.main.id)[0]){
-			console.warn("already exists");
+			console.log("already exists->no adding is needed");
 			console.groupEnd();
 			return false;
 		}
