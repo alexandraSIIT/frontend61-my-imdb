@@ -96,8 +96,9 @@ self.onmessage = function (msg) {
 			//console.log("value=",msg.data.timer4Check);
 			if(msg.data.timer.command==="start"){
 				//console.log('we got timer4Start');
-				stats.called.timer.start++;
-				startTimerInterval();
+				console.warn("Timer start is disabled");
+				//stats.called.timer.start++;
+				//startTimerInterval();
 			}else
 			if(msg.data.timer.command==="stop"){
 				//console.log('we got timer4Stop');
