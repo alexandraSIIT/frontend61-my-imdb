@@ -12,6 +12,7 @@
 	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"><!-- added by Tamas -->
 	<link rel="stylesheet" type="text/css" href="../css/auth.css"><!-- added by Tamas -->
 	<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.6.3/css/all.css" integrity="sha384-UHRtZLI+pbxtHCWp1t77Bi1L4ZtiqrqD80Kn4Z8NTSRyMA2Fd33n5dQ8lWUE00s/" crossorigin="anonymous"><!-- added by Tamas -->
+	<link rel="stylesheet" href="../css/search.css"><!-- added by Tamas -->		
 
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.6/umd/popper.min.js"></script><!-- added by Tamas -->
@@ -46,6 +47,34 @@
 		</div>
 
 	</nav>
+	<div class="container" id="searchRoot"><div class="row">
+        <div class="col-md-6">
+            <div id="custom-search-input">
+                <div class="input-group col-md-12">
+                    <input type="text" id="search-value" class="form-control input-lg" placeholder="Title">
+					<div class="dropdown custom-search-dropbox" id="dropdown">
+						<button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" style="display:none">show</button>
+						<ul class="dropdown-menu" role="menu" aria-labelledby="menu1" id="dropdown-content">
+							<li role="presentation"><a role="menuitem" tabindex="-1" href="#">Text</a></li>
+							<li role="presentation" class="divider"></li>
+						</ul>
+				    </div>
+					<select id="search-category">
+						<option value="Title">Title</option>
+						<option value="Year">Year</option>
+						<option value="Genre">Genre</option>
+						<option value="Country">Country</option>
+						<option value="Type">Type</option>
+					</select>
+                    <span class="input-group-btn">
+                        <button id="search-do" class="btn btn-info btn-lg" type="button"><i class="fas fa-search"></i>Search</button>
+						<button id="search-openadvance" class="btn btn-info btn-lg" type="button"><i class="fas fa-cog"></i>Advance</button>
+                    </span>
+                </div>
+            </div>
+        </div>
+	</div></div>
+	
 	<section id='btnSearch'>
 		<div id='searchDiv'>
 				<input type='text' placeholder='Search by Title' name='search' />
@@ -88,6 +117,7 @@
 	<script src='../models/Auth.js' type='text/javascript'></script><!-- added by Tamas -->
 	<script src='../libs/Storage.js' type='text/javascript'></script><!-- added by Tamas -->
 	<script src="../views/auth.js"></script><!-- added by Tamas -->
+	<script src='../views/searchMovie.js' type='text/javascript'></script><!-- added by Tamas -->
 	<script src='../views/jokeSocialMediaCall.js' type='text/javascript'></script><!-- added by Tamas -->
 	<script src="../views/home.js"></script>
 </body>

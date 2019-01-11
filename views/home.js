@@ -37,12 +37,15 @@ function extraLoad(){ //added by Tamas
   
   console.log('imageUploaderLoad');
   imageFileUploader.init();
+  console.log('searchMovie');	
+	search4Movie.init({root:"#searchRoot",setRoot:true,addEvents:true,addModal:true,addModalEvents:true});
+	//search4Movie.toggleDropdown();
   console.groupEnd();
 }
 
 getMovies();
 function getMovies(skip) {
-  movies.getAll(skip).then(function() {
+  movies.getAllwSearch({skip:skip,take:10},search4Movie.searchParameters).then(function() {
     console.log("getAllList", movies.items);
   if(Worker&&backgroundSync){ //added by Tamas
     console.log("sending data to backgroundSync");
