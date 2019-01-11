@@ -7,6 +7,8 @@
 // };
 
 var movies = new Movies();
+var movie2Edit;
+modalMovieEditCreate();
 let modalElements={};let alertElements={};let backgroundSync;extraLoad();//added by Tamas
 function extraLoad(){ //added by Tamas
   //here it loads the blank modal & alert notification, but also the components for authentication, image uploading and background sysnc
@@ -248,260 +250,28 @@ function searchGenre() {
 //////////////////////ALEXXXXXXXXXXXX
 
 function editMovie(movie){
-   let myElement = document.querySelectorAll(".popup");
-   for (let i = 0; i < myElement.length; i++){
-     myElement[i].remove();
-    
-   }
-   let grandpa = document.getElementById("movie_" + movie._id);
-   let grandpaId = grandpa.id;
-   let movieId = grandpaId.replace("movie_", "");
-
-   movie.getMovie().then(function(response) {
-
-        console.log(response);
-        let divPopup = document.createElement("div");
-        divPopup.setAttribute("class", "popup");
-        divPopup.style.top = (document.body.scrollTop + document.documentElement.scrollTop + 35)+"px"
-        grandpa.appendChild(divPopup);
-
-        let spanPopup = document.createElement("span");
-        spanPopup.setAttribute("class", "content");
-    spanPopup.setAttribute("style", "color:black");//added by Tamas to fix the text color thats being inherited from bootstrap css
-        divPopup.appendChild(spanPopup);
-
-        let popupXButton = document.createElement("div");
-        popupXButton.setAttribute("class", "closeButton");
-        popupXButton.innerHTML = "X";
-        divPopup.appendChild(popupXButton);
-
-        popupXButton.addEventListener("click", function(){
-          let eventButton = grandpa.querySelector('.movie-edit');
-           console.log("Event button", eventButton);
-           eventButton.disabled = false;
-           divPopup.remove();
-
-        });
-        //title edit
-        let titleLabel = document.createElement("label");
-        titleLabel.setAttribute("for", response.Title);
-        titleLabel.innerHTML = "<br>Title of the movie<br>";
-        spanPopup.appendChild(titleLabel);
-
-        let newTitle = document.createElement("input");
-        newTitle.setAttribute("value", response.Title);
-        newTitle.setAttribute("class", "new-title");
-        newTitle.setAttribute("style", "width: 90%");
-        spanPopup.appendChild(newTitle);
-
-        //year edit
-        let yearLabel = document.createElement("label");
-        yearLabel.setAttribute("for", response.Year);
-        yearLabel.innerHTML = "<br>Year<br>";
-        spanPopup.appendChild(yearLabel);
-
-        let newYear = document.createElement("input");
-        newYear.setAttribute("value", response.Year);
-        newYear.setAttribute("class", "new-year");
-        newYear.setAttribute("style", "width: 50%");
-        spanPopup.appendChild(newYear);
-
-        //runtime edit
-        let runtimeLabel = document.createElement("label");
-        runtimeLabel.setAttribute("for", response.Runtime);
-        runtimeLabel.innerHTML = "<br>Runtime<br>";
-        spanPopup.appendChild(runtimeLabel);
-
-        let newRuntime = document.createElement("input");
-        newRuntime.setAttribute("value", response.Runtime);
-        newRuntime.setAttribute("class", "new-runtime");
-        newRuntime.setAttribute("style", "width: 90%");
-        spanPopup.appendChild(newRuntime);
-
-        //Genre edit
-        let genreLabel = document.createElement("label");
-        genreLabel.setAttribute("for", response.Genre);
-        genreLabel.innerHTML = "<br>Genre<br>";
-        spanPopup.appendChild(genreLabel);
-
-        let newGenre = document.createElement("input");
-        newGenre.setAttribute("value", response.Genre);
-        newGenre.setAttribute("class", "new-genre");
-        newGenre.setAttribute("style", "width: 90%");
-        spanPopup.appendChild(newGenre);
-
-        //Director edit
-        let directorLabel = document.createElement("label");
-        directorLabel.setAttribute("for", response.Director);
-        directorLabel.innerHTML = "<br>Director<br>";
-        spanPopup.appendChild(directorLabel);
-
-        let newDirector = document.createElement("input");
-        newDirector.setAttribute("value", response.Director);
-        newDirector.setAttribute("class", "new-director");
-        newDirector.setAttribute("style", "width: 90%");
-        spanPopup.appendChild(newDirector);
-
-        //Writer edit
-        let writerLabel = document.createElement("label");
-        writerLabel.setAttribute("for", response.Writer);
-        writerLabel.innerHTML = "<br>Writer<br>";
-        spanPopup.appendChild(writerLabel);
-
-        let newWriter = document.createElement("input");
-        newWriter.setAttribute("value", response.Writer);
-        newWriter.setAttribute("class", "new-writer");
-        newWriter.setAttribute("style", "width: 50%");
-        spanPopup.appendChild(newWriter);
-
-        //Actors edit
-        let actorsLabel = document.createElement("label");
-        actorsLabel.setAttribute("for", response.Actors);
-        actorsLabel.innerHTML = "<br>Actors<br>";
-        spanPopup.appendChild(actorsLabel);
-
-        let newActors = document.createElement("input");
-        newActors.setAttribute("value", response.Actors);
-        newActors.setAttribute("class", "new-actors");
-        newActors.setAttribute("style", "width: 90%");
-        spanPopup.appendChild(newActors);
-
-        //Plot edit
-        let plotLabel = document.createElement("label");
-        plotLabel.setAttribute("for", response.Plot);
-        plotLabel.innerHTML = "<br>Plot<br>";
-        spanPopup.appendChild(plotLabel);
-
-        let newPlot = document.createElement("textarea");
-        newPlot.value = response.Plot;
-        newPlot.setAttribute("class", "new-plot");
-        newPlot.setAttribute("style", "width: 90%; height: auto");
-        spanPopup.appendChild(newPlot);
-
-        //Language edit
-        let languageLabel = document.createElement("label");
-        languageLabel.setAttribute("for", response.Language);
-        languageLabel.innerHTML = "<br>Language<br>";
-        spanPopup.appendChild(languageLabel);
-
-        let newLanguage = document.createElement("input");
-        newLanguage.setAttribute("value", response.Language);
-        newLanguage.setAttribute("class", "new-language");
-        newLanguage.setAttribute("style", "width: 90%");
-        spanPopup.appendChild(newLanguage);
-
-        //Country edit
-        let countryLabel = document.createElement("label");
-        countryLabel.setAttribute("for", response.Country);
-        countryLabel.innerHTML = "<br>Country<br>";
-        spanPopup.appendChild(countryLabel);
-
-        let newCountry = document.createElement("input");
-        newCountry.setAttribute("value", response.Country);
-        newCountry.setAttribute("class", "new-country");
-        newCountry.setAttribute("style", "width: 50%");
-        spanPopup.appendChild(newCountry);
-
-        //Poster edit
-        let posterLabel = document.createElement("label");
-        posterLabel.setAttribute("for", response.Poster);
-        posterLabel.innerHTML = "<br>Poster<br>";
-        spanPopup.appendChild(posterLabel);
-
-        let newPoster = document.createElement("input");
-        newPoster.setAttribute("value", response.Poster);
-        newPoster.setAttribute("class", "new-poster");
-        newPoster.setAttribute("style", "width: 90%");
-        spanPopup.appendChild(newPoster);
-
-    /*let posterUpload = document.createElement("input");//added by Tamas to allow uploading images
-    posterUpload.setAttribute("type", "file");
-    posterUpload.setAttribute("accept", ".jpg, .jpeg, .png, .gif");
-        spanPopup.appendChild(posterUpload);
-    posterUpload.addEventListener("change", function(){
-      console.groupCollapsed('ileInput');
-      imageFileUploader.fileUppload({event:event,element:this});
-      console.groupEnd();
-    });*/
-
-        //imdbRating edit
-        let imdbLabel = document.createElement("label");
-        imdbLabel.setAttribute("for", response.imdbRating);
-        imdbLabel.innerHTML = "<br>IMDB Rating<br>";
-        spanPopup.appendChild(imdbLabel);
-
-        let newImdbRating = document.createElement("input");
-        newImdbRating.setAttribute("value", response.imdbRating);
-        newImdbRating.setAttribute("class", "new-imdb");
-        newImdbRating.setAttribute("style", "width: 90%");
-        spanPopup.appendChild(newImdbRating);
-
-        let submitBtn = document.createElement("button");
-        submitBtn.setAttribute("class", "submit-updates");
-        submitBtn.innerHTML = "Submit";
-        spanPopup.appendChild(submitBtn);
-
-        submitBtn.addEventListener("click", function() {
-          if (
-            newTitle.value === "" ||
-            yearLabel.value === "" ||
-            newRuntime.value === "" ||
-            newGenre.value === "" ||
-            newDirector.value === "" ||
-            newWriter.value === "" ||
-            newActors.value === "" ||
-            newPlot.value === "" ||
-            newLanguage.value === "" ||
-            newCountry.value === "" ||
-            newPoster.value === "" ||
-            newImdbRating.value === ""
-          ) {
-            alert("Please fill up all fields");
-          } else {
-
-              movie._id = movieId;
-              movie.Title = newTitle.value;
-              movie.Year = newYear.value;
-              movie.Runtime = newRuntime.value;
-              movie.Genre = newGenre.value;
-              movie.Director = newDirector.value;
-              movie.Writer = newWriter.value;
-              movie.Actors = newActors.value;
-              movie.Plot = newPlot.value;
-              movie.Language = newLanguage.value;
-              movie.Country = newCountry.value;
-              movie.Poster = newPoster.value;
-              movie.imdbRating = newImdbRating.value;
-
-
-            movie.editMovie().then(function(response) {
-              console.log("Movie with id " + movieId + " was succesfully updated");
-              divPopup.remove();
-
-              displayMovies(movies.items);
-            },
-            function(reject){
-              //  console.error("Error updating movie");
-               let divDisplayError = document.createElement("div");
-               divDisplayError.setAttribute("class", "display-error");
-               divDisplayError.innerHTML = "Nothing to update";
-               divPopup.appendChild(divDisplayError);
-
-              
-      
-
-                
-               
-
-            });
-          }
-        });
-
+  movie2Edit=movie;
+  console.log(movie);
+  let container="";
+   movie.getMovieDetails().then(function() {
+    for (var key in movie){ //a for cycle that creates the titleLable,newLabel and so on elements
+      if(key==="Title"||key==="Year"||key==="Runtime"||key==="Director"||key==="Writer"||key==="Plot"||key==="Language"||key==="Poster"||key==="imdbRating"){
+      //console.log(movie[key]);
+      container+=`<div class="md-form mb-5">  
+      <label for="new${key}"><br>${key}<br></label>
+      <input value="${movie[key]}" type="text" id="new${key}" class="form-control validate">
+    </div> `;
+ 
       }
+    }
+    console.log(container);
+    $("#movie-edit").find(".modal-body").html(container);
+    $("#movie-edit").modal("show");
+    return;
+        
 
 
-)
-;
+  });
 }
 
 
@@ -609,4 +379,57 @@ if(Worker&&backgroundSync){ //added by Tamas, allows page to refresh its movies 
     }
   console.groupEnd();   
   }
+}
+
+function modalMovieEditCreate(){
+  let myModal = `
+<div class="modal fade in" id="movie-edit"  role="dialog" style="display:none">
+  <div class="modal-dialog" >
+  <form name="formMovieEdit" action="">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">Edit Movie</h4>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">×</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-danger bt-close" data-dismiss="modal">Close</button>
+		 <button type="button" class="btn btn-default bt-save" data-dismiss="modal">Save</button>
+      </div>
+     
+    </div>
+    </form>
+  </div>
+</div>`
+
+var movieEditModal=document.createElement("div");
+movieEditModal.innerHTML=myModal;
+document.body.appendChild(movieEditModal);
+//movie2Edit
+movieEditModal.querySelector(".bt-save").addEventListener("click", function(){
+  console.log("movie2Edit_BEFORE=",movie2Edit);
+  var list=movieEditModal.querySelectorAll("input");
+  console.log("list=",list);
+  list.forEach(function(input){
+    console.log("value=",input.value);
+    console.log("id=",input.id.replace("new",""));
+    movie2Edit[input.id.replace("new","")]=input.value;
+   
+  });
+  console.log("movie2Edit_AFTER=",movie2Edit);
+  movie2Edit.editMovie().then(function(response){
+    console.log(response);
+    
+    modalElements["notification"].setElement([{selector:".modal-title",task:"inner",value:"success"},{selector:".modal-body",task:"inner",value:"Movie successfully edited "},"show"]);  
+    displayMovies(movies.items); 
+  },
+  function(error){
+    console.log(error);
+    
+    modalElements["notification"].setElement([{selector:".modal-title",task:"inner",value:"fail"},{selector:".modal-body",task:"inner",value:error.responseJSON.message},"show"]);   
+  })
+});
 }
