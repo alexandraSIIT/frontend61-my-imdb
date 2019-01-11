@@ -1,10 +1,8 @@
 var movie = new Movie();
-var backgroundSync;var modalElements={};extraLoad();//added by Tamas
+var backgroundSync;extraLoad();//added by Tamas
 function extraLoad(){//added by Tamas
 	console.groupCollapsed('extraLoad');
-	modalElements["notification"]= new Modal({root:"modalRoot"});
-	modalElements["notification"].add2Root();
-	authModal.init({root:"modalRoot",add2Root:true,add2Head:true,addEvents:true});
+	authModal.init({root:"#modalRoot",add2Root:true,add2Head:true,addEvents:true});
 	auth2Pages.init();
 	console.groupCollapsed('backgroundSyncLoad');
 	if(Worker){

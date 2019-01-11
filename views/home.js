@@ -10,17 +10,18 @@ var movies = new Movies();
 var movie2Edit;
 modalMovieEditCreate();
 let modalElements={};let alertElements={};let backgroundSync;extraLoad();//added by Tamas
+
 function extraLoad(){ //added by Tamas
   //here it loads the blank modal & alert notification, but also the components for authentication, image uploading and background sysnc
   console.groupCollapsed('extraLoad');
   console.log('notification');
-  modalElements["notification"]= new Modal({root:"modalRoot",add2Root:true});
-  alertElements["notification"]= new Alert({root:"alertRoot",add2Root:true});
-  jokeSocialMediaCall.init({root:"modalRoot",add2Root:true,addEvents:true});
+  modalElements["notification"]= new Modal({root:"#modalRoot",add2Root:true});
+  alertElements["notification"]= new Alert({root:"#alertRoot",add2Root:true});
+  jokeSocialMediaCall.init({root:"#modalRoot",add2Root:true,addEvents:true});
   notificationPopUp.init();
   console.log('auth');
-  authModal.init({root:"modalRoot",add2Root:true,add2Head:true,addEvents:true});
-  authAlert=new Alert({root:"alertRoot",add2Root:true});
+  authModal.init({root:"#modalRoot",add2Root:true,add2Head:true,addEvents:true});
+  authAlert=new Alert({root:"#alertRoot",add2Root:true});
   auth2Pages.init();
 
   console.log('backgroundSyncLoad');
@@ -53,6 +54,7 @@ function getMovies(skip) {
     displayPagination(movies.pagination);
     searchYear();
     searchGenre();
+    searchLanguage();
   });
 }
 
@@ -129,7 +131,7 @@ function displayMovies(response) {
 
 function displayPagination(response) {
   //console.log("response pagination", response)
-  var templatePages = document.getElementsByClassName("pagination-template");
+  var templatePages = document.getElementById("pagination-template");
   var pagesContainer = document.getElementById("pagination");
   pagesContainer.innerHTML = "";
   for ( let i=1; i<= response.numberOfPages; i++) {
@@ -176,36 +178,37 @@ function searchMovie() {
 ///////////////////////////////////// Search Year
 
 function searchYear() {
-  var yearDiv = document.getElementById('searchDivYear');
-  var buttonYearMin = document.createElement('button');
-  var buttonYearMed = document.createElement('button');
-  var buttonYearMax = document.createElement('button');
-  var textButtonYearMin = document.createTextNode("Year < 2000");
-  var textButtonYearMed = document.createTextNode("2000 - 2010");
-  var textButtonYearMax = document.createTextNode("2010 < Year");
-  buttonYearMin.appendChild(textButtonYearMin);
-  buttonYearMin.addEventListener('click', function(){
-    console.log("Year MIN clicked");
-  })
-  buttonYearMed.appendChild(textButtonYearMed);
-  buttonYearMed.addEventListener('click', function(){
-    console.log("Year MED clicked");
-  })
-  buttonYearMax.appendChild(textButtonYearMax);
-  buttonYearMax.addEventListener('click', function(){
-    console.log("Year MAX clicked");
-  })
-  yearDiv.appendChild(buttonYearMin);
-  yearDiv.appendChild(buttonYearMed);
-  yearDiv.appendChild(buttonYearMax);
+  var yearDiv = document.getElementById("searchDivYear");
+
+  //Create array of options to be added
+  var yearArray = ["Year < 2000", "2000 - 2010", "2010 < Year"];
   
+  //Create and append select list
+  var yearList = document.createElement("select");
+  yearDiv.appendChild(yearList);
+  
+  //Create and append the options
+  for (let i = 0; i < yearArray.length; i++) {
+    var singleYear = yearArray[i];
+    var optionYear = document.createElement("option");
+    optionYear.value = singleYear;
+    optionYear.text = singleYear;
+    yearList.appendChild(optionYear);
+
+  }
+  yearList.addEventListener('change', function() { 
+    console.log("CHANGE?", this.value);
+  }
+);
+  
+
 }
+
 ///////////////////////////////////// Search Genre
 
 function searchGenre() {
   var responseMovies = movies.items;
   var moviesGenre = []; // String Genre Array
-  console.log("SEARCHHHHHHHHHH ", movies.items);
   
   for (let i=0; i<responseMovies.length; i++) {
     var responseMoviesGenre = responseMovies[i].Genre;
@@ -228,29 +231,93 @@ function searchGenre() {
     }
   }
   
+  var genreDiv = document.getElementById('searchDivGenre');
+  var genreList = document.createElement('select');
+  genreDiv.appendChild(genreList);
+
   for (let i=0; i<genreArr.length; i++) { 
     var singleGenre = genreArr[i]; //
-    function addButtonGenre(singleGenre) {
-    var genreDiv = document.getElementById('searchDivGenre'); // div pentru butoane
-    var genreButton = document.createElement('button'); // creare buton
-    var textButton = document.createTextNode(singleGenre); // nume buton (gen)
-    genreButton.appendChild(textButton);
-    genreDiv.appendChild(genreButton);
-  
-    genreButton.addEventListener("click", function() { // functie buton
-        console.log("Genre button", singleGenre);
-    });
+    function addButtonGenre(singleGenre) { // div pentru butoane // creare buton
+      var optionGenre = document.createElement("option");
+      optionGenre.value = singleGenre;
+      optionGenre.text = singleGenre;
+      genreList.appendChild(optionGenre);
+
   }
   
   addButtonGenre(singleGenre);
   }
+  genreList.addEventListener('change', function() { 
+      console.log("CHANGE?", this.value);
+    }
+ );
 
 
 }
-//////////////////////ALEXXXXXXXXXXXX
 
+<<<<<<< HEAD
 function editMovie(movie){
   movie2Edit=movie;
+=======
+///////////////////////////////////// Search Language
+
+function searchLanguage() {
+  var responseMovies = movies.items;
+  var moviesLanguage = []; // String Genre Array
+  console.log("SEARCH LANGUAGE get all ", movies.items);
+  
+  for (let i=0; i<responseMovies.length; i++) {
+    var responseMoviesLanguage = responseMovies[i].Language;
+    getLanguage();
+    function getLanguage(){
+      var languageStringArray = responseMoviesLanguage.split(", ");
+      for(let i=0; i<languageStringArray.length;i++) {
+        var languageString = languageStringArray[i];
+        moviesLanguage.push(languageString);
+      }
+    }
+  }
+  
+  var languageObj = {};
+  var languageArr = [];
+  for (let i = 0; i < moviesLanguage.length; i++) {
+    if (!(moviesLanguage[i] in languageObj)) {
+      languageArr.push(moviesLanguage[i]);
+      languageObj[moviesLanguage[i]] = true;
+    }
+  }
+
+
+  var languageDiv = document.getElementById('searchDivLanguage');
+  var languageList = document.createElement('select');
+  languageDiv.appendChild(languageList);
+  
+  for (let i=0; i<languageArr.length; i++) { 
+    var singleLanguage = languageArr[i]; 
+    function addButtonLanguage(singleLanguage) {
+
+      var optionLanguage = document.createElement("option");
+      optionLanguage.value = singleLanguage;
+      optionLanguage.text = singleLanguage;
+      languageList.appendChild(optionLanguage);
+
+
+  }
+  addButtonLanguage(singleLanguage);
+  }
+  languageList.addEventListener('change', function() { 
+    console.log("CHANGE?", this.value);
+  }
+);
+}
+
+//////////////////////ALEXXXXXXXXXXXX
+/////////////////////Dan
+var movie2Edit;
+modalMovieEditCreate();
+function editMovie(movie){
+     movie2Edit=movie;
+>>>>>>> c11aced82658bbb1f241a8791758c00ca56ec954
   console.log(movie);
   let container="";
    movie.getMovieDetails().then(function() {
@@ -261,19 +328,119 @@ function editMovie(movie){
       <label for="new${key}"><br>${key}<br></label>
       <input value="${movie[key]}" type="text" id="new${key}" class="form-control validate">
     </div> `;
+<<<<<<< HEAD
  
       }
     }
     console.log(container);
     $("#movie-edit").find(".modal-body").html(container);
     $("#movie-edit").modal("show");
+=======
+	if(key==="Poster"){//if added by Tamas to add file upload support to Poster
+		container+=`<input class='fileInput' id='imageUpload' type="file" accept=".jpg, .jpeg, .png, .gif" style="padding-top:5px;">`;
+	}
+ 
+      }
+    }
+    console.log("container=",container);
+    $("#movie-edit").find(".modal-body").html(container);
+    $("#movie-edit").modal("show");
+	insertlUploadImage(); //added by Tamas to add file upload support to Poster
+>>>>>>> c11aced82658bbb1f241a8791758c00ca56ec954
     return;
         
 
 
   });
 }
+function modalMovieEditCreate(){
+	  let myModal = `
+	<div class="modal fade in" id="movie-edit"  role="dialog" style="display:none">
+	  <div class="modal-dialog" >
+	  <form name="formMovieEdit" action="">
+		<div class="modal-content">
+		  <div class="modal-header text-center">
+			<h4 class="modal-title w-100 font-weight-bold">Edit Movie</h4>
+			<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+			  <span aria-hidden="true">×</span>
+			</button>
+		  </div>
+		  <div class="modal-body mx-3">
+		  </div>
+		  <div class="modal-footer">
+			<button type="button" class="btn btn-danger bt-close" data-dismiss="modal">Close</button>
+			 <button type="button" class="btn btn-default bt-save" data-dismiss="modal">Save</button>
+		  </div>
+		 
+		</div>
+		</form>
+	  </div>
+	</div>`
 
+	var movieEditModal=document.createElement("div");
+	movieEditModal.innerHTML=myModal;
+	document.body.appendChild(movieEditModal);
+	//movie2Edit
+	movieEditModal.querySelector(".bt-save").addEventListener("click", function(){
+	  console.log("movie2Edit_BEFORE=",movie2Edit);
+	  var list=movieEditModal.querySelectorAll("input");
+	  console.log("list=",list);
+	  list.forEach(function(input){
+		console.log("value=",input.value);
+		console.log("id=",input.id.replace("new",""));
+		movie2Edit[input.id.replace("new","")]=input.value;
+	   
+	  });
+	  console.log("movie2Edit_AFTER=",movie2Edit);
+	  movie2Edit.editMovie().then(function(response){
+		console.log(response);
+		
+		modalElements["notification"].setElement([{selector:".modal-title",task:"inner",value:"success"},{selector:".modal-body",task:"inner",value:"Movie successfully edited "},"show"]);  
+		displayMovies(movies.items); 
+	  },
+	  function(error){
+		console.log(error);
+		
+		modalElements["notification"].setElement([{selector:".modal-title",task:"inner",value:"fail"},{selector:".modal-body",task:"inner",value:error.responseJSON.message},"show"]);   
+	  })
+	});
+}
+
+
+function insertlUploadImage(){//added by tamas 
+	console.log('insertlUploadImage');
+	$("#imageUpload").change(function(event){
+			imageFileUploader.fileUppload({event:event,element:this});
+		});
+}
+function doAfterSuccessImageUpload(data={}){//added by Tamas, will run this function after successful imate upload
+  console.groupCollapsed('doAfterSuccessImageUpload');
+  console.log('data=',data);
+  if(!$("#movie-edit")||!$("#movie-edit").find("#newPoster")){
+	   console.warn('no element');
+	   console.groupEnd();
+	   return;
+  }
+  //the data will contain information to the address of uploaded image
+  //do to server side, the resposne might not be a json
+  if(typeof data.response !="object"){
+    //conver the result if not json
+    var obj = JSON.parse(data.response);
+    console.log('obj=',obj);
+    console.log('address=',obj.address);
+    //now we got the address of the image saved in obj.address
+    notificationPopUp.post({body:"Image successfully uploaded",icon:obj.address});
+     $("#movie-edit").find("#newPoster").val(obj.address);
+   
+  }else{
+    //we got the address of the image saved in data.response.address
+    console.log('address=',data.response.address);
+    notificationPopUp.post({body:"Image successfully uploaded",icon:data.response.address});
+    $("#movie-edit").find("#newPoster").val(data.response.address);
+  }
+  
+  console.groupEnd();
+}
 
 
 
@@ -323,30 +490,7 @@ function hideEditButtons(){
   document.querySelectorAll(".movie-delete").forEach(function(buttons){buttons.style.display="none";});
   document.querySelectorAll(".movie-edit").forEach(function(buttons){buttons.style.display="none";});
 }
-function doAfterSuccessImageUpload(data={}){//added by Tamas, will run this function after successful imate upload
-  console.groupCollapsed('doAfterSuccessImageUpload');
-  console.log('data=',data);
-  //the data will contain information to the address of uploaded image
-  //do to server side, the resposne might not be a json
-  if(typeof data.response !="object"){
-    //conver the result if not json
-    var obj = JSON.parse(data.response);
-    console.log('obj=',obj);
-    console.log('address=',obj.address);
-    //now we got the address of the image saved in obj.address
-    notificationPopUp.post({body:"Image successfully uploaded",icon:obj.address});
-    if(document.querySelector(".new-poster")){
-      document.querySelector(".new-poster").value=obj.address;
-    }
-  }else{
-    //we got the address of the image saved in data.response.address
-    console.log('address=',data.response.address);
-    notificationPopUp.post({body:"Image successfully uploaded",icon:data.response.address});
-    document.querySelector(".new-poster").value=data.response.address;
-  }
-  
-  console.groupEnd();
-}
+
 if(Worker&&backgroundSync){ //added by Tamas, allows page to refresh its movies if it changed on the database
   //not tested it with search attributes
   console.log("receiving data to backgroundSync");
