@@ -129,6 +129,8 @@ function displayMovies(response) {
 
 };
 
+
+
 function displayPagination(response) {
   //console.log("response pagination", response)
   var templatePages = document.getElementById("pagination-template");
@@ -255,10 +257,6 @@ function searchGenre() {
 
 }
 
-<<<<<<< HEAD
-function editMovie(movie){
-  movie2Edit=movie;
-=======
 ///////////////////////////////////// Search Language
 
 function searchLanguage() {
@@ -313,12 +311,18 @@ function searchLanguage() {
 
 //////////////////////ALEXXXXXXXXXXXX
 /////////////////////Dan
-var movie2Edit;
-modalMovieEditCreate();
-function editMovie(movie){
-     movie2Edit=movie;
->>>>>>> c11aced82658bbb1f241a8791758c00ca56ec954
-  console.log(movie);
+
+
+let addMovieBtn = document.querySelector(".add-movie");
+addMovieBtn.addEventListener("click", function(){
+   addNewMovie();
+});
+
+let movie2Add;
+
+function addNewMovie(){
+  modalMovieAdd();
+  let movie = new Movie();
   let container="";
    movie.getMovieDetails().then(function() {
     for (var key in movie){ //a for cycle that creates the titleLable,newLabel and so on elements
@@ -326,16 +330,8 @@ function editMovie(movie){
       //console.log(movie[key]);
       container+=`<div class="md-form mb-5">  
       <label for="new${key}"><br>${key}<br></label>
-      <input value="${movie[key]}" type="text" id="new${key}" class="form-control validate">
+      <input value="" type="text" id="new${key}" class="form-control validate">
     </div> `;
-<<<<<<< HEAD
- 
-      }
-    }
-    console.log(container);
-    $("#movie-edit").find(".modal-body").html(container);
-    $("#movie-edit").modal("show");
-=======
 	if(key==="Poster"){//if added by Tamas to add file upload support to Poster
 		container+=`<input class='fileInput' id='imageUpload' type="file" accept=".jpg, .jpeg, .png, .gif" style="padding-top:5px;">`;
 	}
@@ -346,15 +342,49 @@ function editMovie(movie){
     $("#movie-edit").find(".modal-body").html(container);
     $("#movie-edit").modal("show");
 	insertlUploadImage(); //added by Tamas to add file upload support to Poster
->>>>>>> c11aced82658bbb1f241a8791758c00ca56ec954
+    return;
+        
+
+
+  });
+
+}
+
+
+var movie2Edit;
+
+function editMovie(movie){
+  modalMovieEditCreate();
+     movie2Edit=movie;
+  console.log(movie);
+  let container="";
+   movie.getMovieDetails().then(function() {
+    for (var key in movie){ //a for cycle that creates the titleLable,newLabel and so on elements
+      if(key==="Title"||key==="Year"||key==="Runtime"||key==="Director"||key==="Writer"||key==="Plot"||key==="Language"||key==="Poster"||key==="imdbRating"){
+      //console.log(movie[key]);
+      container+=`<div class="md-form mb-5">  
+      <label for="new${key}"><br>${key}<br></label>
+      <input value="${movie[key]}" type="text" id="new${key}" class="form-control validate">
+    </div> `;
+	if(key==="Poster"){//if added by Tamas to add file upload support to Poster
+		container+=`<input class='fileInput' id='imageUpload' type="file" accept=".jpg, .jpeg, .png, .gif" style="padding-top:5px;">`;
+	}
+ 
+      }
+    }
+    console.log("container=",container);
+    $("#movie-edit").find(".modal-body").html(container);
+    $("#movie-edit").modal("show");
+	insertlUploadImage(); //added by Tamas to add file upload support to Poster
     return;
         
 
 
   });
 }
-function modalMovieEditCreate(){
-	  let myModal = `
+var myModal;
+function simpleModal(){
+  myModal = `
 	<div class="modal fade in" id="movie-edit"  role="dialog" style="display:none">
 	  <div class="modal-dialog" >
 	  <form name="formMovieEdit" action="">
@@ -375,7 +405,38 @@ function modalMovieEditCreate(){
 		</div>
 		</form>
 	  </div>
-	</div>`
+  </div>`
+  return;
+}
+function modalMovieAdd(){
+	simpleModal();
+
+	let movieAddModal=document.createElement("div");
+	movieAddModal.innerHTML=myModal;
+	document.body.appendChild(movieAddModal);
+	//movie2Add
+	movieAddModal.querySelector(".bt-save").addEventListener("click", function(){
+	  let list=movieAddModal.querySelectorAll("input");
+	  console.log("list=",list);
+	  list.forEach(function(input){      
+      console.log("value=",input.value);
+      console.log("id=",input.id.replace("new",""));
+      movie2Add[input.id.replace("new","")]=input.value;
+	   
+	  });
+	  movie2Add.addMovie().then(function(response){
+		    modalElements["notification"].setElement([{selector:".modal-title",task:"inner",value:"success"},{selector:".modal-body",task:"inner",value:"Movie successfully added "},"show"]);  
+	    	displayMovies(movies.items); 
+	  },
+	  function(error){
+		console.log(error);
+		
+		modalElements["notification"].setElement([{selector:".modal-title",task:"inner",value:"fail"},{selector:".modal-body",task:"inner",value:error.responseJSON.message},"show"]);   
+	  })
+	});
+}
+function modalMovieEditCreate(){
+	simpleModal();
 
 	var movieEditModal=document.createElement("div");
 	movieEditModal.innerHTML=myModal;
@@ -444,7 +505,6 @@ function doAfterSuccessImageUpload(data={}){//added by Tamas, will run this func
 
 
 
-
 function getMovieById(event) {
   var theMovie = event.target.parentNode.parentNode;
   var theMovieId = theMovie.id;
@@ -482,11 +542,13 @@ function doAfterSuccessLogOut(data={}){//added by Tamas, will run this function 
   console.groupEnd();
 }
 function displayEditButtons(){
+  document.querySelector(".add-movie").removeAttribute("style");
   document.querySelectorAll(".movie-delete").forEach(function(buttons){buttons.removeAttribute("style")});
   document.querySelectorAll(".movie-edit").forEach(function(buttons){buttons.removeAttribute("style")});
 }
 function hideEditButtons(){
   console.log("hide");
+  document.querySelector(".add-movie").style.display="none";;
   document.querySelectorAll(".movie-delete").forEach(function(buttons){buttons.style.display="none";});
   document.querySelectorAll(".movie-edit").forEach(function(buttons){buttons.style.display="none";});
 }
@@ -525,55 +587,3 @@ if(Worker&&backgroundSync){ //added by Tamas, allows page to refresh its movies 
   }
 }
 
-function modalMovieEditCreate(){
-  let myModal = `
-<div class="modal fade in" id="movie-edit"  role="dialog" style="display:none">
-  <div class="modal-dialog" >
-  <form name="formMovieEdit" action="">
-    <div class="modal-content">
-      <div class="modal-header text-center">
-        <h4 class="modal-title w-100 font-weight-bold">Edit Movie</h4>
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-          <span aria-hidden="true">×</span>
-        </button>
-      </div>
-      <div class="modal-body mx-3">
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-danger bt-close" data-dismiss="modal">Close</button>
-		 <button type="button" class="btn btn-default bt-save" data-dismiss="modal">Save</button>
-      </div>
-     
-    </div>
-    </form>
-  </div>
-</div>`
-
-var movieEditModal=document.createElement("div");
-movieEditModal.innerHTML=myModal;
-document.body.appendChild(movieEditModal);
-//movie2Edit
-movieEditModal.querySelector(".bt-save").addEventListener("click", function(){
-  console.log("movie2Edit_BEFORE=",movie2Edit);
-  var list=movieEditModal.querySelectorAll("input");
-  console.log("list=",list);
-  list.forEach(function(input){
-    console.log("value=",input.value);
-    console.log("id=",input.id.replace("new",""));
-    movie2Edit[input.id.replace("new","")]=input.value;
-   
-  });
-  console.log("movie2Edit_AFTER=",movie2Edit);
-  movie2Edit.editMovie().then(function(response){
-    console.log(response);
-    
-    modalElements["notification"].setElement([{selector:".modal-title",task:"inner",value:"success"},{selector:".modal-body",task:"inner",value:"Movie successfully edited "},"show"]);  
-    displayMovies(movies.items); 
-  },
-  function(error){
-    console.log(error);
-    
-    modalElements["notification"].setElement([{selector:".modal-title",task:"inner",value:"fail"},{selector:".modal-body",task:"inner",value:error.responseJSON.message},"show"]);   
-  })
-});
-}
