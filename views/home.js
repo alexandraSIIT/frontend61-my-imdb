@@ -1,6 +1,7 @@
 var movies = new Movies();
 var movie2Edit;
 modalMovieEditCreate();
+modalMovieAdd();
 let modalElements={};let alertElements={};let backgroundSync;extraLoad();//added by Tamas
 
 function extraLoad(){ //added by Tamas
@@ -53,9 +54,11 @@ function displayMovies(response) {
   console.log("displayMovies");
   var template = document.getElementById("template");
   if(Auth.getAccessToken()){
+    document.querySelector(".add-movie").removeAttribute("style");
     template.querySelector(".movie-edit").removeAttribute("style");
     template.querySelector(".movie-delete").removeAttribute("style");
   }else{
+    document.querySelector(".add-movie").style.display="none";
     template.querySelector(".movie-edit").style.display="none";
     template.querySelector(".movie-delete").style.display="none";
   }
@@ -151,18 +154,19 @@ addMovieBtn.addEventListener("click", function(){
 let movie2Add;
 
 function addNewMovie(){
-  modalMovieAdd();
+  
   let movie = new Movie();
+  movie2Add = movie;
   let container="";
    movie.getMovieDetails().then(function() {
     for (var key in movie){ //a for cycle that creates the titleLable,newLabel and so on elements
       if(key==="Title"||key==="Year"||key==="Runtime"||key==="Director"||key==="Writer"||key==="Plot"||key==="Language"||key==="Poster"||key==="imdbRating"){
       //console.log(movie[key]);
       container+=`<div class="md-form mb-5">  
-      <label for="new${key}"><br>${key}<br></label>
-      <input value="" type="text" id="new${key}" class="form-control validate">
+      <label for="${key}"><br>${key}<br></label>
+      <input value="" type="text" id="${key}" class="form-control validate">
     </div> `;
-	if(key==="Poster"){//if added by Tamas to add file upload support to Poster
+	if(key==="Poster"){//add file upload support to Poster
 		container+=`<input class='fileInput' id='imageUpload' type="file" accept=".jpg, .jpeg, .png, .gif" style="padding-top:5px;">`;
 	}
  
@@ -184,8 +188,8 @@ function addNewMovie(){
 var movie2Edit;
 
 function editMovie(movie){
-  modalMovieEditCreate();
-     movie2Edit=movie;
+  // modalMovieEditCreate();
+     movie2Edit = movie;
   console.log(movie);
   let container="";
    movie.getMovieDetails().then(function() {
@@ -212,9 +216,56 @@ function editMovie(movie){
 
   });
 }
-var myModal;
-function simpleModal(){
-  myModal = `
+
+function modalMovieAdd(){
+	let myAddModal = `
+	<div class="modal fade in" id="movie-edit"  role="dialog" style="display:none">
+	  <div class="modal-dialog" >
+	  <form name="formMovieEdit" action="">
+		<div class="modal-content">
+		  <div class="modal-header text-center">
+			<h4 class="modal-title w-100 font-weight-bold">Add New Movie</h4>
+			<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+			  <span aria-hidden="true">×</span>
+			</button>
+		  </div>
+		  <div class="modal-body mx-3">
+		  </div>
+		  <div class="modal-footer">
+			<button type="button" class="btn btn-danger bt-close" data-dismiss="modal">Close</button>
+			 <button type="button" class="btn btn-default bt-save" data-dismiss="modal">Save</button>
+		  </div>
+		 
+		</div>
+		</form>
+	  </div>
+  </div>`
+
+	let movieAddModal = document.createElement("div");
+	movieAddModal.innerHTML = myAddModal;
+	document.body.appendChild(movieAddModal);
+	//movie2Add
+	movieAddModal.querySelector(".bt-save").addEventListener("click", function(){
+	let list = movieAddModal.querySelectorAll("input");
+	console.log("list=",list);
+	list.forEach(function(input){      
+     console.log("value=",input.value);
+     console.log("id=",input.id);
+     movie2Add[input.id]=input.value;
+     });
+	movie2Add.addMovie().then(function(response){
+		    modalElements["notification"].setElement([{selector:".modal-title",task:"inner",value:"success"},{selector:".modal-body",task:"inner",value:"Movie successfully added "},"show"]);  
+	    	displayMovies(movies.items); 
+	  },
+	  function(error){
+		console.log(error);
+		
+		modalElements["notification"].setElement([{selector:".modal-title",task:"inner",value:"fail"},{selector:".modal-body",task:"inner",value:error.responseJSON.message},"show"]);   
+	  })
+	});
+}
+function modalMovieEditCreate(){
+	let myModal = `
 	<div class="modal fade in" id="movie-edit"  role="dialog" style="display:none">
 	  <div class="modal-dialog" >
 	  <form name="formMovieEdit" action="">
@@ -236,37 +287,6 @@ function simpleModal(){
 		</form>
 	  </div>
   </div>`
-  return;
-}
-function modalMovieAdd(){
-	simpleModal();
-
-	let movieAddModal=document.createElement("div");
-	movieAddModal.innerHTML=myModal;
-	document.body.appendChild(movieAddModal);
-	//movie2Add
-	movieAddModal.querySelector(".bt-save").addEventListener("click", function(){
-	  let list=movieAddModal.querySelectorAll("input");
-	  console.log("list=",list);
-	  list.forEach(function(input){      
-      console.log("value=",input.value);
-      console.log("id=",input.id.replace("new",""));
-      movie2Add[input.id.replace("new","")]=input.value;
-	   
-	  });
-	  movie2Add.addMovie().then(function(response){
-		    modalElements["notification"].setElement([{selector:".modal-title",task:"inner",value:"success"},{selector:".modal-body",task:"inner",value:"Movie successfully added "},"show"]);  
-	    	displayMovies(movies.items); 
-	  },
-	  function(error){
-		console.log(error);
-		
-		modalElements["notification"].setElement([{selector:".modal-title",task:"inner",value:"fail"},{selector:".modal-body",task:"inner",value:error.responseJSON.message},"show"]);   
-	  })
-	});
-}
-function modalMovieEditCreate(){
-	simpleModal();
 
 	var movieEditModal=document.createElement("div");
 	movieEditModal.innerHTML=myModal;
