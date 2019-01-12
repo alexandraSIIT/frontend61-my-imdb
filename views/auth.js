@@ -837,10 +837,16 @@ let authModal={
 	open:function(){
 		console.groupCollapsed('authModal@open');
 		//if(!this.initDone)this.init();
+		let me=this;
 		this.inputClear();
+		this.displayLogIn();
 		this.eye2PasswordToggle(20);
 		this.displayNotificationUndo();
 		this.modal.show();
+		setTimeout(function(){
+			console.log('focus');
+			me.modal.main.dom.querySelector('.username').focus();
+		}, 500);
 		console.groupEnd();
 	},
 	close:function(){

@@ -55,23 +55,38 @@ let search4Movie={
 	addEvents:function(){
 		console.groupCollapsed('addEvents');
 		let me=this;
-		this.main.jquery.find("#search-category").change(function() {
+		let jquery=this.main.jquery;
+		jquery.find("#search-category").change(function() {
 			console.groupCollapsed('search-category.change');
 		  var selected = $(this).children("option:selected").val();
 		  console.log("selected=",selected);
 		  me.changeCategory(selected);
 		  console.groupEnd();
 		});
-		this.main.jquery.find("#search-do").click(function() {
+		jquery.find("#search-do").click(function() {
 			console.groupCollapsed('search-do.click');
 		    me.doSearch();
 		    console.groupEnd();
 		});
-		
-		this.main.jquery.find("#search-value").keyup(function(event) {
+		jquery.find("#search-value").keyup(function(event) {
 			console.groupCollapsed('search-value.keyup');
-			console.log('value=',event.target.value);
-			me.doDynamicSearch();
+			if (event.keyCode === 13) {
+				console.log("enter hit");
+				me.doSearch();
+			}else{
+				console.log('value=',event.target.value);
+				me.doDynamicSearch();
+			}
+			console.groupEnd();
+		});
+		jquery.find("#refresh-page").click(function(event) {
+			console.groupCollapsed('refresh-page.keyup');
+			me.refreshPage();
+			console.groupEnd();
+		});
+		jquery.find("#reset-page").click(function(event) {
+			console.groupCollapsed('reset-page.keyup');
+			me.resetPage();
 			console.groupEnd();
 		});
 		console.groupEnd();
@@ -79,30 +94,32 @@ let search4Movie={
 	changeCategory:function(option=""){
 		console.groupCollapsed('changeCategory');
 		console.log('option=',option);
+		let jquery=this.main.jquery;
 			if(option==="Type"||option===5){
-				this.main.jquery.find("#search-value").attr("placeholder","Type");
+				jquery.find("#search-value").attr("placeholder","Type");
 				this.basicSearch.tag="Type";
 			}
 			else if(option==="Country"||option===4){
-				this.main.jquery.find("#search-value").attr("placeholder","Country");
+				jquery.find("#search-value").attr("placeholder","Country");
 				this.basicSearch.tag="Country";
 			}
 			else if(option==="Genre"||option===3){
-				this.main.jquery.find("#search-value").attr("placeholder","Genre");
+				jquery.find("#search-value").attr("placeholder","Genre");
 				this.basicSearch.tag="Genre";
 			}
 			else if(option==="Year"||option===2){
-				this.main.jquery.find("#search-value").attr("placeholder","Year");
+				jquery.find("#search-value").attr("placeholder","Year");
 				this.basicSearch.tag="Year";
 			}
 			else if(option==="Title"||option===1){
-				this.main.jquery.find("#search-value").attr("placeholder","Title");
+				jquery.find("#search-value").attr("placeholder","Title");
 				this.basicSearch.tag="Title";
 			}
 		console.groupEnd();
 	},
 	doSearch:function(){
 		console.groupCollapsed('doSearch');
+		let me=this;
 		this.basicSearch.value=this.main.jquery.find("#search-value").val().trim();
 		this.basicSearch.value=this.basicSearch.value.trim();
 		console.log('basicSearch=',this.basicSearch);
@@ -114,12 +131,14 @@ let search4Movie={
 					console.log('resolved=',resolved);
 					console.log('resolved.results.length=',resolved.results.length);
 					if(resolved.results.length===0){
+						me.searchParameters={};
 						if(getMovies){
 							getMovies();
 						}
 						if(alertElements&&alertElements["notification"]){
 							alertElements["notification"].setType("danger");
 							alertElements["notification"].setElement([{selector:".alert-body",task:"inner",value:"No movies with this search parameters have been found!"},"show"]); 
+							alertElements["notification"].slideup(options={a:2000,b:500,c:500,d:500})
 						}
 					}else{
 						if(displayMovies){
@@ -134,12 +153,14 @@ let search4Movie={
 				},
 				function(rejected){
 					console.log('rejected=',rejected);
+					me.searchParameters={};
 					if(displayMovies){
 						displayMovies(movies.items);
 					}
 					if(alertElements&&alertElements["notification"]){
 						alertElements["notification"].setType("danger");
 						alertElements["notification"].setElement([{selector:".alert-body",task:"inner",value:error.responseJSON.message},"show"]); 
+						alertElements["notification"].slideup(options={a:2000,b:500,c:500,d:500})
 					}
 				}
 			);
@@ -189,12 +210,13 @@ let search4Movie={
 	addModalEvents:function(){
 		console.groupCollapsed('addModalEvents');
 		let me=this;
-		this.main.jquery.find("#search-openadvance").click(function(){
+		let jquery=this.main.jquery;
+		jquery.find("#search-openadvance").click(function(){
 			console.groupCollapsed('search-openadvance.click');
 			me.modal.show();
 			console.groupEnd();
 		});
-		this.modal.jquery.find(".bt-doAdvancedSearch").click(function(){
+		jquery.find(".bt-doAdvancedSearch").click(function(){
 			console.groupCollapsed('bt-doAdvancedSearch.click');
 			me.doAdvancedSearch();
 			console.groupEnd();
@@ -219,14 +241,17 @@ let search4Movie={
 					console.log('resolved=',resolved);
 					console.log('resolved.results.length=',resolved.results.length);
 					if(resolved.results.length===0){
+						me.searchParameters={};
 						if(getMovies){
 							getMovies();
 						}
 						if(alertElements&&alertElements["notification"]){
 							alertElements["notification"].setType("danger");
 							alertElements["notification"].setElement([{selector:".alert-body",task:"inner",value:"No movies with this search parameters have been found!"},"show"]); 
+							alertElements["notification"].slideup(options={a:2000,b:500,c:500,d:500})
 						}
 					}else{
+						me.searchParameters={};
 						if(displayMovies){
 							displayMovies(movies.items);
 						}
@@ -242,6 +267,7 @@ let search4Movie={
 					if(alertElements&&alertElements["notification"]){
 						alertElements["notification"].setType("danger");
 						alertElements["notification"].setElement([{selector:".alert-body",task:"inner",value:error.responseJSON.message},"show"]); 
+						alertElements["notification"].slideup(options={a:2000,b:500,c:500,d:500})
 					}
 				}
 			);
@@ -267,14 +293,14 @@ let search4Movie={
 					console.log('resolved.results.length=',resolved.results.length);
 					let html="";
 					if(resolved.results.length===0){
-						html+=`<li role="presentation"><a role="menuitem" tabindex="-1"><i class="fas fa-search" style='padding-right:5px;'></i>No such movie found</a></li>`;
+						html+=`<a class="dropdown-item" role="menuitem"><i class="fas fa-search" style='padding-right:5px;'></i>No such movie found</a>`;
 					}else{
 						resolved.results.forEach(function(movie,i){
 							console.log("response[", i,"]=",movie);
-							html+=`<li role="presentation"><a role="menuitem" tabindex="-1" href="movieDetails.html?_id=${movie._id}"><i class="fas fa-film" style='padding-right:5px;'></i>${movie.Title}</a></li>`;
+							html+=`<a class="dropdown-item" role="menuitem" href="movieDetails.html?_id=${movie._id}"><i class="fas fa-film" style='padding-right:5px;'></i>${movie.Title}</a>`;
 						});
-						html+=`<li role="presentation" class="divider"></li>`;
-						html+=`<li role="presentation"><a role="menuitem" tabindex="-1" onclick="search4Movie.doSearch()"><i class="fas fa-search" style='padding-right:5px;'></i>To see more, do a search.</a></li>`;
+						html+=`<div class="dropdown-divider"></div>`;
+						html+=`<a class="dropdown-item" role="menuitem" onclick="search4Movie.doSearch()"><i class="fas fa-search" style='padding-right:5px;'></i>To see more, do a search.</a>`;
 					}
 					jquery.find("#dropdown-content").html(html);
 					me.show();
@@ -288,8 +314,9 @@ let search4Movie={
 	},
 	show:function(){
 		console.groupCollapsed('show');
-		let isVisible=this.main.jquery.find('.dropdown-menu').is(':visible');
-		let isHidden=this.main.jquery.find('.dropdown-menu').is(':hidden');
+		let jquery=this.main.jquery;
+		let isVisible=jquery.find('.dropdown-menu').is(':visible');
+		let isHidden=jquery.find('.dropdown-menu').is(':hidden');
 		console.log("isVisible:",isVisible);
 		console.log("isHidden:",isHidden);
 		if(!isVisible){
@@ -300,14 +327,27 @@ let search4Movie={
 	},
 	hide:function(){
 		console.groupCollapsed('hide');
-		let isVisible=this.main.jquery.find('.dropdown-menu').is(':visible');
-		let isHidden=this.main.jquery.find('.dropdown-menu').is(':hidden');
+		let jquery=this.main.jquery;
+		let isVisible=jquery.find('.dropdown-menu').is(':visible');
+		let isHidden=jquery.find('.dropdown-menu').is(':hidden');
 		console.log("isVisible:",isVisible);
 		console.log("isHidden:",isHidden);
 		if(isVisible){
 			console.log("do");
 			this.toggleDropdown();
 		}
+		console.groupEnd();
+	},
+	refreshPage:function(){
+		console.groupCollapsed('refreshPage');
+		getMovies();
+		console.groupEnd();
+	},
+	resetPage:function(){
+		console.groupCollapsed('resetPage');
+		this.searchParameters={};
+		this.main.jquery.find("#search-value").val("");
+		getMovies();
 		console.groupEnd();
 	}
 }
