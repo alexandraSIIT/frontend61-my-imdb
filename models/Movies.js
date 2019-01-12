@@ -18,7 +18,10 @@ Movies.prototype.getAll = function(skip="0") {
   });
 };
 Movies.prototype.getAllwSearch = function(defaultParams={skip:0,take:10}, serachParams={}) {
-	var me = this; var address=moviesRootUrl + "movies?take="+defaultParams.take||10+"&skip=" + defaultParams.skip||0
+	console.log("getAllwSearch.defaultParams=",defaultParams);
+	console.log("getAllwSearch.serachParams=",serachParams);
+	var me = this; var address=moviesRootUrl + "movies?take="+(defaultParams.take||10)+"&skip=" + (defaultParams.skip||0)
+	console.log("getAllwSearch.saddress=",address);
 	for (var key in serachParams){ 
 		let arrayOfKeysApproved=["Title","Year","Runtime","Genre","Language","Country","Poster","imdbRating","imdbVotes","imdbID","Type"];
 		if(arrayOfKeysApproved.indexOf(key) > -1){
