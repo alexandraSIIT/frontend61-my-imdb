@@ -38,6 +38,7 @@ function extraLoad(){ //added by Tamas
 
 getMovies();
 function getMovies(skip) {
+	console.log("getMovies.skip=",skip);
   movies.getAllwSearch({skip:skip,take:10},search4Movie.searchParameters).then(function() {
     console.log("getAllList", movies.items);
     displayMovies(movies.items);
@@ -135,7 +136,8 @@ function displayPagination(response) {
     pageButtonElement.innerHTML = i;
     pagesContainer.appendChild(pagesClone);
     pageButtonElement.addEventListener("click",function moveToPage(event){
-      return getMovies((i-1)*10 +1);
+      //return getMovies((i-1)*10 +1);
+	  return getMovies((i-1)*10); //corecte by Tamas
     });
   }
 }
