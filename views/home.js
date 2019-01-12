@@ -39,6 +39,7 @@ function extraLoad(){ //added by Tamas
 
 getMovies();
 function getMovies(skip) {
+	console.log("getMovies.skip=",skip);
   movies.getAllwSearch({skip:skip,take:10},search4Movie.searchParameters).then(function() {
     console.log("getAllList", movies.items);
     displayMovies(movies.items);
@@ -138,12 +139,84 @@ function displayPagination(response) {
     pageButtonElement.innerHTML = i;
     pagesContainer.appendChild(pagesClone);
     pageButtonElement.addEventListener("click",function moveToPage(event){
-      return getMovies((i-1)*10 +1);
+      //return getMovies((i-1)*10 +1);
+	  return getMovies((i-1)*10); //corecte by Tamas
     });
   }
 }
 
+<<<<<<< HEAD
+// ALEXXXXXXX Search
+////////// New
+searchhhh();
+function searchhhh() {
+  movies.searchAllMovies(10, 0).then(function () {
+    displayMovies(movies.items);
+    console.log(" searchhhh", movies.items);
+  });
+}
+//////////////////////
+var inputText = document.querySelector("[name=search]");
+var searchSelected = document.querySelector(".search-select");
+var searchBtn = document.getElementById('search-btn');
+  searchBtn.addEventListener("click", searchMovie);
+
+
+  function searchMovie() {
+    var searchByTitle = "Title";
+    var searchInputValue = inputText.value;
+    if (searchInputValue) {
+
+      removeTemplateMovies();
+      movies.searchAllMovies(10, 0, searchByTitle, searchInputValue).then(function () {
+        console.log("searchMovie by Title: ", searchByTitle, searchInputValue, movies.items);
+        displayMovies(movies.items);
+        inputText.style.border = 'none';
+      });
+    } else {
+      removeTemplateMovies();
+      var body = document.body;
+      var responseSearchParagraph = document.createElement('p');
+      var responseSearchText = document.createTextNode(`There are no movies for "${searchInputValue}"`);
+      responseSearchParagraph.appendChild(responseSearchText);
+      body.appendChild(responseSearchParagraph);
+    }
+  }
+
+  function removeTemplateMovies() {
+    var movieDiv = document.getElementsByClassName('new-movie');
+    while (movieDiv[0]) {
+      movieDiv[0].parentNode.removeChild(movieDiv[0]);
+    }
+  }
+///////////////////////////////////// Search Year
+
+function searchYear() {
+  var yearDiv = document.getElementById("searchDivYear");
+  var yearArray = ["Year < 2000", "2000 - 2010", "2010 < Year"];
+  var yearList = document.createElement("select");
+  var optionYearDefault = document.createElement("option");
+  optionYearDefault.value = "ALL";
+  optionYearDefault.text = "ALL";
+  yearList.appendChild(optionYearDefault);
+  yearDiv.appendChild(yearList);
+  
+  for (let i = 0; i < yearArray.length; i++) {
+    var singleYear = yearArray[i];
+    var optionYear = document.createElement("option");
+    optionYear.value = singleYear;
+    optionYear.text = singleYear;
+    yearList.appendChild(optionYear);
+
+  }
+  yearList.addEventListener('change', function() { 
+    console.log("CHANGE?", this.value);
+  }
+);
+  
+=======
 /////////////////////Dan
+>>>>>>> 438d48a5e37cdfbe6433662b34460f55e2fa595c
 
 
 let addMovieBtn = document.querySelector(".add-movie");
@@ -151,6 +224,49 @@ addMovieBtn.addEventListener("click", function(){
    addNewMovie();
 });
 
+<<<<<<< HEAD
+function searchGenre() {
+  var responseMovies = movies.items;
+  console.log("RRRRRRRRRRRRRRR", responseMovies);
+  var moviesGenre = []; // String Genre Array
+  
+  for (let i=0; i<responseMovies.length; i++) {
+    var responseMoviesGenre = responseMovies[i].Genre;
+    getGenre();
+    function getGenre(){
+      var genreStringArray = responseMoviesGenre.split(", ");
+      for(let i=0; i<genreStringArray.length;i++) {
+        var genreString = genreStringArray[i];
+        moviesGenre.push(genreString);
+      }
+    }
+  }
+  
+  var genreObj = {};
+  var genreArr = [];
+  for (let i = 0; i < moviesGenre.length; i++) {
+    if (!(moviesGenre[i] in genreObj)) {
+      genreArr.push(moviesGenre[i]);
+      genreObj[moviesGenre[i]] = true;
+    }
+  }
+  
+  var genreDiv = document.getElementById('searchDivGenre');
+  var genreList = document.createElement('select');
+  var genreListDefault = document.createElement("option");
+  genreListDefault.value = "ALL";
+  genreListDefault.text = "ALL";
+  genreList.appendChild(genreListDefault);
+  genreDiv.appendChild(genreList);
+
+  for (let i=0; i<genreArr.length; i++) { 
+    var singleGenre = genreArr[i]; //
+    function addButtonGenre(singleGenre) { // div pentru butoane // creare buton
+      var optionGenre = document.createElement("option");
+      optionGenre.value = singleGenre;
+      optionGenre.text = singleGenre;
+      genreList.appendChild(optionGenre);
+=======
 let movie2Add;
 
 function addNewMovie(){
@@ -178,6 +294,7 @@ function addNewMovie(){
 	insertlUploadImage(); //added by Tamas to add file upload support to Poster
     return;
         
+>>>>>>> 438d48a5e37cdfbe6433662b34460f55e2fa595c
 
 
   });
@@ -213,6 +330,20 @@ function editMovie(movie){
     return;
         
 
+<<<<<<< HEAD
+  var languageDiv = document.getElementById('searchDivLanguage');
+  var languageList = document.createElement('select');
+  var languageListDefault = document.createElement("option");
+  languageListDefault.value = "ALL";
+  languageListDefault.text = "ALL";
+  languageList.appendChild(languageListDefault);
+  languageDiv.appendChild(languageList);
+  
+  for (let i=0; i<languageArr.length; i++) { 
+    var singleLanguage = languageArr[i]; 
+    function addButtonLanguage(singleLanguage) {
+=======
+>>>>>>> 438d48a5e37cdfbe6433662b34460f55e2fa595c
 
   });
 }
