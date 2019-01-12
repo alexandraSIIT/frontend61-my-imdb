@@ -1,11 +1,3 @@
-
-// window.onload = function() {
-//   var movie = new Movie();
-//   movie.regenerateMovies().then(function(response) {
-//     console.log("Complet regeneration", response);
-//   });
-// };
-
 var movies = new Movies();
 var movie2Edit;
 modalMovieEditCreate();
@@ -28,33 +20,32 @@ function extraLoad(){ //added by Tamas
   if(Worker){
     if(location.protocol==="file:"||location.protocol==="file"){
       console.warn('cannot do worker do to invalid protocol');
-      console.groupEnd();
-      return;
-    }
+    }else{
     backgroundSync = new Worker('../workers/backgroundSync.js');
     console.log('backgroundSync loaded');
+  }
   }else{
     console.warn('backgroundSync not loaded');
   }
   
   console.log('imageUploaderLoad');
   imageFileUploader.init();
+  console.log('searchMovie');	
+	search4Movie.init({root:"#searchRoot",setRoot:true,addEvents:true,addModal:true,addModalEvents:true});
+	//search4Movie.toggleDropdown();
   console.groupEnd();
 }
 
 getMovies();
 function getMovies(skip) {
-  movies.getAll(skip).then(function() {
+  movies.getAllwSearch({skip:skip,take:10},search4Movie.searchParameters).then(function() {
     console.log("getAllList", movies.items);
-  if(Worker&&backgroundSync){ //added by Tamas
-    console.log("sending data to backgroundSync");
-    backgroundSync.postMessage({mode:1,movies:{skip:skip}});
-  }
     displayMovies(movies.items);
     displayPagination(movies.pagination);
-    searchYear();
-    searchGenre();
-    searchLanguage();
+	if(Worker&&backgroundSync){//added by Tamas
+		console.log("sending data to backgroundSync");
+		backgroundSync.postMessage({mode:1,movies:{skip:skip,searchparam:search4Movie.searchParameters}});
+	}
   });
 }
 
@@ -102,7 +93,7 @@ function displayMovies(response) {
 
         window.location = "movieDetails.html?_id=" + id;
       });
-    moviesClone.style.display="initial";
+    moviesClone.style.display="inline-block";
     moviesContainer.appendChild(moviesClone);
 
 
@@ -124,7 +115,7 @@ function displayMovies(response) {
 
   if(Worker&&backgroundSync){//added by Tamas
     console.log("sending data to backgroundSync");
-    backgroundSync.postMessage({mode:1,movies:{items:movies.items,pagination:movies.pagination},timer:{command:'start'}});
+    backgroundSync.postMessage({movies:{items:movies.items,pagination:movies.pagination},timer:{command:'start'}});
   }
 
 };
@@ -149,167 +140,6 @@ function displayPagination(response) {
   }
 }
 
-// ALEXXXXXXX Search
-var inputText = document.querySelector("[name=search]");
-var searchSelected = document.querySelector(".search-select");
-var searchBtn = document.getElementById('search-btn');
-  searchBtn.addEventListener("click", searchMovie);
-
-function searchMovie() {
-  // var searchSelectedValue = searchSelected.value;
-  var inputTextValue = inputText.value;
-  console.log("SEARCH BUTTON");
-  if (inputTextValue) {
-    removeTemplateMovies();
-    movies.getAll(10, 0, inputTextValue).then(function () {
-      displayMovies(movies.items);
-    });
-  } else {
-    removeTemplateMovies();
-    movies.getAll(10, 0).then(function () {
-      displayMovies(movies.items);
-    });
-  }}
-
-  function removeTemplateMovies() {
-    var movieDiv = document.getElementsByClassName('new-movie');
-    while (movieDiv[0]) {
-      movieDiv[0].parentNode.removeChild(movieDiv[0]);
-    }
-  }
-///////////////////////////////////// Search Year
-
-function searchYear() {
-  var yearDiv = document.getElementById("searchDivYear");
-
-  //Create array of options to be added
-  var yearArray = ["Year < 2000", "2000 - 2010", "2010 < Year"];
-  
-  //Create and append select list
-  var yearList = document.createElement("select");
-  yearDiv.appendChild(yearList);
-  
-  //Create and append the options
-  for (let i = 0; i < yearArray.length; i++) {
-    var singleYear = yearArray[i];
-    var optionYear = document.createElement("option");
-    optionYear.value = singleYear;
-    optionYear.text = singleYear;
-    yearList.appendChild(optionYear);
-
-  }
-  yearList.addEventListener('change', function() { 
-    console.log("CHANGE?", this.value);
-  }
-);
-  
-
-}
-
-///////////////////////////////////// Search Genre
-
-function searchGenre() {
-  var responseMovies = movies.items;
-  var moviesGenre = []; // String Genre Array
-  
-  for (let i=0; i<responseMovies.length; i++) {
-    var responseMoviesGenre = responseMovies[i].Genre;
-    getGenre();
-    function getGenre(){
-      var genreStringArray = responseMoviesGenre.split(", ");
-      for(let i=0; i<genreStringArray.length;i++) {
-        var genreString = genreStringArray[i];
-        moviesGenre.push(genreString);
-      }
-    }
-  }
-  
-  var genreObj = {};
-  var genreArr = [];
-  for (let i = 0; i < moviesGenre.length; i++) {
-    if (!(moviesGenre[i] in genreObj)) {
-      genreArr.push(moviesGenre[i]);
-      genreObj[moviesGenre[i]] = true;
-    }
-  }
-  
-  var genreDiv = document.getElementById('searchDivGenre');
-  var genreList = document.createElement('select');
-  genreDiv.appendChild(genreList);
-
-  for (let i=0; i<genreArr.length; i++) { 
-    var singleGenre = genreArr[i]; //
-    function addButtonGenre(singleGenre) { // div pentru butoane // creare buton
-      var optionGenre = document.createElement("option");
-      optionGenre.value = singleGenre;
-      optionGenre.text = singleGenre;
-      genreList.appendChild(optionGenre);
-
-  }
-  
-  addButtonGenre(singleGenre);
-  }
-  genreList.addEventListener('change', function() { 
-      console.log("CHANGE?", this.value);
-    }
- );
-
-
-}
-
-///////////////////////////////////// Search Language
-
-function searchLanguage() {
-  var responseMovies = movies.items;
-  var moviesLanguage = []; // String Genre Array
-  console.log("SEARCH LANGUAGE get all ", movies.items);
-  
-  for (let i=0; i<responseMovies.length; i++) {
-    var responseMoviesLanguage = responseMovies[i].Language;
-    getLanguage();
-    function getLanguage(){
-      var languageStringArray = responseMoviesLanguage.split(", ");
-      for(let i=0; i<languageStringArray.length;i++) {
-        var languageString = languageStringArray[i];
-        moviesLanguage.push(languageString);
-      }
-    }
-  }
-  
-  var languageObj = {};
-  var languageArr = [];
-  for (let i = 0; i < moviesLanguage.length; i++) {
-    if (!(moviesLanguage[i] in languageObj)) {
-      languageArr.push(moviesLanguage[i]);
-      languageObj[moviesLanguage[i]] = true;
-    }
-  }
-
-
-  var languageDiv = document.getElementById('searchDivLanguage');
-  var languageList = document.createElement('select');
-  languageDiv.appendChild(languageList);
-  
-  for (let i=0; i<languageArr.length; i++) { 
-    var singleLanguage = languageArr[i]; 
-    function addButtonLanguage(singleLanguage) {
-
-      var optionLanguage = document.createElement("option");
-      optionLanguage.value = singleLanguage;
-      optionLanguage.text = singleLanguage;
-      languageList.appendChild(optionLanguage);
-
-
-  }
-  addButtonLanguage(singleLanguage);
-  }
-  languageList.addEventListener('change', function() { 
-    console.log("CHANGE?", this.value);
-  }
-);
-}
-
-//////////////////////ALEXXXXXXXXXXXX
 /////////////////////Dan
 
 
@@ -528,11 +358,13 @@ movie.deleteMovie().then(function(response){
 function doAfterSuccessLogin(data={}){//added by Tamas, will run this function after successful log in
   console.groupCollapsed('doAfterSuccessLogin');
   displayEditButtons();
+   // notificationPopUp.post({title:"Welcome "+Auth.getAccessName()+"!",body:"Welcome to Movie addicts, we are happy to see you here.\nWe have sent you an email verification to the email you provided us."});
   console.groupEnd();
 }
 function doAfterSuccessRegister(data={}){//added by Tamas, will run this function after successful register
   console.groupCollapsed('doAfterSuccessRegister');
   displayEditButtons();
+  notificationPopUp.post({title:"Welcome "+Auth.getAccessName()+"!",body:"Welcome to Movie addicts, we are happy to see you here.\nWe have sent you an email verification to the email you provided us."});
   console.groupEnd();
 
 }
