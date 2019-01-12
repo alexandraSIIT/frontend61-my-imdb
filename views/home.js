@@ -144,8 +144,8 @@ function displayPagination(response) {
     });
   }
 }
+/*
 
-<<<<<<< HEAD
 // ALEXXXXXXX Search
 ////////// New
 searchhhh();
@@ -215,8 +215,6 @@ function searchYear() {
 );
   
 =======
-/////////////////////Dan
->>>>>>> 438d48a5e37cdfbe6433662b34460f55e2fa595c
 
 
 let addMovieBtn = document.querySelector(".add-movie");
@@ -224,7 +222,7 @@ addMovieBtn.addEventListener("click", function(){
    addNewMovie();
 });
 
-<<<<<<< HEAD
+
 function searchGenre() {
   var responseMovies = movies.items;
   console.log("RRRRRRRRRRRRRRR", responseMovies);
@@ -266,71 +264,8 @@ function searchGenre() {
       optionGenre.value = singleGenre;
       optionGenre.text = singleGenre;
       genreList.appendChild(optionGenre);
-=======
-let movie2Add;
+	  
 
-function addNewMovie(){
-  
-  let movie = new Movie();
-  movie2Add = movie;
-  let container="";
-   movie.getMovieDetails().then(function() {
-    for (var key in movie){ //a for cycle that creates the titleLable,newLabel and so on elements
-      if(key==="Title"||key==="Year"||key==="Runtime"||key==="Director"||key==="Writer"||key==="Plot"||key==="Language"||key==="Poster"||key==="imdbRating"){
-      //console.log(movie[key]);
-      container+=`<div class="md-form mb-5">  
-      <label for="${key}"><br>${key}<br></label>
-      <input value="" type="text" id="${key}" class="form-control validate">
-    </div> `;
-	if(key==="Poster"){//add file upload support to Poster
-		container+=`<input class='fileInput' id='imageUpload' type="file" accept=".jpg, .jpeg, .png, .gif" style="padding-top:5px;">`;
-	}
- 
-      }
-    }
-    console.log("container=",container);
-    $("#movie-edit").find(".modal-body").html(container);
-    $("#movie-edit").modal("show");
-	insertlUploadImage(); //added by Tamas to add file upload support to Poster
-    return;
-        
->>>>>>> 438d48a5e37cdfbe6433662b34460f55e2fa595c
-
-
-  });
-
-}
-
-
-var movie2Edit;
-
-function editMovie(movie){
-  // modalMovieEditCreate();
-     movie2Edit = movie;
-  console.log(movie);
-  let container="";
-   movie.getMovieDetails().then(function() {
-    for (var key in movie){ //a for cycle that creates the titleLable,newLabel and so on elements
-      if(key==="Title"||key==="Year"||key==="Runtime"||key==="Director"||key==="Writer"||key==="Plot"||key==="Language"||key==="Poster"||key==="imdbRating"){
-      //console.log(movie[key]);
-      container+=`<div class="md-form mb-5">  
-      <label for="new${key}"><br>${key}<br></label>
-      <input value="${movie[key]}" type="text" id="new${key}" class="form-control validate">
-    </div> `;
-	if(key==="Poster"){//if added by Tamas to add file upload support to Poster
-		container+=`<input class='fileInput' id='imageUpload' type="file" accept=".jpg, .jpeg, .png, .gif" style="padding-top:5px;">`;
-	}
- 
-      }
-    }
-    console.log("container=",container);
-    $("#movie-edit").find(".modal-body").html(container);
-    $("#movie-edit").modal("show");
-	insertlUploadImage(); //added by Tamas to add file upload support to Poster
-    return;
-        
-
-<<<<<<< HEAD
   var languageDiv = document.getElementById('searchDivLanguage');
   var languageList = document.createElement('select');
   var languageListDefault = document.createElement("option");
@@ -342,20 +277,91 @@ function editMovie(movie){
   for (let i=0; i<languageArr.length; i++) { 
     var singleLanguage = languageArr[i]; 
     function addButtonLanguage(singleLanguage) {
-=======
->>>>>>> 438d48a5e37cdfbe6433662b34460f55e2fa595c
+
+
 
   });
 }
 
-function modalMovieAdd(){
-	let myAddModal = `
-	<div class="modal fade in" id="movie-edit"  role="dialog" style="display:none">
+*/
+/////////////////////Dan
+let addMovieBtn = document.querySelector(".add-movie");
+addMovieBtn.addEventListener("click", function(){
+   addNewMovie();
+});
+let movie2Add;
+function addNewMovie(){
+  modalMovieAdd();
+  let movie = new Movie();
+  movie2Add=movie;
+  let container="";
+   movie.getMovieDetails().then(function() {
+    for (var key in movie){ //a for cycle that creates the titleLable,newLabel and so on elements
+      if(key==="Title"||key==="Year"||key==="Runtime"||key==="Director"||key==="Writer"||key==="Plot"||key==="Language"||key==="Poster"||key==="imdbRating"){
+      //console.log(movie[key]);
+      container+=`<div class="md-form mb-5">  
+      <label for="new${key}"><br>${key}<br></label>
+      <input value="" type="text" id="new${key}" class="form-control validate">
+    </div> `;
+	if(key==="Poster"){//if added by Tamas to add file upload support to Poster
+		container+=`<input class='fileInput' id='imageUpload' type="file" accept=".jpg, .jpeg, .png, .gif" style="padding-top:5px;" onchange="{imageFileUploader.fileUppload({event:event,element:this})}">`;
+	}
+ 
+      }
+    }
+    console.log("container=",container);
+    $("#movie-Add").find(".modal-body").html(container);
+    $("#movie-Add").modal("show");
+	//insertlUploadImage(); //added by Tamas to add file upload support to Poster
+    return;
+        
+												
+
+
+  });
+
+}
+
+
+var movie2Edit;
+
+function editMovie(movie){
+ modalMovieEditCreate();					 
+    movie2Edit=movie;
+    console.log(movie);
+    let container="";
+	
+    movie.getMovieDetails().then(function() {
+    for (var key in movie){ //a for cycle that creates the titleLable,newLabel and so on elements
+      if(key==="Title"||key==="Year"||key==="Runtime"||key==="Director"||key==="Writer"||key==="Plot"||key==="Language"||key==="Poster"||key==="imdbRating"){
+      //console.log(movie[key]);
+      container+=`<div class="md-form mb-5">  
+      <label for="new${key}"><br>${key}<br></label>
+      <input value="${movie[key]}" type="text" id="new${key}" class="form-control validate">
+    </div> `;
+	if(key==="Poster"){//if added by Tamas to add file upload support to Poster
+		container+=`<input class='fileInput' id='imageUpload' type="file" accept=".jpg, .jpeg, .png, .gif" style="padding-top:5px;" onchange="{imageFileUploader.fileUppload({event:event,element:this})}">`;
+	}
+ 
+      }
+    }
+    console.log("container=",container);
+    $("#movie-Edit").find(".modal-body").html(container);
+    $("#movie-Edit").modal("show");
+	//insertlUploadImage(); //added by Tamas to add file upload support to Poster
+    return;
+  });
+}      
+
+var myModal;
+function simpleModal(name){
+  myModal = `
+	<div class="modal fade in" id="movie-${name}"  role="dialog" style="display:none">
 	  <div class="modal-dialog" >
 	  <form name="formMovieEdit" action="">
 		<div class="modal-content">
 		  <div class="modal-header text-center">
-			<h4 class="modal-title w-100 font-weight-bold">Add New Movie</h4>
+			<h4 class="modal-title w-100 font-weight-bold">${name} Movie</h4>
 			<button type="button" class="close" data-dismiss="modal" aria-label="Close">
 			  <span aria-hidden="true">×</span>
 			</button>
@@ -371,22 +377,27 @@ function modalMovieAdd(){
 		</form>
 	  </div>
   </div>`
+  return;
+}
 
-	let movieAddModal = document.createElement("div");
-	movieAddModal.innerHTML = myAddModal;
-	document.body.appendChild(movieAddModal);
-	//movie2Add
+function modalMovieAdd(){
+	simpleModal("Add");
+	let movieAddModal=document.createElement("div");
+	movieAddModal.innerHTML=myModal;
+	document.querySelector("#movie-modal").appendChild(movieAddModal);
+			
 	movieAddModal.querySelector(".bt-save").addEventListener("click", function(){
-	let list = movieAddModal.querySelectorAll("input");
-	console.log("list=",list);
-	list.forEach(function(input){      
-     console.log("value=",input.value);
-     console.log("id=",input.id);
-     movie2Add[input.id]=input.value;
-     });
-	movie2Add.addMovie().then(function(response){
+	  let list=movieAddModal.querySelectorAll("input");
+	  console.log("list=",list);
+	  list.forEach(function(input){      
+      console.log("value=",input.value);
+      console.log("id=",input.id.replace("new",""));
+      movie2Add[input.id.replace("new","")]=input.value;
+	   
+	  });
+	  movie2Add.addMovie().then(function(response){
 		    modalElements["notification"].setElement([{selector:".modal-title",task:"inner",value:"success"},{selector:".modal-body",task:"inner",value:"Movie successfully added "},"show"]);  
-	    	displayMovies(movies.items); 
+	    	getMovies();
 	  },
 	  function(error){
 		console.log(error);
@@ -395,33 +406,13 @@ function modalMovieAdd(){
 	  })
 	});
 }
-function modalMovieEditCreate(){
-	let myModal = `
-	<div class="modal fade in" id="movie-edit"  role="dialog" style="display:none">
-	  <div class="modal-dialog" >
-	  <form name="formMovieEdit" action="">
-		<div class="modal-content">
-		  <div class="modal-header text-center">
-			<h4 class="modal-title w-100 font-weight-bold">Edit Movie</h4>
-			<button type="button" class="close" data-dismiss="modal" aria-label="Close">
-			  <span aria-hidden="true">×</span>
-			</button>
-		  </div>
-		  <div class="modal-body mx-3">
-		  </div>
-		  <div class="modal-footer">
-			<button type="button" class="btn btn-danger bt-close" data-dismiss="modal">Close</button>
-			 <button type="button" class="btn btn-default bt-save" data-dismiss="modal">Save</button>
-		  </div>
-		 
-		</div>
-		</form>
-	  </div>
-  </div>`
 
+function modalMovieEditCreate(){
+	simpleModal("Edit");
+	document.querySelector("#movie-modal").innerHTML="";
 	var movieEditModal=document.createElement("div");
 	movieEditModal.innerHTML=myModal;
-	document.body.appendChild(movieEditModal);
+	document.querySelector("#movie-modal").appendChild(movieEditModal);
 	//movie2Edit
 	movieEditModal.querySelector(".bt-save").addEventListener("click", function(){
 	  console.log("movie2Edit_BEFORE=",movie2Edit);
@@ -458,11 +449,7 @@ function insertlUploadImage(){//added by tamas
 function doAfterSuccessImageUpload(data={}){//added by Tamas, will run this function after successful imate upload
   console.groupCollapsed('doAfterSuccessImageUpload');
   console.log('data=',data);
-  if(!$("#movie-edit")||!$("#movie-edit").find("#newPoster")){
-	   console.warn('no element');
-	   console.groupEnd();
-	   return;
-  }
+  
   //the data will contain information to the address of uploaded image
   //do to server side, the resposne might not be a json
   if(typeof data.response !="object"){
@@ -472,13 +459,23 @@ function doAfterSuccessImageUpload(data={}){//added by Tamas, will run this func
     console.log('address=',obj.address);
     //now we got the address of the image saved in obj.address
     notificationPopUp.post({body:"Image successfully uploaded",icon:obj.address});
-     $("#movie-edit").find("#newPoster").val(obj.address);
+		if($("#movie-Edit")||$("#movie-Edit").find("#newPoster")){
+			$("#movie-Edit").find("#newPoster").val(obj.address);
+		}
+		if($("#movie-Add")||$("#movie-Add").find("#newPoster")){
+			$("#movie-Add").find("#newPoster").val(obj.address);
+		}
    
   }else{
     //we got the address of the image saved in data.response.address
     console.log('address=',data.response.address);
     notificationPopUp.post({body:"Image successfully uploaded",icon:data.response.address});
-    $("#movie-edit").find("#newPoster").val(data.response.address);
+	if($("#movie-Edit")||$("#movie-Edit").find("#newPoster")){
+		$("#movie-Edit").find("#newPoster").val(data.response.address);
+	}
+	if($("#movie-Add")||$("#movie-Add").find("#newPoster")){
+		$("#movie-Add").find("#newPoster").val(data.response.address);
+	}
   }
   
   console.groupEnd();
