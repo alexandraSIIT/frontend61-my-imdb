@@ -11,7 +11,7 @@
 body{
     padding: 0;
     margin:0;
-    background-image: linear-gradient(to top, #fdfdfd, #fdf0f9, #ffe1e5, #ffd7c4, #ebd4a5);
+    background: linear-gradient(360deg, rgba(246,243,244,1) 0%, rgba(207,209,210,1) 100%);
 }
 
 .container-wraper{
@@ -27,7 +27,7 @@ body{
 img.movie-poster{
 max-width: 100%;
 height: auto;
-margin: 20px;
+margin: 80px;
 }
 
 div.movie-header {
@@ -41,7 +41,7 @@ div.movie-header {
 
 footer{
 	text-align: center;
-	margin: 20px;
+	padding: 20px;
 }
 
 .movie-poster{
@@ -205,7 +205,7 @@ div > a > button:active , #btnUserAuth:active{
       text-align: center;
       }
    img.movie-poster{
-    margin: 10px;
+    margin: 80px;
     height: 600px;
     width: 400px;
     box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
@@ -264,14 +264,14 @@ div > a > button:active , #btnUserAuth:active{
       text-align: center;
       }
    img.movie-poster{
-    margin: 10px;
+    margin: 70px;
     height: 700px;
     width: 500px;
     box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
     
     }
     .thumbnail-details{
-        height: 1200px; 
+        height: 1300px; 
         width: auto;
         box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19); 
         padding: 5px;

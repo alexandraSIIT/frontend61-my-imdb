@@ -5,7 +5,7 @@
 body.container-fluid{
     padding: 0;
     margin:0;
-    background-image: linear-gradient(to top, #fdfdfd, #fdf0f9, #ffe1e5, #ffd7c4, #ebd4a5);
+    background: linear-gradient(360deg, rgba(246,243,244,1) 0%, rgba(207,209,210,1) 100%);
 }
 
 .container-wraper{
