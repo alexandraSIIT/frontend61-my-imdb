@@ -1,13 +1,8 @@
-
-// window.onload = function() {
-//   var movie = new Movie();
-//   movie.regenerateMovies().then(function(response) {
-//     console.log("Complet regeneration", response);
-//   });
-// };
-
 var movies = new Movies();
+var movie2Edit;
+modalMovieEditCreate();
 let modalElements={};let alertElements={};let backgroundSync;extraLoad();//added by Tamas
+
 function extraLoad(){ //added by Tamas
   //here it loads the blank modal & alert notification, but also the components for authentication, image uploading and background sysnc
   console.groupCollapsed('extraLoad');
@@ -25,33 +20,33 @@ function extraLoad(){ //added by Tamas
   if(Worker){
     if(location.protocol==="file:"||location.protocol==="file"){
       console.warn('cannot do worker do to invalid protocol');
-      console.groupEnd();
-      return;
-    }
+    }else{
     backgroundSync = new Worker('../workers/backgroundSync.js');
     console.log('backgroundSync loaded');
+  }
   }else{
     console.warn('backgroundSync not loaded');
   }
   
   console.log('imageUploaderLoad');
   imageFileUploader.init();
+  console.log('searchMovie');	
+	search4Movie.init({root:"#searchRoot",setRoot:true,addEvents:true,addModal:true,addModalEvents:true});
+	//search4Movie.toggleDropdown();
   console.groupEnd();
 }
 
 getMovies();
 function getMovies(skip) {
-  movies.getAll(skip).then(function() {
+	console.log("getMovies.skip=",skip);
+  movies.getAllwSearch({skip:skip,take:10},search4Movie.searchParameters).then(function() {
     console.log("getAllList", movies.items);
-  if(Worker&&backgroundSync){ //added by Tamas
-    console.log("sending data to backgroundSync");
-    backgroundSync.postMessage({mode:1,movies:{skip:skip}});
-  }
     displayMovies(movies.items);
     displayPagination(movies.pagination);
-    searchYear();
-    searchGenre();
-    searchLanguage();
+	if(Worker&&backgroundSync){//added by Tamas
+		console.log("sending data to backgroundSync");
+		backgroundSync.postMessage({mode:1,movies:{skip:skip,searchparam:search4Movie.searchParameters}});
+	}
   });
 }
 
@@ -99,7 +94,7 @@ function displayMovies(response) {
 
         window.location = "movieDetails.html?_id=" + id;
       });
-    moviesClone.style.display="initial";
+    moviesClone.style.display="inline-block";
     moviesContainer.appendChild(moviesClone);
 
 
@@ -121,10 +116,12 @@ function displayMovies(response) {
 
   if(Worker&&backgroundSync){//added by Tamas
     console.log("sending data to backgroundSync");
-    backgroundSync.postMessage({mode:1,movies:{items:movies.items,pagination:movies.pagination},timer:{command:'start'}});
+    backgroundSync.postMessage({movies:{items:movies.items,pagination:movies.pagination},timer:{command:'start'}});
   }
 
 };
+
+
 
 function displayPagination(response) {
   //console.log("response pagination", response)
@@ -139,11 +136,13 @@ function displayPagination(response) {
     pageButtonElement.innerHTML = i;
     pagesContainer.appendChild(pagesClone);
     pageButtonElement.addEventListener("click",function moveToPage(event){
-      return getMovies((i-1)*10 +1);
+      //return getMovies((i-1)*10 +1);
+	  return getMovies((i-1)*10); //corecte by Tamas
     });
   }
 }
 
+<<<<<<< HEAD
 // ALEXXXXXXX Search
 ////////// New
 searchhhh();
@@ -212,11 +211,17 @@ function searchYear() {
   }
 );
   
+=======
+/////////////////////Dan
+>>>>>>> 438d48a5e37cdfbe6433662b34460f55e2fa595c
 
-}
 
-///////////////////////////////////// Search Genre
+let addMovieBtn = document.querySelector(".add-movie");
+addMovieBtn.addEventListener("click", function(){
+   addNewMovie();
+});
 
+<<<<<<< HEAD
 function searchGenre() {
   var responseMovies = movies.items;
   console.log("RRRRRRRRRRRRRRR", responseMovies);
@@ -258,48 +263,70 @@ function searchGenre() {
       optionGenre.value = singleGenre;
       optionGenre.text = singleGenre;
       genreList.appendChild(optionGenre);
+=======
+let movie2Add;
 
-  }
-  
-  addButtonGenre(singleGenre);
-  }
-  genreList.addEventListener('change', function() { 
-      console.log("CHANGE?", this.value);
+function addNewMovie(){
+  modalMovieAdd();
+  let movie = new Movie();
+  let container="";
+   movie.getMovieDetails().then(function() {
+    for (var key in movie){ //a for cycle that creates the titleLable,newLabel and so on elements
+      if(key==="Title"||key==="Year"||key==="Runtime"||key==="Director"||key==="Writer"||key==="Plot"||key==="Language"||key==="Poster"||key==="imdbRating"){
+      //console.log(movie[key]);
+      container+=`<div class="md-form mb-5">  
+      <label for="new${key}"><br>${key}<br></label>
+      <input value="" type="text" id="new${key}" class="form-control validate">
+    </div> `;
+	if(key==="Poster"){//if added by Tamas to add file upload support to Poster
+		container+=`<input class='fileInput' id='imageUpload' type="file" accept=".jpg, .jpeg, .png, .gif" style="padding-top:5px;">`;
+	}
+ 
+      }
     }
- );
+    console.log("container=",container);
+    $("#movie-edit").find(".modal-body").html(container);
+    $("#movie-edit").modal("show");
+	insertlUploadImage(); //added by Tamas to add file upload support to Poster
+    return;
+        
+>>>>>>> 438d48a5e37cdfbe6433662b34460f55e2fa595c
 
+
+  });
 
 }
 
-///////////////////////////////////// Search Language
 
-function searchLanguage() {
-  var responseMovies = movies.items;
-  var moviesLanguage = []; // String Genre Array
-  console.log("SEARCH LANGUAGE get all ", movies.items);
-  
-  for (let i=0; i<responseMovies.length; i++) {
-    var responseMoviesLanguage = responseMovies[i].Language;
-    getLanguage();
-    function getLanguage(){
-      var languageStringArray = responseMoviesLanguage.split(", ");
-      for(let i=0; i<languageStringArray.length;i++) {
-        var languageString = languageStringArray[i];
-        moviesLanguage.push(languageString);
+var movie2Edit;
+
+function editMovie(movie){
+  modalMovieEditCreate();
+     movie2Edit=movie;
+  console.log(movie);
+  let container="";
+   movie.getMovieDetails().then(function() {
+    for (var key in movie){ //a for cycle that creates the titleLable,newLabel and so on elements
+      if(key==="Title"||key==="Year"||key==="Runtime"||key==="Director"||key==="Writer"||key==="Plot"||key==="Language"||key==="Poster"||key==="imdbRating"){
+      //console.log(movie[key]);
+      container+=`<div class="md-form mb-5">  
+      <label for="new${key}"><br>${key}<br></label>
+      <input value="${movie[key]}" type="text" id="new${key}" class="form-control validate">
+    </div> `;
+	if(key==="Poster"){//if added by Tamas to add file upload support to Poster
+		container+=`<input class='fileInput' id='imageUpload' type="file" accept=".jpg, .jpeg, .png, .gif" style="padding-top:5px;">`;
+	}
+ 
       }
     }
-  }
-  
-  var languageObj = {};
-  var languageArr = [];
-  for (let i = 0; i < moviesLanguage.length; i++) {
-    if (!(moviesLanguage[i] in languageObj)) {
-      languageArr.push(moviesLanguage[i]);
-      languageObj[moviesLanguage[i]] = true;
-    }
-  }
+    console.log("container=",container);
+    $("#movie-edit").find(".modal-body").html(container);
+    $("#movie-edit").modal("show");
+	insertlUploadImage(); //added by Tamas to add file upload support to Poster
+    return;
+        
 
-
+<<<<<<< HEAD
   var languageDiv = document.getElementById('searchDivLanguage');
   var languageList = document.createElement('select');
   var languageListDefault = document.createElement("option");
@@ -311,282 +338,131 @@ function searchLanguage() {
   for (let i=0; i<languageArr.length; i++) { 
     var singleLanguage = languageArr[i]; 
     function addButtonLanguage(singleLanguage) {
+=======
+>>>>>>> 438d48a5e37cdfbe6433662b34460f55e2fa595c
 
-      var optionLanguage = document.createElement("option");
-      optionLanguage.value = singleLanguage;
-      optionLanguage.text = singleLanguage;
-      languageList.appendChild(optionLanguage);
-
-
-  }
-  addButtonLanguage(singleLanguage);
-  }
-  languageList.addEventListener('change', function() { 
-    console.log("CHANGE?", this.value);
-  }
-);
+  });
 }
+var myModal;
+function simpleModal(){
+  myModal = `
+	<div class="modal fade in" id="movie-edit"  role="dialog" style="display:none">
+	  <div class="modal-dialog" >
+	  <form name="formMovieEdit" action="">
+		<div class="modal-content">
+		  <div class="modal-header text-center">
+			<h4 class="modal-title w-100 font-weight-bold">Edit Movie</h4>
+			<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+			  <span aria-hidden="true">×</span>
+			</button>
+		  </div>
+		  <div class="modal-body mx-3">
+		  </div>
+		  <div class="modal-footer">
+			<button type="button" class="btn btn-danger bt-close" data-dismiss="modal">Close</button>
+			 <button type="button" class="btn btn-default bt-save" data-dismiss="modal">Save</button>
+		  </div>
+		 
+		</div>
+		</form>
+	  </div>
+  </div>`
+  return;
+}
+function modalMovieAdd(){
+	simpleModal();
 
-//////////////////////ALEXXXXXXXXXXXX
+	let movieAddModal=document.createElement("div");
+	movieAddModal.innerHTML=myModal;
+	document.body.appendChild(movieAddModal);
+	//movie2Add
+	movieAddModal.querySelector(".bt-save").addEventListener("click", function(){
+	  let list=movieAddModal.querySelectorAll("input");
+	  console.log("list=",list);
+	  list.forEach(function(input){      
+      console.log("value=",input.value);
+      console.log("id=",input.id.replace("new",""));
+      movie2Add[input.id.replace("new","")]=input.value;
+	   
+	  });
+	  movie2Add.addMovie().then(function(response){
+		    modalElements["notification"].setElement([{selector:".modal-title",task:"inner",value:"success"},{selector:".modal-body",task:"inner",value:"Movie successfully added "},"show"]);  
+	    	displayMovies(movies.items); 
+	  },
+	  function(error){
+		console.log(error);
+		
+		modalElements["notification"].setElement([{selector:".modal-title",task:"inner",value:"fail"},{selector:".modal-body",task:"inner",value:error.responseJSON.message},"show"]);   
+	  })
+	});
+}
+function modalMovieEditCreate(){
+	simpleModal();
 
-function editMovie(movie){
-   let myElement = document.querySelectorAll(".popup");
-   for (let i = 0; i < myElement.length; i++){
-     myElement[i].remove();
-    
-   }
-   let grandpa = document.getElementById("movie_" + movie._id);
-   let grandpaId = grandpa.id;
-   let movieId = grandpaId.replace("movie_", "");
-
-   movie.getMovie().then(function(response) {
-
-        console.log(response);
-        let divPopup = document.createElement("div");
-        divPopup.setAttribute("class", "popup");
-        divPopup.style.top = (document.body.scrollTop + document.documentElement.scrollTop + 35)+"px"
-        grandpa.appendChild(divPopup);
-
-        let spanPopup = document.createElement("span");
-        spanPopup.setAttribute("class", "content");
-    spanPopup.setAttribute("style", "color:black");//added by Tamas to fix the text color thats being inherited from bootstrap css
-        divPopup.appendChild(spanPopup);
-
-        let popupXButton = document.createElement("div");
-        popupXButton.setAttribute("class", "closeButton");
-        popupXButton.innerHTML = "X";
-        divPopup.appendChild(popupXButton);
-
-        popupXButton.addEventListener("click", function(){
-          let eventButton = grandpa.querySelector('.movie-edit');
-           console.log("Event button", eventButton);
-           eventButton.disabled = false;
-           divPopup.remove();
-
-        });
-        //title edit
-        let titleLabel = document.createElement("label");
-        titleLabel.setAttribute("for", response.Title);
-        titleLabel.innerHTML = "<br>Title of the movie<br>";
-        spanPopup.appendChild(titleLabel);
-
-        let newTitle = document.createElement("input");
-        newTitle.setAttribute("value", response.Title);
-        newTitle.setAttribute("class", "new-title");
-        newTitle.setAttribute("style", "width: 90%");
-        spanPopup.appendChild(newTitle);
-
-        //year edit
-        let yearLabel = document.createElement("label");
-        yearLabel.setAttribute("for", response.Year);
-        yearLabel.innerHTML = "<br>Year<br>";
-        spanPopup.appendChild(yearLabel);
-
-        let newYear = document.createElement("input");
-        newYear.setAttribute("value", response.Year);
-        newYear.setAttribute("class", "new-year");
-        newYear.setAttribute("style", "width: 50%");
-        spanPopup.appendChild(newYear);
-
-        //runtime edit
-        let runtimeLabel = document.createElement("label");
-        runtimeLabel.setAttribute("for", response.Runtime);
-        runtimeLabel.innerHTML = "<br>Runtime<br>";
-        spanPopup.appendChild(runtimeLabel);
-
-        let newRuntime = document.createElement("input");
-        newRuntime.setAttribute("value", response.Runtime);
-        newRuntime.setAttribute("class", "new-runtime");
-        newRuntime.setAttribute("style", "width: 90%");
-        spanPopup.appendChild(newRuntime);
-
-        //Genre edit
-        let genreLabel = document.createElement("label");
-        genreLabel.setAttribute("for", response.Genre);
-        genreLabel.innerHTML = "<br>Genre<br>";
-        spanPopup.appendChild(genreLabel);
-
-        let newGenre = document.createElement("input");
-        newGenre.setAttribute("value", response.Genre);
-        newGenre.setAttribute("class", "new-genre");
-        newGenre.setAttribute("style", "width: 90%");
-        spanPopup.appendChild(newGenre);
-
-        //Director edit
-        let directorLabel = document.createElement("label");
-        directorLabel.setAttribute("for", response.Director);
-        directorLabel.innerHTML = "<br>Director<br>";
-        spanPopup.appendChild(directorLabel);
-
-        let newDirector = document.createElement("input");
-        newDirector.setAttribute("value", response.Director);
-        newDirector.setAttribute("class", "new-director");
-        newDirector.setAttribute("style", "width: 90%");
-        spanPopup.appendChild(newDirector);
-
-        //Writer edit
-        let writerLabel = document.createElement("label");
-        writerLabel.setAttribute("for", response.Writer);
-        writerLabel.innerHTML = "<br>Writer<br>";
-        spanPopup.appendChild(writerLabel);
-
-        let newWriter = document.createElement("input");
-        newWriter.setAttribute("value", response.Writer);
-        newWriter.setAttribute("class", "new-writer");
-        newWriter.setAttribute("style", "width: 50%");
-        spanPopup.appendChild(newWriter);
-
-        //Actors edit
-        let actorsLabel = document.createElement("label");
-        actorsLabel.setAttribute("for", response.Actors);
-        actorsLabel.innerHTML = "<br>Actors<br>";
-        spanPopup.appendChild(actorsLabel);
-
-        let newActors = document.createElement("input");
-        newActors.setAttribute("value", response.Actors);
-        newActors.setAttribute("class", "new-actors");
-        newActors.setAttribute("style", "width: 90%");
-        spanPopup.appendChild(newActors);
-
-        //Plot edit
-        let plotLabel = document.createElement("label");
-        plotLabel.setAttribute("for", response.Plot);
-        plotLabel.innerHTML = "<br>Plot<br>";
-        spanPopup.appendChild(plotLabel);
-
-        let newPlot = document.createElement("textarea");
-        newPlot.value = response.Plot;
-        newPlot.setAttribute("class", "new-plot");
-        newPlot.setAttribute("style", "width: 90%; height: auto");
-        spanPopup.appendChild(newPlot);
-
-        //Language edit
-        let languageLabel = document.createElement("label");
-        languageLabel.setAttribute("for", response.Language);
-        languageLabel.innerHTML = "<br>Language<br>";
-        spanPopup.appendChild(languageLabel);
-
-        let newLanguage = document.createElement("input");
-        newLanguage.setAttribute("value", response.Language);
-        newLanguage.setAttribute("class", "new-language");
-        newLanguage.setAttribute("style", "width: 90%");
-        spanPopup.appendChild(newLanguage);
-
-        //Country edit
-        let countryLabel = document.createElement("label");
-        countryLabel.setAttribute("for", response.Country);
-        countryLabel.innerHTML = "<br>Country<br>";
-        spanPopup.appendChild(countryLabel);
-
-        let newCountry = document.createElement("input");
-        newCountry.setAttribute("value", response.Country);
-        newCountry.setAttribute("class", "new-country");
-        newCountry.setAttribute("style", "width: 50%");
-        spanPopup.appendChild(newCountry);
-
-        //Poster edit
-        let posterLabel = document.createElement("label");
-        posterLabel.setAttribute("for", response.Poster);
-        posterLabel.innerHTML = "<br>Poster<br>";
-        spanPopup.appendChild(posterLabel);
-
-        let newPoster = document.createElement("input");
-        newPoster.setAttribute("value", response.Poster);
-        newPoster.setAttribute("class", "new-poster");
-        newPoster.setAttribute("style", "width: 90%");
-        spanPopup.appendChild(newPoster);
-
-    /*let posterUpload = document.createElement("input");//added by Tamas to allow uploading images
-    posterUpload.setAttribute("type", "file");
-    posterUpload.setAttribute("accept", ".jpg, .jpeg, .png, .gif");
-        spanPopup.appendChild(posterUpload);
-    posterUpload.addEventListener("change", function(){
-      console.groupCollapsed('ileInput');
-      imageFileUploader.fileUppload({event:event,element:this});
-      console.groupEnd();
-    });*/
-
-        //imdbRating edit
-        let imdbLabel = document.createElement("label");
-        imdbLabel.setAttribute("for", response.imdbRating);
-        imdbLabel.innerHTML = "<br>IMDB Rating<br>";
-        spanPopup.appendChild(imdbLabel);
-
-        let newImdbRating = document.createElement("input");
-        newImdbRating.setAttribute("value", response.imdbRating);
-        newImdbRating.setAttribute("class", "new-imdb");
-        newImdbRating.setAttribute("style", "width: 90%");
-        spanPopup.appendChild(newImdbRating);
-
-        let submitBtn = document.createElement("button");
-        submitBtn.setAttribute("class", "submit-updates");
-        submitBtn.innerHTML = "Submit";
-        spanPopup.appendChild(submitBtn);
-
-        submitBtn.addEventListener("click", function() {
-          if (
-            newTitle.value === "" ||
-            yearLabel.value === "" ||
-            newRuntime.value === "" ||
-            newGenre.value === "" ||
-            newDirector.value === "" ||
-            newWriter.value === "" ||
-            newActors.value === "" ||
-            newPlot.value === "" ||
-            newLanguage.value === "" ||
-            newCountry.value === "" ||
-            newPoster.value === "" ||
-            newImdbRating.value === ""
-          ) {
-            alert("Please fill up all fields");
-          } else {
-
-              movie._id = movieId;
-              movie.Title = newTitle.value;
-              movie.Year = newYear.value;
-              movie.Runtime = newRuntime.value;
-              movie.Genre = newGenre.value;
-              movie.Director = newDirector.value;
-              movie.Writer = newWriter.value;
-              movie.Actors = newActors.value;
-              movie.Plot = newPlot.value;
-              movie.Language = newLanguage.value;
-              movie.Country = newCountry.value;
-              movie.Poster = newPoster.value;
-              movie.imdbRating = newImdbRating.value;
-
-
-            movie.editMovie().then(function(response) {
-              console.log("Movie with id " + movieId + " was succesfully updated");
-              divPopup.remove();
-
-              displayMovies(movies.items);
-            },
-            function(reject){
-              //  console.error("Error updating movie");
-               let divDisplayError = document.createElement("div");
-               divDisplayError.setAttribute("class", "display-error");
-               divDisplayError.innerHTML = "Nothing to update";
-               divPopup.appendChild(divDisplayError);
-
-              
-      
-
-                
-               
-
-            });
-          }
-        });
-
-      }
-
-
-)
-;
+	var movieEditModal=document.createElement("div");
+	movieEditModal.innerHTML=myModal;
+	document.body.appendChild(movieEditModal);
+	//movie2Edit
+	movieEditModal.querySelector(".bt-save").addEventListener("click", function(){
+	  console.log("movie2Edit_BEFORE=",movie2Edit);
+	  var list=movieEditModal.querySelectorAll("input");
+	  console.log("list=",list);
+	  list.forEach(function(input){
+		console.log("value=",input.value);
+		console.log("id=",input.id.replace("new",""));
+		movie2Edit[input.id.replace("new","")]=input.value;
+	   
+	  });
+	  console.log("movie2Edit_AFTER=",movie2Edit);
+	  movie2Edit.editMovie().then(function(response){
+		console.log(response);
+		
+		modalElements["notification"].setElement([{selector:".modal-title",task:"inner",value:"success"},{selector:".modal-body",task:"inner",value:"Movie successfully edited "},"show"]);  
+		displayMovies(movies.items); 
+	  },
+	  function(error){
+		console.log(error);
+		
+		modalElements["notification"].setElement([{selector:".modal-title",task:"inner",value:"fail"},{selector:".modal-body",task:"inner",value:error.responseJSON.message},"show"]);   
+	  })
+	});
 }
 
 
+function insertlUploadImage(){//added by tamas 
+	console.log('insertlUploadImage');
+	$("#imageUpload").change(function(event){
+			imageFileUploader.fileUppload({event:event,element:this});
+		});
+}
+function doAfterSuccessImageUpload(data={}){//added by Tamas, will run this function after successful imate upload
+  console.groupCollapsed('doAfterSuccessImageUpload');
+  console.log('data=',data);
+  if(!$("#movie-edit")||!$("#movie-edit").find("#newPoster")){
+	   console.warn('no element');
+	   console.groupEnd();
+	   return;
+  }
+  //the data will contain information to the address of uploaded image
+  //do to server side, the resposne might not be a json
+  if(typeof data.response !="object"){
+    //conver the result if not json
+    var obj = JSON.parse(data.response);
+    console.log('obj=',obj);
+    console.log('address=',obj.address);
+    //now we got the address of the image saved in obj.address
+    notificationPopUp.post({body:"Image successfully uploaded",icon:obj.address});
+     $("#movie-edit").find("#newPoster").val(obj.address);
+   
+  }else{
+    //we got the address of the image saved in data.response.address
+    console.log('address=',data.response.address);
+    notificationPopUp.post({body:"Image successfully uploaded",icon:data.response.address});
+    $("#movie-edit").find("#newPoster").val(data.response.address);
+  }
+  
+  console.groupEnd();
+}
 
 
 
@@ -613,11 +489,13 @@ movie.deleteMovie().then(function(response){
 function doAfterSuccessLogin(data={}){//added by Tamas, will run this function after successful log in
   console.groupCollapsed('doAfterSuccessLogin');
   displayEditButtons();
+   // notificationPopUp.post({title:"Welcome "+Auth.getAccessName()+"!",body:"Welcome to Movie addicts, we are happy to see you here.\nWe have sent you an email verification to the email you provided us."});
   console.groupEnd();
 }
 function doAfterSuccessRegister(data={}){//added by Tamas, will run this function after successful register
   console.groupCollapsed('doAfterSuccessRegister');
   displayEditButtons();
+  notificationPopUp.post({title:"Welcome "+Auth.getAccessName()+"!",body:"Welcome to Movie addicts, we are happy to see you here.\nWe have sent you an email verification to the email you provided us."});
   console.groupEnd();
 
 }
@@ -627,38 +505,17 @@ function doAfterSuccessLogOut(data={}){//added by Tamas, will run this function 
   console.groupEnd();
 }
 function displayEditButtons(){
+  document.querySelector(".add-movie").removeAttribute("style");
   document.querySelectorAll(".movie-delete").forEach(function(buttons){buttons.removeAttribute("style")});
   document.querySelectorAll(".movie-edit").forEach(function(buttons){buttons.removeAttribute("style")});
 }
 function hideEditButtons(){
   console.log("hide");
+  document.querySelector(".add-movie").style.display="none";;
   document.querySelectorAll(".movie-delete").forEach(function(buttons){buttons.style.display="none";});
   document.querySelectorAll(".movie-edit").forEach(function(buttons){buttons.style.display="none";});
 }
-function doAfterSuccessImageUpload(data={}){//added by Tamas, will run this function after successful imate upload
-  console.groupCollapsed('doAfterSuccessImageUpload');
-  console.log('data=',data);
-  //the data will contain information to the address of uploaded image
-  //do to server side, the resposne might not be a json
-  if(typeof data.response !="object"){
-    //conver the result if not json
-    var obj = JSON.parse(data.response);
-    console.log('obj=',obj);
-    console.log('address=',obj.address);
-    //now we got the address of the image saved in obj.address
-    notificationPopUp.post({body:"Image successfully uploaded",icon:obj.address});
-    if(document.querySelector(".new-poster")){
-      document.querySelector(".new-poster").value=obj.address;
-    }
-  }else{
-    //we got the address of the image saved in data.response.address
-    console.log('address=',data.response.address);
-    notificationPopUp.post({body:"Image successfully uploaded",icon:data.response.address});
-    document.querySelector(".new-poster").value=data.response.address;
-  }
-  
-  console.groupEnd();
-}
+
 if(Worker&&backgroundSync){ //added by Tamas, allows page to refresh its movies if it changed on the database
   //not tested it with search attributes
   console.log("receiving data to backgroundSync");
@@ -692,3 +549,4 @@ if(Worker&&backgroundSync){ //added by Tamas, allows page to refresh its movies 
   console.groupEnd();   
   }
 }
+

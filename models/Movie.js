@@ -26,7 +26,7 @@ class Movie {
             });
     }
     editMovie() {
-         let token=Auth.getAccessToken()
+         let token = Auth.getAccessToken()
         console.log("token=",token);
         return $
             .ajax({
@@ -49,6 +49,30 @@ class Movie {
                 }
             });
     }
+    addMovie(){
+        let token = Auth.getAccessToken()
+        return $
+        .ajax({
+            headers: {"x-auth-token" :token},
+            method: "POST",
+            url: rootUrl + "movies",
+            data: {
+                Title: this.Title,
+                Year: this.Year,
+                Runtime: this.Runtime,
+                Genre: this.Genre,
+                Director: this.Director,
+                Writer: this.Writer,
+                Actors: this.Actors,
+                Plot: this.Plot,
+                Language: this.Language,
+                Country: this.Country,
+                Poster: this.Poster,
+                imdbRating: this.imdbRating
+            }
+        });
+
+    }
     deleteMovie() {
         let token=Auth.getAccessToken()
         return $
@@ -70,7 +94,15 @@ const moviesRootUrl = "https://ancient-caverns-16784.herokuapp.com/";
 
 Movie.prototype.getMovieDetails = function() {
   var me = this;
-  return $.get(moviesRootUrl +"movies/" + me.id).then(function(response) {
+  //if added by tamas to resolve a conflict that exists
+  let id="";
+  if(me.id){
+	  id=me.id;
+  }else
+  if(me._id){
+	  id=me._id;
+  }
+  return $.get(moviesRootUrl +"movies/" +id).then(function(response) {
     console.log("Movie", response);
     me._id = response._id;
     me.Title = response.Title;
