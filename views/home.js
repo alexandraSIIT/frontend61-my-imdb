@@ -145,26 +145,56 @@ function displayPagination(response) {
 }
 
 // ALEXXXXXXX Search
+////////// New
+searchhhh();
+function searchhhh() {
+  movies.searchAllMovies(10, 0).then(function () {
+    displayMovies(movies.items);
+    console.log(" searchhhh", movies.items);
+  });
+}
+//////////////////////
 var inputText = document.querySelector("[name=search]");
 var searchSelected = document.querySelector(".search-select");
 var searchBtn = document.getElementById('search-btn');
   searchBtn.addEventListener("click", searchMovie);
 
-function searchMovie() {
-  // var searchSelectedValue = searchSelected.value;
-  var inputTextValue = inputText.value;
-  console.log("SEARCH BUTTON");
-  if (inputTextValue) {
-    removeTemplateMovies();
-    movies.getAll(10, 0, inputTextValue).then(function () {
-      displayMovies(movies.items);
-    });
-  } else {
-    removeTemplateMovies();
-    movies.getAll(10, 0).then(function () {
-      displayMovies(movies.items);
-    });
-  }}
+
+  function searchMovie() {
+    var searchByTitle = "Title";
+    var searchInputValue = inputText.value;
+    if (searchInputValue) {
+
+      removeTemplateMovies();
+      movies.searchAllMovies(10, 0, searchByTitle, searchInputValue).then(function () {
+        console.log("searchMovie by Title: ", searchByTitle, searchInputValue, movies.items);
+        displayMovies(movies.items);
+        inputText.style.border = 'none';
+      });
+    } else {
+      removeTemplateMovies();
+      var body = document.body;
+      var responseSearchParagraph = document.createElement('p');
+      var responseSearchText = document.createTextNode(`There are no movies for ${searchInputValue}`);
+      responseSearchParagraph.appendChild(responseSearchText);
+      body.appendChild(responseSearchParagraph);
+    }
+  }
+// function searchMovie() {
+//   // var searchSelectedValue = searchSelected.value;
+//   var inputTextValue = inputText.value;
+//   console.log("SEARCH BUTTON");
+//   if (inputTextValue) {
+//     removeTemplateMovies();
+//     movies.getAll(10, 0, inputTextValue).then(function () {
+//       displayMovies(movies.items);
+//     });
+//   } else {
+//     removeTemplateMovies();
+//     movies.getAll(10, 0).then(function () {
+//       displayMovies(movies.items);
+//     });
+//   }}
 
   function removeTemplateMovies() {
     var movieDiv = document.getElementsByClassName('new-movie');
@@ -176,15 +206,14 @@ function searchMovie() {
 
 function searchYear() {
   var yearDiv = document.getElementById("searchDivYear");
-
-  //Create array of options to be added
   var yearArray = ["Year < 2000", "2000 - 2010", "2010 < Year"];
-  
-  //Create and append select list
   var yearList = document.createElement("select");
+  var optionYearDefault = document.createElement("option");
+  optionYearDefault.value = "ALL";
+  optionYearDefault.text = "ALL";
+  yearList.appendChild(optionYearDefault);
   yearDiv.appendChild(yearList);
   
-  //Create and append the options
   for (let i = 0; i < yearArray.length; i++) {
     var singleYear = yearArray[i];
     var optionYear = document.createElement("option");
@@ -205,6 +234,7 @@ function searchYear() {
 
 function searchGenre() {
   var responseMovies = movies.items;
+  console.log("RRRRRRRRRRRRRRR", responseMovies);
   var moviesGenre = []; // String Genre Array
   
   for (let i=0; i<responseMovies.length; i++) {
@@ -230,6 +260,10 @@ function searchGenre() {
   
   var genreDiv = document.getElementById('searchDivGenre');
   var genreList = document.createElement('select');
+  var genreListDefault = document.createElement("option");
+  genreListDefault.value = "ALL";
+  genreListDefault.text = "ALL";
+  genreList.appendChild(genreListDefault);
   genreDiv.appendChild(genreList);
 
   for (let i=0; i<genreArr.length; i++) { 
@@ -283,6 +317,10 @@ function searchLanguage() {
 
   var languageDiv = document.getElementById('searchDivLanguage');
   var languageList = document.createElement('select');
+  var languageListDefault = document.createElement("option");
+  languageListDefault.value = "ALL";
+  languageListDefault.text = "ALL";
+  languageList.appendChild(languageListDefault);
   languageDiv.appendChild(languageList);
   
   for (let i=0; i<languageArr.length; i++) { 
