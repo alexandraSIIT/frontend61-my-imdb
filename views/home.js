@@ -175,26 +175,11 @@ var searchBtn = document.getElementById('search-btn');
       removeTemplateMovies();
       var body = document.body;
       var responseSearchParagraph = document.createElement('p');
-      var responseSearchText = document.createTextNode(`There are no movies for ${searchInputValue}`);
+      var responseSearchText = document.createTextNode(`There are no movies for "${searchInputValue}"`);
       responseSearchParagraph.appendChild(responseSearchText);
       body.appendChild(responseSearchParagraph);
     }
   }
-// function searchMovie() {
-//   // var searchSelectedValue = searchSelected.value;
-//   var inputTextValue = inputText.value;
-//   console.log("SEARCH BUTTON");
-//   if (inputTextValue) {
-//     removeTemplateMovies();
-//     movies.getAll(10, 0, inputTextValue).then(function () {
-//       displayMovies(movies.items);
-//     });
-//   } else {
-//     removeTemplateMovies();
-//     movies.getAll(10, 0).then(function () {
-//       displayMovies(movies.items);
-//     });
-//   }}
 
   function removeTemplateMovies() {
     var movieDiv = document.getElementsByClassName('new-movie');
