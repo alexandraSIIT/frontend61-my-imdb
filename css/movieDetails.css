@@ -18,12 +18,6 @@ body{
 	background-color: white;
 }
 
-.thumbnail-details{
-	background-color: #FFEFCA;
-	box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
-	padding: 20px;
-}
-
 img.movie-poster{
 max-width: 100%;
 height: auto;
@@ -104,9 +98,6 @@ div > a > button:active , #btnUserAuth:active{
     .thumbnail-details{
         height: 1200px; 
         width: auto;
-        box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19); 
-        padding: 5px;
-        margin: 10px;
     }
 
     div#template{
@@ -151,7 +142,7 @@ div > a > button:active , #btnUserAuth:active{
       text-align: center;
       }
    img.movie-poster{
-    margin: 10px;
+    margin: 40px;
     height: 600px;
     width: 400px;
     box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
@@ -160,7 +151,6 @@ div > a > button:active , #btnUserAuth:active{
     .thumbnail-details{
         height: 1200px; 
         width: auto;
-        box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19); 
         padding: 5px;
         margin: 10px;
     }
@@ -193,8 +183,8 @@ div > a > button:active , #btnUserAuth:active{
     }
 
     .container-wraper{
-    	margin-left: 100px;
-    	margin-right: 100px
+    	margin-left: 200px;
+    	margin-right: 200px
     }
 
     .nav-item{
@@ -214,7 +204,6 @@ div > a > button:active , #btnUserAuth:active{
     .thumbnail-details{
         height: 1200px; 
         width: auto;
-        box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19); 
         padding: 5px;
         margin: 10px;
     }
@@ -246,8 +235,8 @@ div > a > button:active , #btnUserAuth:active{
     }
 
     .container-wraper{
-    	margin-left: 200px;
-    	margin-right: 200px
+    	margin-left: 400px;
+    	margin-right: 400px
     }
 
     .nav-buttons{
@@ -272,8 +261,7 @@ div > a > button:active , #btnUserAuth:active{
     }
     .thumbnail-details{
         height: 1300px; 
-        width: auto;
-        box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19); 
+        width: auto; 
         padding: 5px;
         margin: 10px;
     }
