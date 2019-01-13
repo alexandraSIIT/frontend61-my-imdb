@@ -41,7 +41,7 @@ getMovies();
 function getMovies(skip) {
 	console.log("getMovies.skip=",skip);
 	console.log("getMovies.searchParameters=",search4Movie.searchParameters);
-  movies.getAllwSearch({skip:skip,take:10},search4Movie.searchParameters).then(function() {
+  movies.getAllwSearch({skip:skip,take:12},search4Movie.searchParameters).then(function() {
     console.log("getAllList", movies.items);
     displayMovies(movies.items);
     displayPagination(movies.pagination);
@@ -75,20 +75,24 @@ function displayMovies(response) {
     moviesClone.classList.add('new-movie');
     // populate the cloned template
     var movieTitleElement = moviesClone.querySelector(".movie-title");
-    movieTitleElement.innerHTML = response[i].Title;
+    movieTitleElement.innerHTML = response[i].Title||"(no title)";
 
     var movieYearElement = moviesClone.querySelector(".movie-year");
-    movieYearElement.innerHTML = response[i].Year;
+    movieYearElement.innerHTML = response[i].Year||"(no year)";
 
     var movieRuntimeElement = moviesClone.querySelector(".movie-runtime");
-    movieRuntimeElement.innerHTML = response[i].Runtime;
+    movieRuntimeElement.innerHTML = response[i].Runtime||"(no runtime)";
 
     var movieGenreElement = moviesClone.querySelector(".movie-genre");
-    movieGenreElement.innerHTML = response[i].Genre;
+    movieGenreElement.innerHTML = response[i].Genre||"(no genre)";
 
     var moviePosterElement = moviesClone.querySelector(".movie-poster");
-    moviePosterElement.src = response[i].Poster;
-
+	if(response[i].Poster===""){
+		moviePosterElement.src="../static/default_poster.jpg"
+	}else{
+		moviePosterElement.src = response[i].Poster;
+	}
+   
     var getMovieDetailsButton = moviesClone.querySelector(".movie-details");
     let id=response[i]._id;
     let me=response[i];
@@ -113,7 +117,9 @@ function displayMovies(response) {
     deleteButton.addEventListener("click", function(){
       deleteMovieOnClick(me,i);
     });
-
+	moviePosterElement.onerror = function () {
+		this.src="../static/default_poster.jpg"
+	};
     
 
   };
