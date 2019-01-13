@@ -151,7 +151,7 @@ function displayPagination(response) { // corecte by Alex
     pageButtonElement.addEventListener("click",function moveToPage(event){
       console.log("Button clicked: ", i);
       //return getMovies((i-1)*10 +1);
-    return getMovies((i-1)*10);
+    return getMovies((i-1)*12);
     });
   }
 }
