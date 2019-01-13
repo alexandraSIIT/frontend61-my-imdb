@@ -213,12 +213,15 @@ let authModal={
 			</div>
       </div>
       <div class="modal-footer">
-		<button type="button" class="btn btn-warning btn-eye2Password"><i class="fas fa-eye-slash"></i></button>		
-		<button type="button" class="btn btn-primary bt-loginOrRegister"><i class="fas fa-sign-in-alt auth-button-icon"></i>Log In</button>
-		<button type="button" class="btn btn-secondary bt-newuserOrback"><i class="fas fa-user-plus auth-button-icon"></i>New</button>
-		<button type="button" class="btn btn-secondary bt-closenotification" style="display:none"><i class="fas fa-undo-alt auth-button-icon"></i>Retry</button>
-		<button type="button" class="btn btn-danger bt-close" data-dismiss="modal"><i class="fas fa-times auth-button-icon"></i>Close</button>
-      </div>
+		<div>
+		<button type="button" class="btn btn-warning btn-eye2Password auth-button-replacement"><i class="fas fa-eye-slash"></i></button>		
+		<button type="button" class="btn btn-primary bt-loginOrRegister auth-button-replacement"><i class="fas fa-sign-in-alt auth-button-icon"></i>Log In</button>
+		</div><div>
+		<button type="button" class="btn btn-secondary bt-newuserOrback auth-button-replacement"><i class="fas fa-user-plus auth-button-icon"></i>New</button>
+		<button type="button" class="btn btn-secondary bt-closenotification auth-button-replacement" style="display:none"><i class="fas fa-undo-alt auth-button-icon"></i>Retry</button>
+		<button type="button" class="btn btn-danger bt-close auth-button-replacement" data-dismiss="modal"><i class="fas fa-times auth-button-icon"></i>Close</button>
+		</div>
+	  </div>
     </div>
 
   </form></div>`;

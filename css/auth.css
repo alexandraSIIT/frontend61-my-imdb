@@ -76,3 +76,11 @@
 @media screen and (max-width: 575px){
 .g-recaptcha {transform:scale(0.77);-webkit-transform:scale(0.77);transform-origin:0 0;-webkit-transform-origin:0 0;}
 }
+@media screen and (max-width: 411px){
+div.auth-button-replacement{
+	/*display:block;*/
+}
+button.auth-button-replacement{
+	margin-bottom:5px;
+}
+}
