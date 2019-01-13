@@ -204,7 +204,7 @@ let authModal={
 					<span class="input-group-addon auth-icon"><i class="fas fa-lock fa-lg" aria-hidden="true"></i></span>
 					<input type="password" name="inputConfirmPassword" autocomplete="new-password" value="" placeholder='Retype your Password' class="confirm-password text-input form-control register-input inputKeyupCheck auth-input" >
 				</div>
-				<div class='form-group register-group' id="add_g-recaptcha_here_${this.id}" style="display:none">
+				<div class='form-group register-group g-recaptcha' id="add_g-recaptcha_here_${this.id}" style="display:none">
 					
 				</div>
 			</div>
