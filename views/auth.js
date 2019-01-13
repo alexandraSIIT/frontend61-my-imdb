@@ -1,4 +1,5 @@
-
+//the idea is based on what modules are
+//the idea is of: maintainability, namespacing and reusability to some degree
 let authAlert;
 let auth2Pages={ 
 	init:function(){
@@ -11,7 +12,7 @@ let auth2Pages={
 	addEvent:function(){
 		console.groupCollapsed('auth2Pages@addEvent');
 		//if(!this.initDone)this.init();
-		if(document.querySelector("#btnUserAuth")){
+		if($("#btnUserAuth")){
 			console.log('add button event');
 			let me=this;
 			$("#btnUserAuth").click("click",function(event){
@@ -81,10 +82,10 @@ let auth2Pages={
 		//if(!this.initDone)this.init();
 		if(Auth.getAccessToken()){
 			console.log('loged in');
-			if(document.querySelector("#labelUserName")){
+			if($("#labelUserName")){
 				$("#labelUserName").text("You are logged in as "+Auth.getAccessName());
 			}
-			if(document.querySelector("#btnUserAuth")){
+			if($("#btnUserAuth")){
 				$("#btnUserAuth").html("<i class='fas fa-sign-out-alt' style='padding-right:5px;'></i>Log out");
 				$("#btnUserAuth").removeClass("btn-primary");
 				$("#btnUserAuth").addClass("btn-danger");
@@ -92,10 +93,10 @@ let auth2Pages={
 			}
 		}else{
 			console.log('not loged in');
-			if(document.querySelector("#labelUserName")){
+			if($("#labelUserName")){
 				$("#labelUserName").text("No user is loged in");
 			}
-			if(document.querySelector("#btnUserAuth")){
+			if($("#btnUserAuth")){
 				$("#btnUserAuth").html("<i class='fas fa-sign-in-alt' style='padding-right:5px;'></i>Log in");
 				$("#btnUserAuth").removeClass("btn-danger");
 				$("#btnUserAuth").addClass("btn-primary");
@@ -230,26 +231,22 @@ let authModal={
 	displayLogIn:function(){
 		console.groupCollapsed('authModal@displayLogIn');
 		//if(!this.initDone)this.init();
-		let modal=this.modal.main.dom;
+		let jquery=this.modal.main.jquery;
 		this.inputClear();
 		this.profile.mode=1;
-		modal.querySelectorAll('.register-group').forEach(function(element,index){
-			element.style.display="none";
-		});
-		modal.querySelectorAll('.register-input').forEach(function(element,index){
-			element.value="";
-		});
-		modal.querySelector('.modal-title').innerHTML=`User Log In`;
-		modal.querySelector('.bt-newuserOrback').innerHTML=`<i class="fas fa-user-plus auth-button-icon"></i>New`;
-		modal.querySelector('.bt-loginOrRegister').innerHTML=`<i class="fas fa-sign-in-alt auth-button-icon"></i>Log In`;
-		modal.querySelector('.username').focus();
+		jquery.find('.register-group').css("display","none")
+		jquery.find('.register-input').val("");
+		jquery.find('.modal-title').html(`User Log In`);
+		jquery.find('.bt-newuserOrback').html(`<i class="fas fa-user-plus auth-button-icon"></i>New`);
+		jquery.find('.bt-loginOrRegister').html(`<i class="fas fa-sign-in-alt auth-button-icon"></i>Log In`);
+		jquery.find('.username').focus();
 		console.groupEnd();
 	},
 	displayRegister:function(){
 		console.groupCollapsed('authModal@displayRegister');
 		//if(!this.initDone)this.init();
 		let me=this;
-		let modal=this.modal.main.dom;
+		let jquery=this.modal.main.jquery;
 		this.inputClear();
 		this.profile.mode=2;
 		if(this.profile.protocol!=="file:"){
@@ -269,13 +266,11 @@ let authModal={
 		}else{
 			console.warn('Its not on network, disabling g-recaptcha requirement');
 		}
-		modal.querySelectorAll('.register-group').forEach(function(element,index){
-			element.style.display="block";
-		});
-		modal.querySelector('.modal-title').innerHTML="New User Register";
-		modal.querySelector('.bt-newuserOrback').innerHTML=`<i class="fas fa-caret-left  auth-button-icon"></i>Back`;
-		modal.querySelector('.bt-loginOrRegister').innerHTML=`<i class="fas fa-user-plus  auth-button-icon"></i>Register`;
-		modal.querySelector('.username').focus();
+		jquery.find('.register-group').css("display","block")
+		jquery.find('.modal-title').html("New User Register")
+		jquery.find('.bt-newuserOrback').html(`<i class="fas fa-caret-left  auth-button-icon"></i>Back`);
+		jquery.find('.bt-loginOrRegister').html(`<i class="fas fa-user-plus  auth-button-icon"></i>Register`);
+		jquery.find('.username').focus();
 		console.groupEnd();
 	},
 	addEvents:function(){
@@ -283,9 +278,9 @@ let authModal={
 		//if(!this.initDone)this.init();
 		console.log('4Buttons');
 		let me=this;
-		let mdom=this.modal.main.dom;
-		let mjquery=this.modal.main.jquery;
-		mjquery.find('.bt-close').click(function(event){
+		let dom=this.modal.main.dom;
+		let jquery=this.modal.main.jquery;
+		jquery.find('.bt-close').click(function(event){
 			event.preventDefault();
 			console.groupCollapsed('authModal@.bt-close:click');
 			me.inputClear();
@@ -293,19 +288,19 @@ let authModal={
 			me.displayNotificationUndo();
 			console.groupEnd();
 		});
-		mjquery.find('.bt-closenotification').click( function(event){
+		jquery.find('.bt-closenotification').click( function(event){
 			event.preventDefault();
 			console.groupCollapsed('authModal@.bt-closenotification:click');
 			me.displayNotificationUndo();
 			console.groupEnd();
 		});
-		mjquery.find(".btn-eye2Password").click(function(event){
+		jquery.find(".btn-eye2Password").click(function(event){
 			event.preventDefault();
 			console.groupCollapsed('authModal@.bt-eye2Password:click');
 			me.eye2PasswordToggle(2);
 			console.groupEnd();
 		});
-		mjquery.find(".bt-newuserOrback").click(function(event){
+		jquery.find(".bt-newuserOrback").click(function(event){
 			event.preventDefault();
 			console.groupCollapsed('authModal@.bt-newuserOrback:click');
 			if(me.profile.mode===1){
@@ -315,7 +310,7 @@ let authModal={
 			}
 			console.groupEnd();
 		});
-		mjquery.find(".bt-loginOrRegister").click(function(event){
+		jquery.find(".bt-loginOrRegister").click(function(event){
 			event.preventDefault();
 			console.groupCollapsed('authModal@.bt-loginOrRegister');
 			if(me.profile.mode===1){
@@ -346,7 +341,7 @@ let authModal={
 			});
 			console.groupEnd();
 		}
-		mdom.querySelectorAll('.inputKeyupCheck').forEach(function(element,index){
+		dom.querySelectorAll('.inputKeyupCheck').forEach(function(element,index){
 			inputKeyupEvent(element);
 		});
 		/*console.log('authModal@4Mouseover');
@@ -365,45 +360,44 @@ let authModal={
 				console.groupEnd();
 			});*/
 		console.log("input enter -> focus")
-			mjquery.find(".username").keyup(function(event){
+			jquery.find(".username").keyup(function(event){
 				if (event.keyCode === 13&&me.inputKeyupCheck({element:this,type:"name"})) {
 					console.log("enter_hit:correct");
 					if(me.profile.mode===2){
-						mjquery.find(".email").focus();
+						jquery.find(".email").focus();
 					}else{
-						mjquery.find(".password").focus();
+						jquery.find(".password").focus();
 					}
 				}
 			});
-			mjquery.find(".password").keyup(function(event){
+			jquery.find(".password").keyup(function(event){
 				if (event.keyCode === 13&&me.inputKeyupCheck({element:this,type:"password"})) {
 					console.log("enter_hit:correct");
 					if(me.profile.mode===2){
-						mjquery.find(".confirm-password").focus();
+						jquery.find(".confirm-password").focus();
 					}else{
-						mjquery.find(".bt-loginOrRegister").focus();
+						jquery.find(".bt-loginOrRegister").focus();
 					}
 				}
 			});
-			mjquery.find(".email").keyup(function(event){
+			jquery.find(".email").keyup(function(event){
 				if (event.keyCode === 13&&me.inputKeyupCheck({element:this,type:"password"})) {
 					console.log("enter_hit:correct");
-					mjquery.find(".password").focus();					
+					jquery.find(".password").focus();					
 				}
 			});
-			mjquery.find(".confirm-password").keyup(function(event){
+			jquery.find(".confirm-password").keyup(function(event){
 				if (event.keyCode === 13&&me.inputKeyupCheck({element:this,type:"password"})) {
 					console.log("enter_hit:correct");
-					//me.modal.main.dom.querySelector(".bt-loginOrRegister").focus();
 					//Google repatcha uses sandbox attribute, its iFrame cant be accessed by script :C
 				}
 			});
 		console.log('passwordstr');
-		mjquery.find('.password').popover({
+		jquery.find('.password').popover({
 			placement: 'top',
 			trigger: 'focus'
 		});
-		mjquery.find(".password").keyup(function () {
+		jquery.find(".password").keyup(function () {
 			console.groupCollapsed('password_input');
 			var password = $(this);
 			var pass = password.val();
@@ -441,39 +435,39 @@ let authModal={
 		//if(!this.initDone)this.init();
 		let html2Hide=`<i class="fas fa-eye-slash">`;
 		let html2Show=`<i class="fas fa-eye"></i>`;
-		let modal=this.modal.main.jquery;
+		let jquery=this.modal.main.jquery;
 		if(mode===2||mode===20||mode===21){
 			if((mode===2&&this.profile.eye)||mode===20){
 				console.log('change to hide mode');
 				this.profile.eye=false;
-				modal.find('input[name="password"]').attr('type', 'password');
-				modal.find(".btn-eye2Password").removeClass("btn-info btn-success");
-				modal.find(".btn-eye2Password").addClass("btn-warning");
-				modal.find(".btn-eye2Password").html(html2Show);
+				jquery.find('input[name="password"]').attr('type', 'password');
+				jquery.find(".btn-eye2Password").removeClass("btn-info btn-success");
+				jquery.find(".btn-eye2Password").addClass("btn-warning");
+				jquery.find(".btn-eye2Password").html(html2Show);
 			}else if((mode===2&&!this.profile.eye)||mode===21){
 				console.log('change to show mode');
 				this.profile.eye=true;
-				modal.find('input[name="password"]').attr('type', 'text');
-				modal.find(".btn-eye2Password").removeClass("btn-warning btn-info");
-				modal.find(".btn-eye2Password").addClass("btn-success");
-				modal.find(".btn-eye2Password").html(html2Hide);
+				jquery.find('input[name="password"]').attr('type', 'text');
+				jquery.find(".btn-eye2Password").removeClass("btn-warning btn-info");
+				jquery.find(".btn-eye2Password").addClass("btn-success");
+				jquery.find(".btn-eye2Password").html(html2Hide);
 			}
 		}
 		else if(mode===1){
 			if(!this.profile.eye){
 				console.log('show');
-				modal.find('input[name="password"]').attr('type', 'text');
-				modal.find(".btn-eye2Password").removeClass("btn-warning btn-success");
-				modal.find(".btn-eye2Password").addClass("btn-info");
-				modal.find(".btn-eye2Password").html(html2Hide);
+				jquery.find('input[name="password"]').attr('type', 'text');
+				jquery.find(".btn-eye2Password").removeClass("btn-warning btn-success");
+				jquery.find(".btn-eye2Password").addClass("btn-info");
+				jquery.find(".btn-eye2Password").html(html2Hide);
 			}
 		}else{
 			if(!this.profile.eye){
 				console.log('hide');
-				modal.find('input[name="password"]').attr('type', 'password');
-				modal.find(".btn-eye2Password").removeClass("btn-info btn-success");
-				modal.find(".btn-eye2Password").addClass("btn-warning");
-				modal.find(".btn-eye2Password").html(html2Show);
+				jquery.find('input[name="password"]').attr('type', 'password');
+				jquery.find(".btn-eye2Password").removeClass("btn-info btn-success");
+				jquery.find(".btn-eye2Password").addClass("btn-warning");
+				jquery.find(".btn-eye2Password").html(html2Show);
 			}
 		}
 		console.groupEnd();
@@ -491,10 +485,7 @@ let authModal={
 	inputKeyupCheckClear:function(){
 		console.groupCollapsed('authModal@inputKeyupCheckClear');
 		//if(!this.initDone)this.init();
-		let me=this;
-		this.modal.main.dom.querySelectorAll('.inputKeyupCheck').forEach(function(element,index){
-			element.classList.remove(me.settings.classList.invalid);
-		});
+		this.modal.main.jquery.find('.inputKeyupCheck').removeClass(this.settings.classList.invalid);
 		console.groupEnd();
 	},
 	inputKeyupCheck:function(options={}){
@@ -560,34 +551,34 @@ let authModal={
 		console.groupCollapsed('authModal@inputCheck');
 		//if(!this.initDone)this.init();
 		console.log('profile.mode=',this.profile.mode);
-		let modal=this.modal.main.dom;
+		let modal=this.modal.main.dom;let jquery=this.modal.main.jquery;
 		var errorLog=[];
 		modal.querySelectorAll('input').forEach(function(input,i){
 			input.value=input.value.trim();
 		});
-		if(modal.querySelector('input[name="username"]').value.length<this.settings.nameLength_min){
+		if(jquery.find('input[name="username"]').val().length<this.settings.nameLength_min){
 			console.warn('name too small');
 			errorLog.push('name too small');
 		}
-		if(modal.querySelector('input[name="username"]').value.length>this.settings.nameLength_max){
+		if(jquery.find('input[name="username"]').val().length>this.settings.nameLength_max){
 			console.warn('name too big');
 			errorLog.push('name too big');
 		}
-		if(modal.querySelector('input[name="password"]').value.length<this.settings.passwordLength_min){
+		if(jquery.find('input[name="password"]').val().length<this.settings.passwordLength_min){
 			console.warn('password too small');
 			errorLog.push('password too small');
 		}
-		if(modal.querySelector('input[name="password"]').value.length>this.settings.passwordLength_max){
+		if(jquery.find('input[name="password"]').val().length>this.settings.passwordLength_max){
 			console.warn('password too big');
 			errorLog.push('password too big');
 		}
 		if(this.profile.mode===2){
 			console.log('registry requirements');
-			if(modal.querySelector('input[name="inputConfirmPassword"]').value!=modal.querySelector('input[name="password"]').value){
+			if(jquery.find('input[name="inputConfirmPassword"]').val()!=jquery.find('input[name="password"]').val()){
 				console.warn('password not a match');
 				errorLog.push('password not a match');
 			}
-			if(!this.validateEmail(modal.querySelector('input[name="email"]').value)){
+			if(!this.validateEmail(jquery.find('input[name="email"]').val())){
 				console.warn('email is not valid');
 				errorLog.push('email is not valid');
 			}
@@ -625,47 +616,47 @@ let authModal={
 	displayNotificationUndo:function(){
 		console.groupCollapsed('authModal@displayNotificationUndo');
 		//if(!this.initDone)this.init();
-		let modal=this.modal.main.dom;
-		modal.querySelector('.loginOrRegister').style.display="";
-		modal.querySelector('.notification').style.display="none";
-		modal.querySelector('.bt-loginOrRegister').style.display="";
-		modal.querySelector('.bt-newuserOrback').style.display="";
-		modal.querySelector('.bt-closenotification').style.display="none";
+		let jquery=this.modal.main.jquery;
+		jquery.find('.loginOrRegister').css("display","");
+		jquery.find('.notification').css("display","none");
+		jquery.find('.bt-loginOrRegister').css("display","");
+		jquery.find('.bt-newuserOrback').css("display","");
+		jquery.find('.bt-closenotification').css("display","none");
 		console.groupEnd();
 	},
 	displayNotification:function(options={}){
 		console.groupCollapsed('authModal@displayNotification');
 		//if(!this.initDone)this.init();
 		console.log("options=",options);
-		let modal=this.modal.main.dom;		
+		let jquery=this.modal.main.jquery;		
 		if(options.type){
 			if(options.type===1){//processing
-				modal.querySelector('.bt-closenotification').style.display="none";
+				jquery.find('.bt-closenotification').css("display","none");
 			}else
 			if(options.type===-1){//failed
-				modal.querySelector('.bt-closenotification').style.display="";
+				jquery.find('.bt-closenotification').css("display","");
 			}
 		}
 		if(options.body){
-			modal.querySelector('.notification').innerHTML=options.body;
+			jquery.find('.notification').html(options.body);
 		}
 		/*if(options.title){
-			this.modal.main.dom.querySelector('.modal-title').innerHTML=options.title;
+			jquery.find('.modal-title').inner(options.title);
 		}*/
-		modal.querySelector('.bt-loginOrRegister').style.display="none";
-		modal.querySelector('.bt-newuserOrback').style.display="none";
-		modal.querySelector('.loginOrRegister').style.display="none";
-		modal.querySelector('.notification').style.display="block";
+		jquery.find('.bt-loginOrRegister').css("display","none");
+		jquery.find('.bt-newuserOrback').css("display","none");
+		jquery.find('.loginOrRegister').css("display","none");
+		jquery.find('.notification').css("display","block");
 		console.groupEnd();
 	},
 	callLogIn:function(){
 		console.groupCollapsed('authModal@callLogIn');
 		//if(!this.initDone)this.init();
-		let modal=this.modal.main.dom;
+		let jquery=this.modal.main.jquery;
 		if(this.inputCheck()){
 			var data={};
-			data.username=modal.querySelector('input[name="username"]').value.trim();
-			data.password=modal.querySelector('input[name="password"]').value.trim();
+			data.username=jquery.find('input[name="username"]').val().trim();
+			data.password=jquery.find('input[name="password"]').val().trim();
 			console.log('data=',data);
 			let me=this;
 			this.statusLog.callResponse={status:0,mode:1,data:data,response:""};
@@ -727,11 +718,11 @@ let authModal={
 	callRegister:function(){
 		console.groupCollapsed('authModal@callRegister');
 		//if(!this.initDone)this.init();
-		let modal=this.modal.main.dom;
+		let jquery=this.modal.main.jquery;
 		if(this.inputCheck()){
 			var data={};
-			data.username=modal.querySelector('input[name="username"]').value.trim();
-			data.password=modal.querySelector('input[name="password"]').value.trim();
+			data.username=jquery.find('input[name="username"]').val().trim();
+			data.password=jquery.find('input[name="password"]').val().trim();
 			//the movie api does not require email, so it's pointless to add one 
 			console.log('data=',data);
 			this.displayNotification({type:1,body:"<p>Please wait</p>"});
@@ -823,7 +814,7 @@ let authModal={
 		let me=this;
 		setTimeout(function(){
 			console.log('focus');
-			me.modal.main.dom.querySelector('.username').focus();
+			me.modal.main.jquery.find('.username').focus();
 		}, 500);
 		
 		console.groupEnd();
@@ -845,7 +836,7 @@ let authModal={
 		this.modal.show();
 		setTimeout(function(){
 			console.log('focus');
-			me.modal.main.dom.querySelector('.username').focus();
+			me.modal.main.jquery.find('.username').focus();
 		}, 500);
 		console.groupEnd();
 	},

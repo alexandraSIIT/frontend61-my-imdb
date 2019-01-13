@@ -2,26 +2,31 @@
 	box-sizing: border-box;
 }
 
+/*properties for the template of the movie Details*/
 #template{
 	margin-left: 20%;
 	margin-right: 20%;
 	padding-bottom: 5%;
 }
 
+/*these are the properties for the body container with gradient background*/
 body{
     padding: 0;
     margin:0;
     background: linear-gradient(360deg, rgba(246,243,244,1) 0%, rgba(207,209,210,1) 100%);
 }
 
+/*the main container should have the color white*/
 .container-wraper{
 	background-color: white;
 }
 
+/*properties for the movie poster */
 img.movie-poster{
 max-width: 100%;
 height: auto;
 margin: 80px;
+box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
 }
 
 div.movie-header {
@@ -38,9 +43,7 @@ footer{
 	padding: 20px;
 }
 
-.movie-poster{
-	box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
-}
+/*style for all the buttons*/
 
 div > a > button, #btnUserAuth{
     -moz-box-shadow: 3px 4px 1px 0px #8a2a21;
@@ -56,7 +59,7 @@ div > a > button, #btnUserAuth{
     color:#ffffff;
     font-family:Arial;
     font-size:12px;
-    /*padding:8px 2px;*/
+    padding:8px 5px;
     text-decoration:none;
     text-shadow:0px 1px 0px #810e05;
 }
@@ -76,6 +79,7 @@ div > a > button:active , #btnUserAuth:active{
 
 @media only screen and (min-width: 320px) {
 
+	/*properties for the movie details that appear below the movie poster*/
     #movieDetails{
         padding: 0;
         margin:0;
@@ -88,13 +92,17 @@ div > a > button:active , #btnUserAuth:active{
    .movie-title { 
       text-align: center;
       }
+
+   /*properties for the movie poster */
    img.movie-poster{
     margin: 10px;
     height: 300px;
-    width: 200px;
+    width: 250px;
     box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
     
     }
+
+    /*properties for the container of the movie*/
     .thumbnail-details{
         height: 1200px; 
         width: auto;
@@ -113,6 +121,7 @@ div > a > button:active , #btnUserAuth:active{
 
 @media only screen and (min-width: 768px) {
 
+	/*properties for the movie details that appear below the movie poster*/
     #movieDetails{
         padding: 0;
         margin:0;
@@ -124,11 +133,10 @@ div > a > button:active , #btnUserAuth:active{
 
     .nav-buttons{
     	display: inline-block;
-/*    	align-items: left;
-    	float: right; */ 
     	height: 100px;  
     }
 
+    /*the main container properties*/
     .container-wraper{
     	margin-left: 70px;
     	margin-right: 70px
@@ -141,6 +149,8 @@ div > a > button:active , #btnUserAuth:active{
    .movie-title { 
       text-align: center;
       }
+
+    /*properties for the movie poster */
    img.movie-poster{
     margin: 40px;
     height: 600px;
@@ -148,6 +158,8 @@ div > a > button:active , #btnUserAuth:active{
     box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
     
     }
+
+    /*properties for the container of the movie*/
     .thumbnail-details{
         height: 1200px; 
         width: auto;
@@ -173,6 +185,7 @@ div > a > button:active , #btnUserAuth:active{
 
 @media only screen and (min-width: 1200px) {
 
+	/*properties for the movie details that appear below the movie poster*/
    #movieDetails{
         padding: 0;
         margin:0;
@@ -182,6 +195,7 @@ div > a > button:active , #btnUserAuth:active{
         width:auto;
     }
 
+    /*the main container properties*/
     .container-wraper{
     	margin-left: 200px;
     	margin-right: 200px
@@ -194,6 +208,8 @@ div > a > button:active , #btnUserAuth:active{
    .movie-title { 
       text-align: center;
       }
+
+    /*properties for the movie poster */
    img.movie-poster{
     margin: 80px;
     height: 600px;
@@ -201,6 +217,8 @@ div > a > button:active , #btnUserAuth:active{
     box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
     
     }
+
+    /*properties for the container of the movie*/
     .thumbnail-details{
         height: 1200px; 
         width: auto;
@@ -225,6 +243,7 @@ div > a > button:active , #btnUserAuth:active{
 
 @media only screen and (min-width: 2560px){
 
+	/*properties for the movie details that appear below the movie poster*/
    #movieDetails{
         padding: 0;
         margin:0;
@@ -234,6 +253,7 @@ div > a > button:active , #btnUserAuth:active{
         width:auto;
     }
 
+    /*the main container properties*/
     .container-wraper{
     	margin-left: 400px;
     	margin-right: 400px
@@ -252,6 +272,8 @@ div > a > button:active , #btnUserAuth:active{
    .movie-title { 
       text-align: center;
       }
+
+    /*properties for the movie poster */
    img.movie-poster{
     margin: 70px;
     height: 700px;
@@ -259,6 +281,8 @@ div > a > button:active , #btnUserAuth:active{
     box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
     
     }
+
+    /*properties for the container of the movie*/
     .thumbnail-details{
         height: 1300px; 
         width: auto; 

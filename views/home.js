@@ -41,7 +41,7 @@ getMovies();
 function getMovies(skip) {
 	console.log("getMovies.skip=",skip);
 	console.log("getMovies.searchParameters=",search4Movie.searchParameters);
-  movies.getAllwSearch({skip:skip,take:10},search4Movie.searchParameters).then(function() {
+  movies.getAllwSearch({skip:skip,take:12},search4Movie.searchParameters).then(function() {
     console.log("getAllList", movies.items);
     displayMovies(movies.items);
     displayPagination(movies.pagination);
@@ -135,6 +135,7 @@ function displayPagination(response) { // corecte by Alex
   //console.log("response pagination", response)
   var templatePages = document.getElementById("pagination-template");
   var pagesContainer = document.getElementById("pagination");
+   pagesContainer.innerHTML = "";						  
   for ( let i=1; i<= response.numberOfPages; i++) {
     displayButtons(i);
     function displayButtons(i) {
@@ -150,8 +151,7 @@ function displayPagination(response) { // corecte by Alex
     pageButtonElement.addEventListener("click",function moveToPage(event){
       console.log("Button clicked: ", i);
       //return getMovies((i-1)*10 +1);
-      pagesContainer.innerHTML = "";
-    return getMovies((i-1)*10);
+    return getMovies((i-1)*12);
     });
   }
 }
@@ -555,7 +555,7 @@ if(Worker&&backgroundSync){ //added by Tamas, allows page to refresh its movies 
     console.log("data:",event.data);
     if(event.data.update){
       if(event.data.update.items){
-        console.log("updated movies.items");
+        console.log("updated movies.items:",event.data.update.items);
         if(event.data.update.items.length){
           movies.items=[];
           event.data.update.items.forEach(function(item,index){
@@ -566,7 +566,7 @@ if(Worker&&backgroundSync){ //added by Tamas, allows page to refresh its movies 
         
       }
       if(event.data.update.pagination){
-        console.log("updated movies.pagination");
+       console.log("updated movies.pagination:",event.data.update.pagination);
         movies.pagination=event.data.update.pagination;
       }
     }else

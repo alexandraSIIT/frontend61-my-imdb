@@ -8,7 +8,7 @@ if it did change based from the information it gathered it will trigger the main
 //mcount is the passed tiem since last check 
 let timerForCheckingModificationl={mcycle:60000,obj:'',mfire:60000, mcount:0}; //this is 900000 ms == 15 minutes
 let mode=0; //1-all movies 2-movie
-let movies={main:{items:[],pagination:{}},background:{items:[],pagination:{}}, settings:{skip:0,take:10,searchParam:{}}}; //contains all the data for movies comparison for home.html
+let movies={main:{items:[],pagination:{}},background:{items:[],pagination:{}}, settings:{skip:0,take:12,searchParam:{}}}; //contains all the data for movies comparison for home.html
 let movie={main:{},background:{},id:''}; //contains all the data for movie comparison for movieDetails.html
 let movieUrl='https://ancient-caverns-16784.herokuapp.com/movies'
 let urlMovies='';
