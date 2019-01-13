@@ -2,21 +2,25 @@
     text-align: center;
 }
 
+/*these are the properties for the body container with gradient background*/
 body.container-fluid{
     padding: 0;
     margin:0;
     background: linear-gradient(360deg, rgba(246,243,244,1) 0%, rgba(207,209,210,1) 100%);
 }
 
+/*the main container should have the color white*/
 .container-wraper{
   background-color: white;
 }
 
+/*this is the container for the movie, added a background color and the line between rows shold be smaller than standard*/
 .thumbnail{
     background-color: #FFEFCA;
     line-height: 5px;
 }
 
+/*this is the container for the title and details of the movie*/
 .title-thumbnail{
   text-align: justify;
   margin-bottom: 5px;
@@ -24,14 +28,17 @@ body.container-fluid{
   height: 150px;
 }
 
+/*this fixes the overlapping of the genre property, if we have more than one row*/
 .movie-genre{
     overflow-wrap: normal;
     line-height: 15px;
 }
 
+/*margin for the add-movie button , between the search bar and the movies*/
 .add-movie{
   margin: 20px;
 }
+
 
 footer{
   padding: 20px;
@@ -56,24 +63,30 @@ footer{
         height: 30px;
     }
 
+    /*this property if for the buttons after the search bar, so we have some space between them*/
     span > button{
       margin: 5px;
     }
 
+    /*this is a margin for the search bar*/
     #search-value{
       margin-bottom: 5px;
     }
 
+    /*to center the movie titles*/
    .movie-title { 
       text-align: center;
-      }
+    }
+
+  /*properties for the movie poster */
    img.movie-poster{
     margin: 10px;
     height: 300px;
     width: 200px;
     box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
-    
     }
+
+    /*properties for the container of the movies*/
     .thumbnail{
         height: 540px; 
         width: auto;
@@ -83,23 +96,29 @@ footer{
         margin: 10px;
     }
 
+
     .navbar{
       padding: 10px;
     }
 
+    /*properties for the container of the movies*/
     #template{
       padding:0;
     }
 
+    /*properties for the h5 container of the title*/
     .movie-header{
         padding-top:10px;
         height: 60px;
     }
 
+    /*properties for the logo image*/
      img.logo{
         height: 90px;
         margin-left: 10px;
     }
+
+    /*properties for the login button*/
     button#btnUserAuth{
         padding: 8px 10px;
     }
@@ -107,6 +126,7 @@ footer{
 
 @media only screen and (min-width: 768px) {
 
+  /*properties for the movie poster */
    img.movie-poster{
     margin: 10px;
     height: 300px;
@@ -115,12 +135,14 @@ footer{
     
     }
 
+    /*the main container properties*/
     .container-wraper{
       margin-left: 50px;
       margin-right: 50px;
       box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
     }
 
+    /*properties for the container of the movies*/
     .thumbnail{
         height: 530px; 
         width: auto;
@@ -128,19 +150,23 @@ footer{
         margin: 15px; 
     }
 
+    /*properties for the h5 container of the title*/
     .movie-header{
         height: 50px;
         margin-bottom: 20px;
     }
 
+    /*setting the width for the search category*/
     #search-category{
       width: 120px;
     }
 
+    /*setting for the container of the search property*/
     .input-group{
       display: inline-block;
     }
 
+    /*properties for the logo image*/
     img.logo{
         height: 110px;
         margin:0;
@@ -150,6 +176,7 @@ footer{
 
 @media only screen and (min-width: 1024px) {
 
+  /*properties for the movie poster */
    img.movie-poster{
     margin: 10px;
     height: 300px;
@@ -158,12 +185,14 @@ footer{
     
     }
 
+     /*the main container properties*/
     .container-wraper{
       margin-left: 100px;
       margin-right: 100px;
       box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
     }
 
+     /*properties for the container of the movies*/
     .thumbnail{
         height: 550px; 
         width: auto;
@@ -175,11 +204,13 @@ footer{
       padding: 30px;
     }
 
+    /*properties for the h5 container of the title*/
     .movie-header{
         height: 50px;
         margin-bottom: 20px;
     }
 
+    /*properties for the logo image*/
     img.logo{
         height: 150px;
         margin:0;
@@ -189,6 +220,7 @@ footer{
 
 @media only screen and (min-width: 2560px){
 
+  /*properties for the movie template*/
   div.template{
         padding: 0;
         margin:0;
@@ -198,12 +230,14 @@ footer{
         width:auto;
     }
 
+  /*the main container properties*/
   .container-wraper{
     margin-left: 400px;
     margin-right: 400px;
     box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
   }
 
+  /*properties for the movie poster */
   img.movie-poster{
     margin: 20px;
     height: 500px;
@@ -216,6 +250,7 @@ footer{
       padding: 50px;
     }
 
+    /*properties for the container of the movies*/
     .thumbnail{
         height: 740px; 
         width: auto;
@@ -223,11 +258,13 @@ footer{
         margin: 50px; 
     }
 
+    /*properties for the h5 container of the title*/
     .movie-header{
         height: 50px;
         margin-bottom: 20px;
     }
 
+    /*properties for the logo image*/
     img.logo{
         height: 250px;
     }
@@ -236,6 +273,7 @@ footer{
 }
 
 
+/*style for all the buttons*/
 .buttons > button, #btnUserAuth, div > span > button, .pages-btn{
     -moz-box-shadow: 3px 4px 1px 0px #8a2a21;
     -webkit-box-shadow: 3px 4px 1px 0px #8a2a21;
