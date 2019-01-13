@@ -177,6 +177,7 @@ class Modal {
 	}
 	setElement(options=[]){
 		console.groupCollapsed('setElement');
+		this.add2Root();
 		if(!(typeof options === 'object')){options=[]};
 		if(!this.main.dom){
 			console.warn('No modal to select');
@@ -185,6 +186,7 @@ class Modal {
 		}
 		console.log("options=",options);
 		let me=this;
+		let jquery=this.main.jquery;
 		options.forEach(function(option,index){//element, index
 			console.groupCollapsed('option[',index,']');
 			console.log('option=',option);
@@ -203,31 +205,25 @@ class Modal {
 			if(!me.root.dom.querySelector(option.selector)){
 				console.warn('No element for: ', index);
 			}else{
-				//console.log("element:",me.main.dom.querySelector(option.selector));
 				if(option.task==="inner"){
 					//console.log("set: inner");
-					me.main.dom.querySelector(option.selector).innerHTML=option.value;
-					//console.log("get:",me.main.dom.querySelector(option.selector));
+					jquery.find(option.selector).html(option.value);
 				}else
 				if(option.task==="attribute-add"){
 					//console.log("set: attribute-add");
-					me.main.dom.querySelector(option.selector).setAttribute(option.name,option.value);
-					//console.log("get:",me.main.dom.querySelector(option.selector));
+					jquery.find(option.selector).attr(option.name,option.value);
 				}else
 				if(option.task==="attribute-remove"){
 					//console.log("set: attribute-remove");
-					me.main.dom.querySelector(option.selector).removeAttribute(option.name);
-					//console.log("get:",me.main.dom.querySelector(option.selector));
+					jquery.find(option.selector).removeAttr(option.name);
 				}else
 				if(option.task==="class-add"){
 					//console.log("set: class-add");
-					me.main.dom.querySelector(option.selector).classList.add(option.value);
-					//console.log("get:",me.main.dom.querySelector(option.selector));
+					jquery.find(option.selector).addClass(option.value);
 				}else
 				if(option.task==="class-remove"){
 					//console.log("set: class-remove");
-					me.main.dom.querySelector(option.selector).classList.remove(option.value);
-					//console.log("get:",me.main.dom.querySelector(option.selector));
+					jquery.find(option.selector).removeClass(option.value);
 				}else{
 					console.warn('No task for: ', index);
 				}
@@ -331,69 +327,6 @@ class Modal {
 	get jquery(){
 		console.log("get jquery");
 		return this.main.jquery;
-	}
-	setElement(options=[]){
-		//suggesting to remove this
-		console.groupCollapsed('setElement');
-		if(!(typeof options === 'object')){options=[]};
-		this.add2Root();
-		if(!this.main.dom){
-			console.warn('No modal to select');
-			console.groupEnd();
-			return;
-		}
-		console.log("options=",options);
-		let me=this;
-		options.forEach(function(option,index){//element, index
-			//console.groupCollapsed('option[',index,']');
-			//console.log('option=',option);
-			if(option==="show"){
-				me.show();
-			}else
-			if(option==="hide"){
-				me.hide();
-			}else
-			if(option==="toggle"){
-				me.toggle();
-			}else
-			if(!option.selector){
-				console.warn('No selector for: ', index);
-			}else
-			if(!me.main.dom.querySelector(option.selector)){
-				console.warn('No element for: ', index);
-			}else{
-				//console.log("element:",me.main.dom.querySelector(option.selector));
-				if(option.task==="inner"){
-					//console.log("set: inner");
-					me.main.dom.querySelector(option.selector).innerHTML=option.value;
-					//console.log("get:",me.main.dom.querySelector(option.selector));
-				}else
-				if(option.task==="attribute-add"){
-					//console.log("set: attribute-add");
-					me.main.dom.querySelector(option.selector).setAttribute(option.name,option.value);
-					//console.log("get:",me.main.dom.querySelector(option.selector));
-				}else
-				if(option.task==="attribute-remove"){
-					//console.log("set: attribute-remove");
-					me.main.dom.querySelector(option.selector).removeAttribute(option.name);
-					//console.log("get:",me.main.dom.querySelector(option.selector));
-				}else
-				if(option.task==="class-add"){
-					//console.log("set: class-add");
-					me.main.dom.querySelector(option.selector).classList.add(option.value);
-					//console.log("get:",me.main.dom.querySelector(option.selector));
-				}else
-				if(option.task==="class-remove"){
-					//console.log("set: class-remove");
-					me.main.dom.querySelector(option.selector).classList.remove(option.value);
-					//console.log("get:",me.main.dom.querySelector(option.selector));
-				}else{
-					console.warn('No task for: ', index);
-				}
-			}
-			//console.groupEnd();
-		});
-		console.groupEnd();
 	}
 	ifExists(selector=""){
 		console.groupCollapsed('ifExists');

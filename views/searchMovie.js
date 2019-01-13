@@ -26,15 +26,13 @@ function searchMovie() {
 		}
 	  });
 	} else {
-		if(alertElements&&alertElements["notification"]){
-			alertElements["notification"].setType("danger");
-			alertElements["notification"].setElement([{selector:".alert-body",task:"inner",value:error.responseJSON.message},"show"]); 
-			alertElements["notification"].slideup(options={a:2000,b:500,c:500,d:500})
-		}
+
 	}
 }
 
 ////////////Tamas function
+//the idea is based on what modules are
+//the idea is of: maintainability, namespacing and reusability to some degree
 let search4Movie={
 	init:function(options={root:"body",setRoot:true,addEvents:true}) {
 		console.groupCollapsed('init');
