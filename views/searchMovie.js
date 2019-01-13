@@ -79,16 +79,16 @@ let search4Movie={
 			}
 			console.groupEnd();
 		});
-		jquery.find("#refresh-page").click(function(event) {
-			console.groupCollapsed('refresh-page.keyup');
-			me.refreshPage();
-			console.groupEnd();
-		});
-		jquery.find("#reset-page").click(function(event) {
-			console.groupCollapsed('reset-page.keyup');
-			me.resetPage();
-			console.groupEnd();
-		});
+		// jquery.find("#refresh-page").click(function(event) {
+		// 	console.groupCollapsed('refresh-page.keyup');
+		// 	me.refreshPage();
+		// 	console.groupEnd();
+		// });
+		// jquery.find("#reset-page").click(function(event) {
+		// 	console.groupCollapsed('reset-page.keyup');
+		// 	me.resetPage();
+		// 	console.groupEnd();
+		// });
 		console.groupEnd();
 	},
 	changeCategory:function(option=""){
