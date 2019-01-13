@@ -19,7 +19,7 @@ Movies.prototype.getAll = function(skip="0") {
 };
 
 /////////////////////////////////// Search
-Movies.prototype.searchAllMovies = function(take='0', skip='0',searchName='',searchValue='') {
+Movies.prototype.searchAllMovies = function(take='0', skip='0',searchName='',searchValue='') { //by Alex
   var me = this;
   var urlSearchMoviesPaginated;
   if (!searchName || !searchValue) {
@@ -46,3 +46,34 @@ Movies.prototype.searchAllMovies = function(take='0', skip='0',searchName='',sea
 };
 
 //////////////////////////////////////////////////////////////////////
+Movies.prototype.getAllwSearch = function(defaultParams={skip:0,take:10}, serachParams={}) { //by Tamas
+	console.log("getAllwSearch.defaultParams=",defaultParams);
+	console.log("getAllwSearch.serachParams=",serachParams);
+	var me = this; var address=moviesRootUrl + "movies?take="+(defaultParams.take||10)+"&skip=" + (defaultParams.skip||0)
+	console.log("getAllwSearch.saddress=",address);
+	for (var key in serachParams){ 
+		let arrayOfKeysApproved=["Title","Year","Runtime","Genre","Language","Country","Poster","imdbRating","imdbVotes","imdbID","Type"];
+		if(arrayOfKeysApproved.indexOf(key) > -1){
+			address+="&"+key+"="+serachParams[key];
+		}
+	}
+	console.log("address=",address);
+	return $.get(address)
+	.done(function(response) {
+		console.log("found=",response);
+		if(response.results.length>0){
+			me.items=[];
+			me.pagination=response.pagination;
+			response=response.results;
+			for (var i = 0; i < response.length; i++) {
+				var movie = new Movie(response[i]);
+				me.items.push(movie);
+			};  
+		}
+		return response;
+	})
+	.fail(function(response) {
+		console.log("notfound=",response);
+		return response;
+	});
+};

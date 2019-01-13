@@ -40,6 +40,7 @@ function extraLoad(){ //added by Tamas
 getMovies();
 function getMovies(skip) {
 	console.log("getMovies.skip=",skip);
+	console.log("getMovies.searchParameters=",search4Movie.searchParameters);
   movies.getAllwSearch({skip:skip,take:10},search4Movie.searchParameters).then(function() {
     console.log("getAllList", movies.items);
     displayMovies(movies.items);
@@ -74,20 +75,24 @@ function displayMovies(response) {
     moviesClone.classList.add('new-movie');
     // populate the cloned template
     var movieTitleElement = moviesClone.querySelector(".movie-title");
-    movieTitleElement.innerHTML = response[i].Title;
+    movieTitleElement.innerHTML = response[i].Title||"(no title)";
 
     var movieYearElement = moviesClone.querySelector(".movie-year");
-    movieYearElement.innerHTML = response[i].Year;
+    movieYearElement.innerHTML = response[i].Year||"(no year)";
 
     var movieRuntimeElement = moviesClone.querySelector(".movie-runtime");
-    movieRuntimeElement.innerHTML = response[i].Runtime;
+    movieRuntimeElement.innerHTML = response[i].Runtime||"(no runtime)";
 
     var movieGenreElement = moviesClone.querySelector(".movie-genre");
-    movieGenreElement.innerHTML = response[i].Genre;
+    movieGenreElement.innerHTML = response[i].Genre||"(no genre)";
 
     var moviePosterElement = moviesClone.querySelector(".movie-poster");
-    moviePosterElement.src = response[i].Poster;
-
+	if(response[i].Poster===""){
+		moviePosterElement.src="../static/default_poster.jpg"
+	}else{
+		moviePosterElement.src = response[i].Poster;
+	}
+   
     var getMovieDetailsButton = moviesClone.querySelector(".movie-details");
     let id=response[i]._id;
     let me=response[i];
@@ -112,7 +117,9 @@ function displayMovies(response) {
     deleteButton.addEventListener("click", function(){
       deleteMovieOnClick(me,i);
     });
-
+	moviePosterElement.onerror = function () {
+		this.src="../static/default_poster.jpg"
+	};
     
 
   };
@@ -124,28 +131,102 @@ function displayMovies(response) {
 
 };
 
-
-
-function displayPagination(response) {
+function displayPagination(response) { // corecte by Alex
   //console.log("response pagination", response)
   var templatePages = document.getElementById("pagination-template");
   var pagesContainer = document.getElementById("pagination");
-  pagesContainer.innerHTML = "";
   for ( let i=1; i<= response.numberOfPages; i++) {
+    displayButtons(i);
+    function displayButtons(i) {
     var pagesClone = templatePages.cloneNode(true);
     pagesClone.removeAttribute("style");
     pagesClone.removeAttribute("id");
     var pageButtonElement = pagesClone.querySelector(".pages-btn");
-    pageButtonElement.innerHTML = i;
-    pagesContainer.appendChild(pagesClone);
+        pageButtonElement.innerHTML = i;
+    // var numberPageButton = document.createTextNode(i);
+    // pageButtonElement.appendChild(numberPageButton);
+    // pagesClone.appendChild(pageButtonElement);
+    pagesContainer.appendChild(pageButtonElement);
     pageButtonElement.addEventListener("click",function moveToPage(event){
+      console.log("Button clicked: ", i);
       //return getMovies((i-1)*10 +1);
-	  return getMovies((i-1)*10); //corecte by Tamas
+      pagesContainer.innerHTML = "";
+    return getMovies((i-1)*10);
     });
   }
 }
+}
+/*
 
-/////////////////////Dan
+// ALEXXXXXXX Search
+////////// New
+searchhhh();
+function searchhhh() {
+  movies.searchAllMovies(10, 0).then(function () {
+    displayMovies(movies.items);
+    console.log(" searchhhh", movies.items);
+  });
+}
+//////////////////////
+var inputText = document.querySelector("[name=search]");
+var searchSelected = document.querySelector(".search-select");
+var searchBtn = document.getElementById('search-btn');
+  searchBtn.addEventListener("click", searchMovie);
+
+
+  function searchMovie() {
+    var searchByTitle = "Title";
+    var searchInputValue = inputText.value;
+    if (searchInputValue) {
+
+      removeTemplateMovies();
+      movies.searchAllMovies(10, 0, searchByTitle, searchInputValue).then(function () {
+        console.log("searchMovie by Title: ", searchByTitle, searchInputValue, movies.items);
+        displayMovies(movies.items);
+        inputText.style.border = 'none';
+      });
+    } else {
+      removeTemplateMovies();
+      var body = document.body;
+      var responseSearchParagraph = document.createElement('p');
+      var responseSearchText = document.createTextNode(`There are no movies for "${searchInputValue}"`);
+      responseSearchParagraph.appendChild(responseSearchText);
+      body.appendChild(responseSearchParagraph);
+    }
+  }
+
+  function removeTemplateMovies() {
+    var movieDiv = document.getElementsByClassName('new-movie');
+    while (movieDiv[0]) {
+      movieDiv[0].parentNode.removeChild(movieDiv[0]);
+    }
+  }
+///////////////////////////////////// Search Year
+
+function searchYear() {
+  var yearDiv = document.getElementById("searchDivYear");
+  var yearArray = ["Year < 2000", "2000 - 2010", "2010 < Year"];
+  var yearList = document.createElement("select");
+  var optionYearDefault = document.createElement("option");
+  optionYearDefault.value = "ALL";
+  optionYearDefault.text = "ALL";
+  yearList.appendChild(optionYearDefault);
+  yearDiv.appendChild(yearList);
+  
+  for (let i = 0; i < yearArray.length; i++) {
+    var singleYear = yearArray[i];
+    var optionYear = document.createElement("option");
+    optionYear.value = singleYear;
+    optionYear.text = singleYear;
+    yearList.appendChild(optionYear);
+
+  }
+  yearList.addEventListener('change', function() { 
+    console.log("CHANGE?", this.value);
+  }
+);
+  
+=======
 
 
 let addMovieBtn = document.querySelector(".add-movie");
@@ -153,33 +234,100 @@ addMovieBtn.addEventListener("click", function(){
    addNewMovie();
 });
 
-let movie2Add;
 
-function addNewMovie(){
+function searchGenre() {
+  var responseMovies = movies.items;
+  console.log("RRRRRRRRRRRRRRR", responseMovies);
+  var moviesGenre = []; // String Genre Array
   
+  for (let i=0; i<responseMovies.length; i++) {
+    var responseMoviesGenre = responseMovies[i].Genre;
+    getGenre();
+    function getGenre(){
+      var genreStringArray = responseMoviesGenre.split(", ");
+      for(let i=0; i<genreStringArray.length;i++) {
+        var genreString = genreStringArray[i];
+        moviesGenre.push(genreString);
+      }
+    }
+  }
+  
+  var genreObj = {};
+  var genreArr = [];
+  for (let i = 0; i < moviesGenre.length; i++) {
+    if (!(moviesGenre[i] in genreObj)) {
+      genreArr.push(moviesGenre[i]);
+      genreObj[moviesGenre[i]] = true;
+    }
+  }
+  
+  var genreDiv = document.getElementById('searchDivGenre');
+  var genreList = document.createElement('select');
+  var genreListDefault = document.createElement("option");
+  genreListDefault.value = "ALL";
+  genreListDefault.text = "ALL";
+  genreList.appendChild(genreListDefault);
+  genreDiv.appendChild(genreList);
+
+  for (let i=0; i<genreArr.length; i++) { 
+    var singleGenre = genreArr[i]; //
+    function addButtonGenre(singleGenre) { // div pentru butoane // creare buton
+      var optionGenre = document.createElement("option");
+      optionGenre.value = singleGenre;
+      optionGenre.text = singleGenre;
+      genreList.appendChild(optionGenre);
+	  
+
+  var languageDiv = document.getElementById('searchDivLanguage');
+  var languageList = document.createElement('select');
+  var languageListDefault = document.createElement("option");
+  languageListDefault.value = "ALL";
+  languageListDefault.text = "ALL";
+  languageList.appendChild(languageListDefault);
+  languageDiv.appendChild(languageList);
+  
+  for (let i=0; i<languageArr.length; i++) { 
+    var singleLanguage = languageArr[i]; 
+    function addButtonLanguage(singleLanguage) {
+
+
+
+  });
+}
+
+*/
+/////////////////////Dan
+let addMovieBtn = document.querySelector(".add-movie");
+addMovieBtn.addEventListener("click", function(){
+   addNewMovie();
+});
+let movie2Add;
+function addNewMovie(){
+  modalMovieAdd();
   let movie = new Movie();
-  movie2Add = movie;
+  movie2Add=movie;
   let container="";
    movie.getMovieDetails().then(function() {
     for (var key in movie){ //a for cycle that creates the titleLable,newLabel and so on elements
-      if(key==="Title"||key==="Year"||key==="Runtime"||key==="Director"||key==="Writer"||key==="Plot"||key==="Language"||key==="Poster"||key==="imdbRating"){
+      if(key==="Title"||key==="Year"||key==="Runtime"||key==="Genre"||key==="Director"||key==="Writer"||key==="Plot"||key==="Language"||key==="Poster"||key==="imdbRating"){
       //console.log(movie[key]);
       container+=`<div class="md-form mb-5">  
-      <label for="${key}"><br>${key}<br></label>
-      <input value="" type="text" id="${key}" class="form-control validate">
+      <label for="new${key}"><br>${key}<br></label>
+      <input value="" type="text" id="new${key}" class="form-control validate">
     </div> `;
-	if(key==="Poster"){//add file upload support to Poster
-		container+=`<input class='fileInput' id='imageUpload' type="file" accept=".jpg, .jpeg, .png, .gif" style="padding-top:5px;">`;
+	if(key==="Poster"){//if added by Tamas to add file upload support to Poster
+		container+=`<input class='fileInput' id='imageUpload' type="file" accept=".jpg, .jpeg, .png, .gif" style="padding-top:5px;" onchange="{imageFileUploader.fileUppload({event:event,element:this})}">`;
 	}
  
       }
     }
     console.log("container=",container);
-    $("#movie-edit").find(".modal-body").html(container);
-    $("#movie-edit").modal("show");
-	insertlUploadImage(); //added by Tamas to add file upload support to Poster
+    $("#movie-Add").find(".modal-body").html(container);
+    $("#movie-Add").modal("show");
+	//insertlUploadImage(); //added by Tamas to add file upload support to Poster
     return;
         
+												
 
 
   });
@@ -190,43 +338,42 @@ function addNewMovie(){
 var movie2Edit;
 
 function editMovie(movie){
-  // modalMovieEditCreate();
-     movie2Edit = movie;
-  console.log(movie);
-  let container="";
-   movie.getMovieDetails().then(function() {
+ modalMovieEditCreate();					 
+    movie2Edit=movie;
+    console.log(movie);
+    let container="";
+	
+    movie.getMovieDetails().then(function() {
     for (var key in movie){ //a for cycle that creates the titleLable,newLabel and so on elements
-      if(key==="Title"||key==="Year"||key==="Runtime"||key==="Director"||key==="Writer"||key==="Plot"||key==="Language"||key==="Poster"||key==="imdbRating"){
+      if(key==="Title"||key==="Year"||key==="Runtime"||key==="Genre"||key==="Director"||key==="Writer"||key==="Plot"||key==="Language"||key==="Poster"||key==="imdbRating"){
       //console.log(movie[key]);
       container+=`<div class="md-form mb-5">  
       <label for="new${key}"><br>${key}<br></label>
       <input value="${movie[key]}" type="text" id="new${key}" class="form-control validate">
     </div> `;
 	if(key==="Poster"){//if added by Tamas to add file upload support to Poster
-		container+=`<input class='fileInput' id='imageUpload' type="file" accept=".jpg, .jpeg, .png, .gif" style="padding-top:5px;">`;
+		container+=`<input class='fileInput' id='imageUpload' type="file" accept=".jpg, .jpeg, .png, .gif" style="padding-top:5px;" onchange="{imageFileUploader.fileUppload({event:event,element:this})}">`;
 	}
  
       }
     }
     console.log("container=",container);
-    $("#movie-edit").find(".modal-body").html(container);
-    $("#movie-edit").modal("show");
-	insertlUploadImage(); //added by Tamas to add file upload support to Poster
+    $("#movie-Edit").find(".modal-body").html(container);
+    $("#movie-Edit").modal("show");
+	//insertlUploadImage(); //added by Tamas to add file upload support to Poster
     return;
-        
-
-
   });
-}
+}      
 
-function modalMovieAdd(){
-	let myAddModal = `
-	<div class="modal fade in" id="movie-edit"  role="dialog" style="display:none">
+var myModal;
+function simpleModal(name){
+  myModal = `
+	<div class="modal fade in" id="movie-${name}"  role="dialog" style="display:none">
 	  <div class="modal-dialog" >
 	  <form name="formMovieEdit" action="">
 		<div class="modal-content">
 		  <div class="modal-header text-center">
-			<h4 class="modal-title w-100 font-weight-bold">Add New Movie</h4>
+			<h4 class="modal-title w-100 font-weight-bold">${name} Movie</h4>
 			<button type="button" class="close" data-dismiss="modal" aria-label="Close">
 			  <span aria-hidden="true">×</span>
 			</button>
@@ -242,22 +389,28 @@ function modalMovieAdd(){
 		</form>
 	  </div>
   </div>`
+  return;
+}
 
-	let movieAddModal = document.createElement("div");
-	movieAddModal.innerHTML = myAddModal;
-	document.body.appendChild(movieAddModal);
-	//movie2Add
+function modalMovieAdd(){
+	simpleModal("Add");
+	document.querySelector("#movie-modal").innerHTML="";												 
+	let movieAddModal=document.createElement("div");
+	movieAddModal.innerHTML=myModal;
+	document.querySelector("#movie-modal").appendChild(movieAddModal);
+			
 	movieAddModal.querySelector(".bt-save").addEventListener("click", function(){
-	let list = movieAddModal.querySelectorAll("input");
-	console.log("list=",list);
-	list.forEach(function(input){      
-     console.log("value=",input.value);
-     console.log("id=",input.id);
-     movie2Add[input.id]=input.value;
-     });
-	movie2Add.addMovie().then(function(response){
+	  let list=movieAddModal.querySelectorAll("input");
+	  console.log("list=",list);
+	  list.forEach(function(input){      
+      console.log("value=",input.value);
+      console.log("id=",input.id.replace("new",""));
+      movie2Add[input.id.replace("new","")]=input.value;
+	   
+	  });
+	  movie2Add.addMovie().then(function(response){
 		    modalElements["notification"].setElement([{selector:".modal-title",task:"inner",value:"success"},{selector:".modal-body",task:"inner",value:"Movie successfully added "},"show"]);  
-	    	displayMovies(movies.items); 
+	    	getMovies();
 	  },
 	  function(error){
 		console.log(error);
@@ -266,33 +419,13 @@ function modalMovieAdd(){
 	  })
 	});
 }
-function modalMovieEditCreate(){
-	let myModal = `
-	<div class="modal fade in" id="movie-edit"  role="dialog" style="display:none">
-	  <div class="modal-dialog" >
-	  <form name="formMovieEdit" action="">
-		<div class="modal-content">
-		  <div class="modal-header text-center">
-			<h4 class="modal-title w-100 font-weight-bold">Edit Movie</h4>
-			<button type="button" class="close" data-dismiss="modal" aria-label="Close">
-			  <span aria-hidden="true">×</span>
-			</button>
-		  </div>
-		  <div class="modal-body mx-3">
-		  </div>
-		  <div class="modal-footer">
-			<button type="button" class="btn btn-danger bt-close" data-dismiss="modal">Close</button>
-			 <button type="button" class="btn btn-default bt-save" data-dismiss="modal">Save</button>
-		  </div>
-		 
-		</div>
-		</form>
-	  </div>
-  </div>`
 
+function modalMovieEditCreate(){
+	simpleModal("Edit");
+	document.querySelector("#movie-modal").innerHTML="";
 	var movieEditModal=document.createElement("div");
 	movieEditModal.innerHTML=myModal;
-	document.body.appendChild(movieEditModal);
+	document.querySelector("#movie-modal").appendChild(movieEditModal);
 	//movie2Edit
 	movieEditModal.querySelector(".bt-save").addEventListener("click", function(){
 	  console.log("movie2Edit_BEFORE=",movie2Edit);
@@ -329,11 +462,7 @@ function insertlUploadImage(){//added by tamas
 function doAfterSuccessImageUpload(data={}){//added by Tamas, will run this function after successful imate upload
   console.groupCollapsed('doAfterSuccessImageUpload');
   console.log('data=',data);
-  if(!$("#movie-edit")||!$("#movie-edit").find("#newPoster")){
-	   console.warn('no element');
-	   console.groupEnd();
-	   return;
-  }
+  
   //the data will contain information to the address of uploaded image
   //do to server side, the resposne might not be a json
   if(typeof data.response !="object"){
@@ -343,13 +472,23 @@ function doAfterSuccessImageUpload(data={}){//added by Tamas, will run this func
     console.log('address=',obj.address);
     //now we got the address of the image saved in obj.address
     notificationPopUp.post({body:"Image successfully uploaded",icon:obj.address});
-     $("#movie-edit").find("#newPoster").val(obj.address);
+		if($("#movie-Edit")||$("#movie-Edit").find("#newPoster")){
+			$("#movie-Edit").find("#newPoster").val(obj.address);
+		}
+		if($("#movie-Add")||$("#movie-Add").find("#newPoster")){
+			$("#movie-Add").find("#newPoster").val(obj.address);
+		}
    
   }else{
     //we got the address of the image saved in data.response.address
     console.log('address=',data.response.address);
     notificationPopUp.post({body:"Image successfully uploaded",icon:data.response.address});
-    $("#movie-edit").find("#newPoster").val(data.response.address);
+	if($("#movie-Edit")||$("#movie-Edit").find("#newPoster")){
+		$("#movie-Edit").find("#newPoster").val(data.response.address);
+	}
+	if($("#movie-Add")||$("#movie-Add").find("#newPoster")){
+		$("#movie-Add").find("#newPoster").val(data.response.address);
+	}
   }
   
   console.groupEnd();
