@@ -45,6 +45,10 @@ footer{
 
 /*style for all the buttons*/
 
+a {
+	outline: none;
+}
+
 div > a > button, #btnUserAuth{
     -moz-box-shadow: 3px 4px 1px 0px #8a2a21;
     -webkit-box-shadow: 3px 4px 1px 0px #8a2a21;
@@ -62,6 +66,7 @@ div > a > button, #btnUserAuth{
     padding:8px 5px;
     text-decoration:none;
     text-shadow:0px 1px 0px #810e05;
+    outline-style: none;
 }
 
 div > a > button:hover , #btnUserAuth:hover{

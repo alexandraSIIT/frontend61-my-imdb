@@ -274,6 +274,11 @@ footer{
 
 
 /*style for all the buttons*/
+
+a {
+  outline: none;
+}
+
 .buttons > button, #btnUserAuth, div > span > button, .pages-btn{
     -moz-box-shadow: 3px 4px 1px 0px #8a2a21;
     -webkit-box-shadow: 3px 4px 1px 0px #8a2a21;
@@ -291,6 +296,7 @@ footer{
     padding:8px 20px;
     text-decoration:none;
     text-shadow:0px 1px 0px #810e05;
+    outline-style: none;
 }/*added by Iulia*/
 
 .buttons > button:hover, #btnUserAuth:hover, div > span > button:hover, .pages-btn:hover{
