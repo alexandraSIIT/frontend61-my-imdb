@@ -309,7 +309,7 @@ function addNewMovie(){
   let container="";
    movie.getMovieDetails().then(function() {
     for (var key in movie){ //a for cycle that creates the titleLable,newLabel and so on elements
-      if(key==="Title"||key==="Year"||key==="Runtime"||key==="Director"||key==="Writer"||key==="Plot"||key==="Language"||key==="Poster"||key==="imdbRating"){
+      if(key==="Title"||key==="Year"||key==="Runtime"||key==="Genre"||key==="Director"||key==="Writer"||key==="Plot"||key==="Language"||key==="Poster"||key==="imdbRating"){
       //console.log(movie[key]);
       container+=`<div class="md-form mb-5">  
       <label for="new${key}"><br>${key}<br></label>
@@ -345,7 +345,7 @@ function editMovie(movie){
 	
     movie.getMovieDetails().then(function() {
     for (var key in movie){ //a for cycle that creates the titleLable,newLabel and so on elements
-      if(key==="Title"||key==="Year"||key==="Runtime"||key==="Director"||key==="Writer"||key==="Plot"||key==="Language"||key==="Poster"||key==="imdbRating"){
+      if(key==="Title"||key==="Year"||key==="Runtime"||key==="Genre"||key==="Director"||key==="Writer"||key==="Plot"||key==="Language"||key==="Poster"||key==="imdbRating"){
       //console.log(movie[key]);
       container+=`<div class="md-form mb-5">  
       <label for="new${key}"><br>${key}<br></label>
