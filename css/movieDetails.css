@@ -59,7 +59,7 @@ div > a > button, #btnUserAuth{
     color:#ffffff;
     font-family:Arial;
     font-size:12px;
-    /*padding:8px 2px;*/
+    padding:8px 5px;
     text-decoration:none;
     text-shadow:0px 1px 0px #810e05;
 }
