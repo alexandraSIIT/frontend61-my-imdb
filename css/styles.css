@@ -24,13 +24,12 @@ body.container-fluid{
 .title-thumbnail{
   text-align: justify;
   margin-bottom: 5px;
-  overflow-wrap: normal;
-  height: 150px;
+  height: 160px;
 }
 
 /*this fixes the overlapping of the genre property, if we have more than one row*/
 .movie-genre{
-    overflow-wrap: normal;
+    overflow-wrap: break-word;
     line-height: 15px;
 }
 
