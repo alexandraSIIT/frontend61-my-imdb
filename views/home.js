@@ -124,27 +124,6 @@ function displayMovies(response) {
 
 };
 
-
-
-// function displayPagination(response) {
-//   //console.log("response pagination", response)
-//   var templatePages = document.getElementById("pagination-template");
-//   var pagesContainer = document.getElementById("pagination");
-//   pagesContainer.innerHTML = "";
-//   for ( let i=1; i<= response.numberOfPages; i++) {
-//     var pagesClone = templatePages.cloneNode(true);
-//     pagesClone.removeAttribute("style");
-//     pagesClone.removeAttribute("id");
-//     var pageButtonElement = pagesClone.querySelector(".pages-btn");
-//     pageButtonElement.innerHTML = i;
-//     pagesContainer.appendChild(pagesClone);
-//     pageButtonElement.addEventListener("click",function moveToPage(event){
-//       //return getMovies((i-1)*10 +1);
-// 	  return getMovies((i-1)*10); //corecte by Tamas
-//     });
-//   }
-// }
-
 function displayPagination(response) { // corecte by Alex
   //console.log("response pagination", response)
   var templatePages = document.getElementById("pagination-template");
@@ -156,13 +135,16 @@ function displayPagination(response) { // corecte by Alex
     pagesClone.removeAttribute("style");
     pagesClone.removeAttribute("id");
     var pageButtonElement = pagesClone.querySelector(".pages-btn");
-    var numberPageButton = document.createTextNode(i);
-    pageButtonElement.appendChild(numberPageButton);
+        pageButtonElement.innerHTML = i;
+    // var numberPageButton = document.createTextNode(i);
+    // pageButtonElement.appendChild(numberPageButton);
     // pagesClone.appendChild(pageButtonElement);
     pagesContainer.appendChild(pageButtonElement);
     pageButtonElement.addEventListener("click",function moveToPage(event){
+      console.log("Button clicked: ", i);
       //return getMovies((i-1)*10 +1);
-	  return getMovies((i-1)*10);
+      pagesContainer.innerHTML = "";
+    return getMovies((i-1)*10);
     });
   }
 }
