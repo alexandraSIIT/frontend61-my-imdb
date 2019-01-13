@@ -1,3 +1,40 @@
+///////	Do to we were not sure and had no contact with Alex, we made the search without him. Later on he did resume activity but by that time we had this with css implemented too
+//////	The basic search of this was replaced with what Alex has written , while the advanced one was not. 
+/////	While this is not the best practice way of doing it, we dont want to leave Alex out 
+
+////////////Alex function
+function searchMovie() { 
+	var inputText = document.querySelector("input[name=search]");
+	var searchSelected = document.querySelector(".search-select");
+	//var searchBtn = document.getElementById('#search-do');
+	//searchBtn.addEventListener("click", searchMovie);
+	var searchByTitle = searchSelected.value
+	var searchInputValue = inputText.value;
+	
+	//<<<<<this bit added in by Tamas to allow backgroundSync
+	search4Movie.searchParameters={};
+	search4Movie.searchParameters[searchByTitle]=searchInputValue;
+	console.log("searchParameters=",search4Movie.searchParameters);
+	//>>>>>
+	if (searchInputValue) {
+	  movies.searchAllMovies(10, 0, searchByTitle, searchInputValue).then(function () {
+		console.log("searchMovie by Title: ", searchByTitle, searchInputValue, movies.items);
+		displayMovies(movies.items);
+		if(Worker&&backgroundSync){//added by Tamas to allow backgroundSync
+			console.log("sending data to backgroundSync:",{skip:0,searchparam:search4Movie.searchParameters});
+			backgroundSync.postMessage({movies:{skip:0,searchparam:search4Movie.searchParameters}});
+		}
+	  });
+	} else {
+		if(alertElements&&alertElements["notification"]){
+			alertElements["notification"].setType("danger");
+			alertElements["notification"].setElement([{selector:".alert-body",task:"inner",value:error.responseJSON.message},"show"]); 
+			alertElements["notification"].slideup(options={a:2000,b:500,c:500,d:500})
+		}
+	}
+}
+
+////////////Tamas function
 let search4Movie={
 	init:function(options={root:"body",setRoot:true,addEvents:true}) {
 		console.groupCollapsed('init');
@@ -65,30 +102,32 @@ let search4Movie={
 		});
 		jquery.find("#search-do").click(function() {
 			console.groupCollapsed('search-do.click');
-		    me.doSearch();
+			searchMovie(); //calls for Alex's function 
+		   // me.doSearch();
 		    console.groupEnd();
 		});
 		jquery.find("#search-value").keyup(function(event) {
 			console.groupCollapsed('search-value.keyup');
 			if (event.keyCode === 13) {
 				console.log("enter hit");
-				me.doSearch();
+				searchMovie(); //calls for Alex's function 
+				//me.doSearch();
 			}else{
 				console.log('value=',event.target.value);
 				me.doDynamicSearch();
 			}
 			console.groupEnd();
 		});
-		// jquery.find("#refresh-page").click(function(event) {
-		// 	console.groupCollapsed('refresh-page.keyup');
-		// 	me.refreshPage();
-		// 	console.groupEnd();
-		// });
-		// jquery.find("#reset-page").click(function(event) {
-		// 	console.groupCollapsed('reset-page.keyup');
-		// 	me.resetPage();
-		// 	console.groupEnd();
-		// });
+		jquery.find("#refresh-page").click(function(event) {
+			console.groupCollapsed('refresh-page.keyup');
+			me.refreshPage();
+		console.groupEnd();
+		});
+		jquery.find("#reset-page").click(function(event) {
+			console.groupCollapsed('reset-page.keyup');
+			me.resetPage();
+			console.groupEnd();
+		});
 		console.groupEnd();
 	},
 	changeCategory:function(option=""){
@@ -174,8 +213,8 @@ let search4Movie={
     <!-- Modal content-->
     <div class="modal-content">
       <div class="modal-header">
-        <button type="button" class="close" data-dismiss="modal">&times;</button>
-        <h4 class="modal-title">Advanced Search</h4>
+	  <h4 class="modal-title">Advanced Search</h4>
+       <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
       </div>
       <div class="modal-body">
 
@@ -351,3 +390,5 @@ let search4Movie={
 		console.groupEnd();
 	}
 }
+
+

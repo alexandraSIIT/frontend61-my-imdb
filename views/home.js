@@ -40,6 +40,7 @@ function extraLoad(){ //added by Tamas
 getMovies();
 function getMovies(skip) {
 	console.log("getMovies.skip=",skip);
+	console.log("getMovies.searchParameters=",search4Movie.searchParameters);
   movies.getAllwSearch({skip:skip,take:10},search4Movie.searchParameters).then(function() {
     console.log("getAllList", movies.items);
     displayMovies(movies.items);
@@ -387,6 +388,7 @@ function simpleModal(name){
 
 function modalMovieAdd(){
 	simpleModal("Add");
+	document.querySelector("#movie-modal").innerHTML="";												 
 	let movieAddModal=document.createElement("div");
 	movieAddModal.innerHTML=myModal;
 	document.querySelector("#movie-modal").appendChild(movieAddModal);

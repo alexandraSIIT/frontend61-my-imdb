@@ -1,14 +1,18 @@
 /*Worker for background sync
 This will periodically check if movies database has changed 
-if it did change based from the information it gathered it will trigger the host tread to update its movies or movie display
+if it did change based from the information it gathered it will trigger the main tread to update its movies or movie display
 */
+//the timer is not the best practice way written for debug purposes, while it could have been better written i believe this is the best way of debug viewing it
+//mcycle refers to the timer interval 
+//mfire refers to the time it needs to perform the check
+//mcount is the passed tiem since last check 
 let timerForCheckingModificationl={mcycle:60000,obj:'',mfire:60000, mcount:0}; //this is 900000 ms == 15 minutes
-let mode=0; //1-all 2-special
-let movies={main:{items:[],pagination:{}},background:{items:[],pagination:{}}, settings:{skip:0,take:10,searchParam:{}}};
-let movie={main:{},background:{},id:''};
+let mode=0; //1-all movies 2-movie
+let movies={main:{items:[],pagination:{}},background:{items:[],pagination:{}}, settings:{skip:0,take:10,searchParam:{}}}; //contains all the data for movies comparison for home.html
+let movie={main:{},background:{},id:''}; //contains all the data for movie comparison for movieDetails.html
 let movieUrl='https://ancient-caverns-16784.herokuapp.com/movies'
 let urlMovies='';
-let stats={
+let stats={ //boring debug stats 
 	received:0, sent:0,
 	called:{mode:0,movies:{reset:0,items:0,pagination:0,skip:0,searchparam:0,category:0},movie:{details:0,id:0},timer:{start:0,stop:0,mcycle:0,mfire:0}},
 	xhttp:{calls:0, success:0, failure:0},
@@ -90,9 +94,10 @@ self.onmessage = function (msg) {
 			//console.log("value=",msg.data.timer4Check);
 			if(msg.data.timer.command==="start"){
 				console.log('got timer Start');
-				console.warn("Timer start is disabled");
-				//stats.called.timer.start++;
-				//startTimerInterval();
+				//console.warn("Timer start is disabled");
+				stats.called.timer.start++;
+				startTimerInterval();
+				console.warn("Timer start has been triggered");
 			}else
 			if(msg.data.timer.command==="stop"){
 				console.log('got timer Stop');
@@ -120,13 +125,7 @@ self.onmessage = function (msg) {
 			//console.log('we got get');
 			//console.log("value=",msg.data.get);
 			if(msg.data.get==="stats"){
-				let tmp={};
-				function addMain(key){
-					tmp[key]=stats[key];
-				}
-				addMain("received"); addMain("sent");
-				addMain("called"); addMain("xhttp");addMain("checkup");
-				reply({stats:tmp,timer:timerForCheckingModificationl,movies:movies,movie:movie});
+				reply({stats:stats,timer:timerForCheckingModificationl,movies:movies,movie:movie, mode:mode,url:urlMovies});
 			}
 		}
 	//console.groupEnd();   
@@ -140,14 +139,7 @@ function startTimerInterval(){
 		timerForCheckingModificationl['obj']='';
 	}
 	if(mode!=1&&mode!=2){
-		console.warn('No mode selected. Ignoring setIterval');
-		//console.groupEnd();
-		return;
-	}
-	if(location.protocol==="file:"){
-		console.warn('Protocol is invalid. Ignoring setIterval');
-		//console.groupEnd();
-		return;
+		console.warn('No mode selected.');
 	}
 	//console.log('adding new');
 	timerForCheckingModificationl.mcount=0;
@@ -187,13 +179,20 @@ function doAjaxCheckup(){
 	console.log("checking4Modifications");
 	//console.groupCollapsed('doAjaxCheckup');
 	timerForCheckingModificationl.mcount+=timerForCheckingModificationl.mcycle;
+	console.log('waiting:',timerForCheckingModificationl.mcount,'/',timerForCheckingModificationl.mfire);
 	if(timerForCheckingModificationl.mcount<timerForCheckingModificationl.mfire){
-		//console.log('waiting:',timerForCheckingModificationl.mcount,'/',timerForCheckingModificationl.mfire);
+		console.log('dont fire yet');
 		//console.groupEnd();
 		return;
 	}
+	console.log('do fire ');
 	timerForCheckingModificationl.mcount=0;
 	//console.log('urlMovies=',urlMovies);
+	if(mode!=1&&mode!=2){
+		console.warn('No mode selected. Ignore doAjaxCheckup');
+		//console.groupEnd();
+		return;
+	}
 	if(urlMovies===''){
 		buildUrlMovies();
 		//console.log('urlMovies=',urlMovies);
@@ -216,6 +215,8 @@ function doAjaxCheckup(){
 					reply({update:{details:movie.background}});
 					reply({display:true});
 				}		
+			}else{
+				console.log("They are same, so no need to update.");
 			}
 		}else 
 		if (this.readyState == 4 && this.status !=200) {
@@ -357,7 +358,7 @@ function checkifTheyAreTheSame(){
 		//console.log("movie.main=",movie.main);
 		//console.log("movie.background=",movie.background);
 		if(isObjEquivalent(movie.main,movie.background)){
-			console.warn("notEquivalent:",[movie.main,movie.background]);
+			console.log("equivalent:",[movie.main,movie.background]);
 			//console.log("isObjEquivalent=true");
 			//console.groupEnd();
 			return true;
@@ -372,7 +373,7 @@ function checkifTheyAreTheSame(){
 
 function reply(obj={none:'none'}) {
 	//console.groupCollapsed('reply');
-	//console.log("obj=",obj);
+	console.log("reply.obj=",obj);
     if (obj) { 
 		stats.sent++;
 		//console.groupEnd();
