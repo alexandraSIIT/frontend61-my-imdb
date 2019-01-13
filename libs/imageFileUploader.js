@@ -1,3 +1,5 @@
+//the idea is based on what modules are
+//the idea is of: maintainability, namespacing and reusability to some degree
 let imageFileUploader={
 	init:function(options={}) {
 		console.groupCollapsed('init');
