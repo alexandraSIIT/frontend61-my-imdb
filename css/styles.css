@@ -41,7 +41,6 @@ footer{
   padding: 10px;
 }
 
-
 @media only screen and (min-width: 320px) {
 
     div.movies{
@@ -76,7 +75,7 @@ footer{
     
     }
     .thumbnail{
-        height: 500px; 
+        height: 540px; 
         width: auto;
         box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19); 
         width:auto;
