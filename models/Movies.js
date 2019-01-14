@@ -34,8 +34,7 @@ Movies.prototype.searchAllMovies = function(take='0', skip='0',searchName='',sea
         var movie = new Movie(searchResponse.results[i]);
         me.items.push(movie);
     }
-    me.numberOfPages = searchResponse.pagination.numberOfPages;
-    me.currentPage = searchResponse.pagination.currentPage;
+    me.pagination = searchResponse.pagination;
 },
     function (error) {
         console.log(
@@ -61,12 +60,10 @@ Movies.prototype.getAllwSearch = function(defaultParams={skip:0,take:10}, serach
 	return $.get(address)
 	.done(function(response) {
 		console.log("found=",response);
+		me.items=[];me.pagination=response.pagination;
 		if(response.results.length>0){
-			me.items=[];
-			me.pagination=response.pagination;
-			response=response.results;
-			for (var i = 0; i < response.length; i++) {
-				var movie = new Movie(response[i]);
+			for (var i = 0; i < response.results.length; i++) {
+				var movie = new Movie(response.results[i]);
 				me.items.push(movie);
 			};  
 		}

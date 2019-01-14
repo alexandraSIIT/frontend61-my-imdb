@@ -17,9 +17,9 @@ function searchMovie() {
 	console.log("searchParameters=",search4Movie.searchParameters);
 	//>>>>>
 	if (searchInputValue) {
-	  movies.searchAllMovies(10, 0, searchByTitle, searchInputValue).then(function () {
+	  movies.searchAllMovies(12, 0, searchByTitle, searchInputValue).then(function () {
 		console.log("searchMovie by Title: ", searchByTitle, searchInputValue, movies.items);
-		displayMovies(movies.items);
+		displayMovies(movies.items);displayPagination(movies.pagination);
 		if(Worker&&backgroundSync){//added by Tamas to allow backgroundSync
 			console.log("sending data to backgroundSync:",{skip:0,searchparam:search4Movie.searchParameters});
 			backgroundSync.postMessage({movies:{skip:0,searchparam:search4Movie.searchParameters}});
@@ -167,7 +167,7 @@ let search4Movie={
 				function(resolved){
 					console.log('resolved=',resolved);
 					console.log('resolved.results.length=',resolved.results.length);
-					if(resolved.results.length===0){
+					if(movies.items.length===0){
 						me.searchParameters={};
 						if(getMovies){
 							getMovies();
@@ -273,14 +273,20 @@ let search4Movie={
 		console.log('searchParameters=',this.searchParameters);
 		
 		if(movies){
-			movies.getAllwSearch ({skip:0,take:10},this.searchParameters).then(
+			movies.getAllwSearch ({skip:0,take:12},this.searchParameters).then(
 				function(resolved){
 					console.log('resolved=',resolved);
 					console.log('resolved.results.length=',resolved.results.length);
-					if(resolved.results.length===0){
-						me.searchParameters={};
-						if(getMovies){
+					if(movies.items.length===0){
+						//me.searchParameters={};
+						/*if(getMovies){
 							getMovies();
+						}*/
+						if(displayMovies){
+							displayMovies(movies.items);
+						}
+						if(displayPagination){
+							displayPagination(movies.pagination);
 						}
 						if(alertElements&&alertElements["notification"]){
 							alertElements["notification"].setType("danger");
@@ -288,9 +294,12 @@ let search4Movie={
 							alertElements["notification"].slideup(options={a:2000,b:500,c:500,d:500})
 						}
 					}else{
-						me.searchParameters={};
+						//me.searchParameters={};
 						if(displayMovies){
 							displayMovies(movies.items);
+						}
+						if(displayPagination){
+							displayPagination(movies.pagination);
 						}
 						if(alertElements&&alertElements["notification"]){
 							alertElements["notification"].setType("success");
