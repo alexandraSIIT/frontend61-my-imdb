@@ -159,7 +159,7 @@ function displayPagination(response) { // corecte by Alex
 /*
 
 // ALEXXXXXXX Search
-////////// New
+////////// TEST
 searchhhh();
 function searchhhh() {
   movies.searchAllMovies(10, 0).then(function () {
@@ -226,14 +226,10 @@ function searchYear() {
   }
 );
   
-=======
 
+}
 
-let addMovieBtn = document.querySelector(".add-movie");
-addMovieBtn.addEventListener("click", function(){
-   addNewMovie();
-});
-
+///////////////////////////////////// Search Genre
 
 function searchGenre() {
   var responseMovies = movies.items;
@@ -276,7 +272,47 @@ function searchGenre() {
       optionGenre.value = singleGenre;
       optionGenre.text = singleGenre;
       genreList.appendChild(optionGenre);
-	  
+
+  }
+  
+  addButtonGenre(singleGenre);
+  }
+  genreList.addEventListener('change', function() { 
+      console.log("CHANGE?", this.value);
+    }
+ );
+
+
+}
+
+///////////////////////////////////// Search Language
+
+function searchLanguage() {
+  var responseMovies = movies.items;
+  var moviesLanguage = []; // String Genre Array
+  console.log("SEARCH LANGUAGE get all ", movies.items);
+  
+  for (let i=0; i<responseMovies.length; i++) {
+    var responseMoviesLanguage = responseMovies[i].Language;
+    getLanguage();
+    function getLanguage(){
+      var languageStringArray = responseMoviesLanguage.split(", ");
+      for(let i=0; i<languageStringArray.length;i++) {
+        var languageString = languageStringArray[i];
+        moviesLanguage.push(languageString);
+      }
+    }
+  }
+  
+  var languageObj = {};
+  var languageArr = [];
+  for (let i = 0; i < moviesLanguage.length; i++) {
+    if (!(moviesLanguage[i] in languageObj)) {
+      languageArr.push(moviesLanguage[i]);
+      languageObj[moviesLanguage[i]] = true;
+    }
+  }
+
 
   var languageDiv = document.getElementById('searchDivLanguage');
   var languageList = document.createElement('select');
@@ -290,11 +326,20 @@ function searchGenre() {
     var singleLanguage = languageArr[i]; 
     function addButtonLanguage(singleLanguage) {
 
+      var optionLanguage = document.createElement("option");
+      optionLanguage.value = singleLanguage;
+      optionLanguage.text = singleLanguage;
+      languageList.appendChild(optionLanguage);
 
 
-  });
+  }
+  addButtonLanguage(singleLanguage);
+  }
+  languageList.addEventListener('change', function() { 
+    console.log("CHANGE?", this.value);
+  }
+);
 }
-
 */
 /////////////////////Dan
 let addMovieBtn = document.querySelector(".add-movie");
